@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Ticket Details
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header">
+        <h4>
+            Ticket Details
+        </h4>
+    </div>
+
+    <div class="card-body">
+
+        <div class="row mb-3">
+
+            <div class="col-md-3">
+                <strong>Ticket Number</strong>
+            </div>
+
+            <div class="col-md-9">
+                {{ ticket.ticket_number }}
+            </div>
+
+        </div>
+
+        <div class="row mb-3">
+
+            <div class="col-md-3">
+                <strong>Title</strong>
+            </div>
+
+            <div class="col-md-9">
+                {{ ticket.title }}
+            </div>
+
+        </div>
+
+
+        <div class="row mb-3">
+
+            <div class="col-md-3">
+                <strong>Description</strong>
+            </div>
+
+            <div class="col-md-9">
+                {{ ticket.description }}
+            </div>
+
+        </div>
+
+        <div class="row mb-3">
+
+            <div class="col-md-3">
+                <strong>Department</strong>
+            </div>
+
+            <div class="col-md-9">
+                {{ ticket.department }}
+            </div>
+
+        </div>
+
+        <div class="row mb-3">
+
+            <div class="col-md-3">
+                <strong>Priority</strong>
+            </div>
+
+            <div class="col-md-9">
+                {{ ticket.priority }}
+            </div>
+
+        </div>
+
+        <div class="row mb-3">
+
+            <div class="col-md-3">
+                <strong>Status</strong>
+            </div>
+
+            <div class="col-md-9">
+                {{ ticket.status }}
+            </div>
+
+        </div>
+
+        <div class="row mb-3">
+
+            <div class="col-md-3">
+                <strong>Created By</strong>
+            </div>
+
+            <div class="col-md-9">
+                {{ ticket.created_by }}
+            </div>
+
+        </div>
+
+        <div class="row mb-3">
+
+            <div class="col-md-3">
+                <strong>Assigned To</strong>
+            </div>
+
+            <div class="col-md-9">
+
+                {% if ticket.assigned_to %}
+                    {{ ticket.assigned_to }}
+                {% else %}
+                    Not Assigned
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <div class="row mb-3">
+
+            <div class="col-md-3">
+                <strong>Created At</strong>
+            </div>
+
+            <div class="col-md-9">
+                {{ ticket.created_at }}
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
