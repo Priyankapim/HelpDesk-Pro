@@ -119,6 +119,145 @@ Ticket Details
 
         </div>
 
+        {% if request.user.role == 'ADMIN' or request.user.role == 'SUPER_ADMIN' %}
+
+            <hr>
+
+            {% if ticket.assigned_to %}
+                <h5>Reassign Ticket</h5>
+            {% else %}
+                <h5>Assign Ticket</h5>
+            {% endif %}
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="mb-3">
+
+                    <select name="assigned_to" class="form-select">
+
+                        <option value="">
+                            Select Agent
+                        </option>
+
+                        {% for agent in agents %}
+
+                        <option value="{{ agent.id }}">
+                            {% if agent.first_name %}
+                                {{ agent.first_name }} {{ agent.last_name }}
+                            {% else %}
+                                {{ agent.email }}
+                            {% endif %}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+
+                    {% if ticket.assigned_to %}
+                        Reassign Ticket
+                    {% else %}
+                        Assign Ticket
+                    {% endif %}
+
+                </button>
+
+            </form>
+
+            <hr>
+
+            <h5>Update Status</h5>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="mb-3">
+
+                    <select name="status" class="form-select">
+
+                        <option value="Open" {% if ticket.status == 'Open' %}selected{% endif %}>Open</option>
+
+                        <option value="In Progress" {% if ticket.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+
+                        <option value="Resolved" {% if ticket.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+
+                        <option value="Closed" {% if ticket.status == 'Closed' %}selected{% endif %}>Closed</option>
+
+                    </select>
+
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Update Status
+                </button>
+
+            </form>
+
+            {% endif %}
+
+            <hr>
+
+            <h5>Comments</h5>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <textarea
+                    name="comment"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Add comment...">
+                </textarea>
+
+                <br>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary">
+
+                    Add Comment
+
+                </button>
+
+            </form>
+
+            {% for comment in comments %}
+
+            <div class="card mb-2">
+
+                <div class="card-body">
+
+                    <strong>
+                        {{ comment.user }}
+                    </strong>
+
+                    <small>
+                        {{ comment.created_at }}
+                    </small>
+
+                    <hr>
+
+                    {{ comment.comment }}
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <p>No comments yet.</p>
+
+            {% endfor %}
+            <hr>
+
+
         <div class="row mb-3">
 
             <div class="col-md-3">

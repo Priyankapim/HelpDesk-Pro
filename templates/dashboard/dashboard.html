@@ -6,44 +6,110 @@ Dashboard
 
 {% block content %}
 
-<div class="row">
+<div class="container-fluid">
 
-    <div class="col-md-3">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h6>Total Tickets</h6>
-                <h2>0</h2>
-            </div>
-        </div>
+    <div class="mb-4">
+        <h2 class="fw-bold">HelpDesk Dashboard</h2>
+        <p class="text-muted">
+            Welcome back, {{ request.user.first_name|default:request.user.email }}
+        </p>
     </div>
 
-    <div class="col-md-3">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h6>Open Tickets</h6>
-                <h2>0</h2>
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Total Tickets</h6>
+                    <h1 class="fw-bold">{{ total_tickets }}</h1>
+                </div>
             </div>
         </div>
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Open Tickets</h6>
+                    <h1 class="fw-bold">{{ open_tickets }}</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">In Progress</h6>
+                    <h1 class="fw-bold">{{ in_progress_tickets }}</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Resolved</h6>
+                    <h1 class="fw-bold">{{ resolved_tickets }}</h1>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="col-md-3">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h6>In Progress</h6>
-                <h2>0</h2>
-            </div>
-        </div>
-    </div>
+    <div class="row mt-4">
 
-    <div class="col-md-3">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h6>Closed</h6>
-                <h2>0</h2>
+        <div class="col-md-8">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">
+                        Quick Actions
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <a href="{% url 'create_ticket' %}"
+                       class="btn btn-primary me-2">
+                        Create Ticket
+                    </a>
+
+                    <a href="{% url 'my_tickets' %}"
+                       class="btn btn-outline-primary">
+                        My Tickets
+                    </a>
+
+                </div>
+
             </div>
+
         </div>
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">
+                        Closed Tickets
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <h1 class="fw-bold">
+                        {{ closed_tickets }}
+                    </h1>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
 </div>
 
 {% endblock %}
+

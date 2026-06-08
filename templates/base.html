@@ -76,11 +76,13 @@
 
     <div class="menu">
 
-        <a href="#">📊 Dashboard</a>
+        <a href="{% url 'dashboard' %}">📊 Dashboard</a>
 
         <a href="{% url 'create_ticket' %}">🎫 Create Ticket</a>
 
         <a href="{% url 'my_tickets' %}">📁 My Tickets</a>
+
+        <a href="{% url 'all_tickets' %}"> 📋 All Tickets </a>
 
         <a href="#">🏢 Departments</a>
 
@@ -103,10 +105,11 @@
             <h5 class="mb-0">Dashboard</h5>
 
             <span>
-                Welcome, {{ request.user.username }}
+                Welcome, {{ request.user.username }}.
             </span>
 
         </div>
+
 
     </div>
 

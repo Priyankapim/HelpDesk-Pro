@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+All Tickets
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    <div class="card-header">
+        <h4>All Tickets</h4>
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-striped">
+
+            <thead>
+                <tr>
+                    <th>Ticket No</th>
+                    <th>User</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Assigned To</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for ticket in tickets %}
+
+                <tr>
+
+                    <td>
+                        <a href="{% url 'ticket_detail' ticket.id %}">
+                            {{ ticket.ticket_number }}
+                        </a>
+                    </td>
+
+                    <td>{{ ticket.created_by }}</td>
+
+                    <td>{{ ticket.priority }}</td>
+
+                    <td>{{ ticket.status }}</td>
+
+                    <td>
+                        {% if ticket.assigned_to %}
+                            {{ ticket.assigned_to }}
+                        {% else %}
+                            Not Assigned
+                        {% endif %}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

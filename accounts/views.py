@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from tickets.models import Ticket
 
 
 def login_view(request):
@@ -27,7 +28,36 @@ def login_view(request):
 
 @login_required
 def dashboard_view(request):
+
+    total_tickets = Ticket.objects.count()
+
+    open_tickets = Ticket.objects.filter(
+        status='Open'
+    ).count()
+
+    in_progress_tickets = Ticket.objects.filter(
+        status='In Progress'
+    ).count()
+
+    resolved_tickets = Ticket.objects.filter(
+        status='Resolved'
+    ).count()
+
+    closed_tickets = Ticket.objects.filter(
+        status='Closed'
+    ).count()
+
+    context = {
+        'total_tickets': total_tickets,
+        'open_tickets': open_tickets,
+        'in_progress_tickets': in_progress_tickets,
+        'resolved_tickets': resolved_tickets,
+        'closed_tickets': closed_tickets,
+    }
+
     return render(
         request,
-        'dashboard/dashboard.html'
+        'dashboard/dashboard.html',
+        context
     )
+
