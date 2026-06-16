@@ -1,8 +1,12 @@
 
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from tickets.models import Ticket
+from .models import User
+from django.shortcuts import get_object_or_404
+
+
 
 
 def login_view(request):
@@ -26,38 +30,105 @@ def login_view(request):
 
 
 
+
+
 @login_required
 def dashboard_view(request):
 
-    total_tickets = Ticket.objects.count()
+    if request.user.role == "EMPLOYEE":
 
-    open_tickets = Ticket.objects.filter(
-        status='Open'
-    ).count()
+        tickets = Ticket.objects.filter(created_by=request.user)
 
-    in_progress_tickets = Ticket.objects.filter(
-        status='In Progress'
-    ).count()
+    elif request.user.role == "AGENT":
 
-    resolved_tickets = Ticket.objects.filter(
-        status='Resolved'
-    ).count()
+        tickets = Ticket.objects.filter(assigned_to=request.user)
 
-    closed_tickets = Ticket.objects.filter(
-        status='Closed'
-    ).count()
+    else:  # ADMIN / SUPER_ADMIN
+
+        tickets = Ticket.objects.all()
 
     context = {
-        'total_tickets': total_tickets,
-        'open_tickets': open_tickets,
-        'in_progress_tickets': in_progress_tickets,
-        'resolved_tickets': resolved_tickets,
-        'closed_tickets': closed_tickets,
+
+        "total_tickets": tickets.count(),
+
+        "open_tickets": tickets.filter(
+            status="Open"
+        ).count(),
+
+        "in_progress_tickets": tickets.filter(
+            status="In Progress"
+        ).count(),
+
+        "resolved_tickets": tickets.filter(
+            status="Resolved"
+        ).count(),
+
+        "closed_tickets": tickets.filter(
+            status="Closed"
+        ).count(),
+
+        "recent_tickets": tickets.order_by(
+            "-created_at"
+        )[:5],
     }
 
     return render(
         request,
-        'dashboard/dashboard.html',
+        "dashboard/dashboard.html",
         context
     )
 
+
+def logout_view(request):
+
+    logout(request)
+
+    return redirect('login')
+
+
+@login_required
+def users_list(request):
+
+    if request.user.role not in [
+        'ADMIN',
+        'SUPER_ADMIN'
+    ]:
+        return redirect('dashboard')
+
+    users = User.objects.all().order_by('first_name')
+
+    return render(
+        request,
+        'users_list.html',
+        {
+            'users': users
+        }
+    )
+
+
+
+
+@login_required
+def edit_user(request, user_id):
+
+    if request.user.role not in ['ADMIN', 'SUPER_ADMIN']:
+        return redirect('dashboard')
+
+    user = get_object_or_404(User, id=user_id)
+
+    if request.method == "POST":
+
+        role = request.POST.get("role")
+
+        user.role = role
+        user.save()
+
+        return redirect("users_list")
+
+    return render(
+        request,
+        "edit_user.html",
+        {
+            "user_obj": user
+        }
+    )

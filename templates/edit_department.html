@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit Department
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header">
+
+        <h4>
+
+            Edit Department
+
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="mb-3">
+
+                <label>Name</label>
+
+                <input
+
+                    type="text"
+
+                    name="name"
+
+                    value="{{ department.name }}"
+
+                    class="form-control">
+
+            </div>
+
+            <div class="mb-3">
+
+                <label>Description</label>
+
+                <textarea
+
+                    name="description"
+
+                    class="form-control">{{ department.description }}</textarea>
+
+            </div>
+
+            <button
+
+                class="btn btn-primary">
+
+                Update
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

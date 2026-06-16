@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Assigned Tickets
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header">
+        <h4>Assigned Tickets</h4>
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+                    <th>Ticket Number</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for ticket in tickets %}
+
+                <tr>
+
+                    <td>
+
+                        <a href="{% url 'ticket_detail' ticket.id %}">
+
+                            {{ ticket.ticket_number }}
+
+                        </a>
+
+                    </td>
+
+                    <td>
+                        {{ ticket.title }}
+                    </td>
+
+                    <td>
+                        {{ ticket.status }}
+                    </td>
+
+                    <td>
+                        {{ ticket.priority }}
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="4">
+                        No assigned tickets.
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

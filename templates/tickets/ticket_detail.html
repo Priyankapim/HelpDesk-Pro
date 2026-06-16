@@ -169,6 +169,10 @@ Ticket Details
 
             </form>
 
+        {% endif %}
+
+        {% if request.user.role == 'ADMIN' or request.user.role == 'SUPER_ADMIN' or request.user.role == 'AGENT' %}
+
             <hr>
 
             <h5>Update Status</h5>
@@ -181,13 +185,21 @@ Ticket Details
 
                     <select name="status" class="form-select">
 
-                        <option value="Open" {% if ticket.status == 'Open' %}selected{% endif %}>Open</option>
+                        <option value="Open" {% if ticket.status == 'Open' %}selected{% endif %}>
+                            Open
+                        </option>
 
-                        <option value="In Progress" {% if ticket.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                        <option value="In Progress" {% if ticket.status == 'In Progress' %}selected{% endif %}>
+                            In Progress
+                        </option>
 
-                        <option value="Resolved" {% if ticket.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+                        <option value="Resolved" {% if ticket.status == 'Resolved' %}selected{% endif %}>
+                            Resolved
+                        </option>
 
-                        <option value="Closed" {% if ticket.status == 'Closed' %}selected{% endif %}>Closed</option>
+                        <option value="Closed" {% if ticket.status == 'Closed' %}selected{% endif %}>
+                            Closed
+                        </option>
 
                     </select>
 
@@ -199,10 +211,9 @@ Ticket Details
 
             </form>
 
-            {% endif %}
+        {% endif %}
 
-            <hr>
-
+        <hr>
             <h5>Comments</h5>
 
             <form method="POST">

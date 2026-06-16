@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit User
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header">
+
+        <h4>Edit User Role</h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <h5>{{ user_obj.email }}</h5>
+
+        <br>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="mb-3">
+
+                <label>Role</label>
+
+                <select
+                    name="role"
+                    class="form-select">
+
+                    <option
+                        value="EMPLOYEE"
+                        {% if user_obj.role == 'EMPLOYEE' %}selected{% endif %}>
+
+                        Employee
+
+                    </option>
+
+                    <option
+                        value="AGENT"
+                        {% if user_obj.role == 'AGENT' %}selected{% endif %}>
+
+                        Agent
+
+                    </option>
+
+                    <option
+                        value="ADMIN"
+                        {% if user_obj.role == 'ADMIN' %}selected{% endif %}>
+
+                        Admin
+
+                    </option>
+
+                    <option
+                        value="SUPER_ADMIN"
+                        {% if user_obj.role == 'SUPER_ADMIN' %}selected{% endif %}>
+
+                        Super Admin
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-success">
+
+                Save Changes
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

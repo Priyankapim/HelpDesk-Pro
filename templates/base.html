@@ -76,21 +76,39 @@
 
     <div class="menu">
 
-        <a href="{% url 'dashboard' %}">📊 Dashboard</a>
+        <a href="{% url 'dashboard' %}"> 📊 Dashboard </a>
 
-        <a href="{% url 'create_ticket' %}">🎫 Create Ticket</a>
+        {% if request.user.role == 'EMPLOYEE' %}
 
-        <a href="{% url 'my_tickets' %}">📁 My Tickets</a>
+            <a href="{% url 'create_ticket' %}"> 🎫 Create Ticket </a>
 
-        <a href="{% url 'all_tickets' %}"> 📋 All Tickets </a>
+            <a href="{% url 'my_tickets' %}"> 📁 My Tickets </a>
 
-        <a href="#">🏢 Departments</a>
+        {% endif %}
+
+        {% if request.user.role == 'AGENT' %}
+
+            <a href="{% url 'assigned_tickets' %}"> 📋 Assigned Tickets </a>
+
+        {% endif %}
+
+        {% if request.user.role == 'ADMIN' or request.user.role == 'SUPER_ADMIN' %}
+
+            <a href="{% url 'create_ticket' %}"> 🎫 Create Ticket </a>
+
+            <a href="{% url 'my_tickets' %}"> 📁 My Tickets </a>
+
+            <a href="{% url 'all_tickets' %}"> 📋 All Tickets </a>
+
+            <a href="{% url 'users_list' %}"> 👥 Users</a>
+
+        {% endif %}
+
+        <a href="{% url 'department_list' %}">🏢 Departments</a>
 
         <a href="#">📈 Reports</a>
 
-        <a href="#">👥 Users</a>
-
-        <a href="#">🚪 Logout</a>
+        <a href="{% url 'logout' %}">🚪 Logout</a>
 
     </div>
 
@@ -105,8 +123,10 @@
             <h5 class="mb-0">Dashboard</h5>
 
             <span>
-                Welcome, {{ request.user.username }}.
+               👤 {{ request.user.username }}
             </span>
+
+
 
         </div>
 
@@ -118,9 +138,11 @@
         {% block content %}
         {% endblock %}
 
+
     </div>
 
 </div>
 
 </body>
 </html>
+

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Departments
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header d-flex justify-content-between">
+
+        <h4>
+
+            Departments
+
+        </h4>
+
+        <a
+
+            href="{% url 'add_department' %}"
+
+            class="btn btn-success">
+
+            + Add Department
+
+        </a>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered">
+
+            <thead>
+
+                <tr>
+
+                    <th>Name</th>
+
+                    <th>Description</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for department in departments %}
+
+                <tr>
+
+                    <td>
+
+                        {{ department.name }}
+
+                    </td>
+
+                    <td>
+
+                        {{ department.description }}
+
+                    </td>
+
+                    <td>
+
+                        <a
+
+                            href="{% url 'edit_department' department.id %}"
+
+                            class="btn btn-sm btn-primary">
+
+                            Edit
+
+                        </a>
+
+                        <a
+
+                            href="{% url 'delete_department' department.id %}"
+
+                            class="btn btn-sm btn-danger">
+
+                            Delete
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}
