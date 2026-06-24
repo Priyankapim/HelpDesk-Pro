@@ -4,12 +4,15 @@
 Dashboard
 {% endblock %}
 
+{% block page_title %}
+Dashboard
+{% endblock %}
+
 {% block content %}
 
 <div class="container-fluid">
 
     <div class="mb-4">
-
         <p class="text-muted">
             Welcome back, {{ request.user.first_name|default:request.user.email }}
         </p>
@@ -38,7 +41,7 @@ Dashboard
         <div class="col">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
-                    <h6 class="text-muted">In Progress</h6>
+                    <h6 class="text-muted">In Progress Tickets</h6>
                     <h1 class="fw-bold">{{ in_progress_tickets }}</h1>
                 </div>
             </div>
@@ -47,7 +50,7 @@ Dashboard
         <div class="col">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
-                    <h6 class="text-muted">Resolved</h6>
+                    <h6 class="text-muted">Resolved Tickets</h6>
                     <h1 class="fw-bold">{{ resolved_tickets }}</h1>
                 </div>
             </div>
@@ -56,13 +59,15 @@ Dashboard
         <div class="col">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
-                    <h6 class="text-muted">Closed Tickets</h6>
+                    <h6 class="text-muted"> Closed Tickets </h6>
                     <h1 class="fw-bold">{{ closed_tickets }}</h1>
                 </div>
             </div>
         </div>
 
     </div>
+
+
 
     <hr class="my-4">
 
@@ -87,39 +92,24 @@ Dashboard
                 <thead>
 
                     <tr>
-
                         <th>Ticket No</th>
-
                         <th>Title</th>
-
                         <th>Status</th>
-
                         <th>Priority</th>
-
                     </tr>
 
                 </thead>
 
                 <tbody>
-
                     {% for ticket in recent_tickets %}
 
                     <tr>
 
                         <td>{{ ticket.ticket_number }}</td>
-
                         <td>
-
-                            <a href="{% url 'ticket_detail' ticket.id %}">
-
-                                {{ ticket.title }}
-
-                            </a>
-
+                            <a href="{% url 'ticket_detail' ticket.id %}"> {{ ticket.title }} </a>
                         </td>
-
                         <td>{{ ticket.status }}</td>
-
                         <td>{{ ticket.priority }}</td>
 
                     </tr>
@@ -127,13 +117,7 @@ Dashboard
                     {% empty %}
 
                     <tr>
-
-                        <td colspan="4">
-
-                            No tickets found.
-
-                        </td>
-
+                        <td colspan="4"> No tickets found. </td> <td
                     </tr>
 
                     {% endfor %}

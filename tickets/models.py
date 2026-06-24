@@ -10,6 +10,7 @@ class Ticket(models.Model):
         ('Medium', 'Medium'),
         ('High', 'High'),
         ('Critical', 'Critical'),
+
     ]
 
     STATUS_CHOICES = [

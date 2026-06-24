@@ -102,11 +102,13 @@
 
             <a href="{% url 'users_list' %}"> 👥 Users</a>
 
+            <a href="{% url 'department_list' %}">🏢 Departments</a>
+
+            <a href="{% url 'reports_dashboard' %}">📈 Reports</a>
+
         {% endif %}
 
-        <a href="{% url 'department_list' %}">🏢 Departments</a>
 
-        <a href="#">📈 Reports</a>
 
         <a href="{% url 'logout' %}">🚪 Logout</a>
 
@@ -120,7 +122,11 @@
 
         <div class="d-flex justify-content-between">
 
-            <h5 class="mb-0">Dashboard</h5>
+            <h3 class="fw-bold">
+                {% block page_title %}
+                Dashboard
+                {% endblock %}
+            </h3>
 
             <span>
                👤 {{ request.user.username }}

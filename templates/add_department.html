@@ -9,59 +9,24 @@ Add Department
 <div class="card shadow-sm">
 
     <div class="card-header">
-
-        <h4>
-
-            Add Department
-
-        </h4>
-
+        <h4> Add Department </h4>
     </div>
 
     <div class="card-body">
-
         <form method="POST">
-
             {% csrf_token %}
 
             <div class="mb-3">
-
                 <label>Name</label>
-
-                <input
-
-                    type="text"
-
-                    name="name"
-
-                    class="form-control"
-
-                    required>
-
+                <input type="text" name="name" class="form-control" required>
             </div>
 
             <div class="mb-3">
-
                 <label>Description</label>
-
-                <textarea
-
-                    name="description"
-
-                    class="form-control">
-
-                </textarea>
-
+                <textarea name="description" class="form-control"> </textarea>
             </div>
 
-            <button
-
-                class="btn btn-success">
-
-                Save
-
-            </button>
-
+            <button class="btn btn-success"> Save </button>
         </form>
 
     </div>
@@ -69,3 +34,4 @@ Add Department
 </div>
 
 {% endblock %}
+

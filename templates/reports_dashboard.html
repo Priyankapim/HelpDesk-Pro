@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}
+Reports
+{% endblock %}
+{% block page_title %}
+Reports
+{% endblock %}
+{% block content %}
+
+
+
+<!-- Department Report -->
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header">
+
+        <h5>Department Wise Report</h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered">
+
+            <tr>
+
+                <th>Department</th>
+
+                <th>Total Tickets</th>
+
+            </tr>
+
+            {% for row in department_report %}
+
+            <tr>
+
+                <td>
+
+                    {{ row.department__name }}
+
+                </td>
+
+                <td>
+
+                    {{ row.total }}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- Priority Report -->
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header">
+
+        <h5>Priority Wise Report</h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered">
+
+            <tr>
+
+                <th>Priority</th>
+
+                <th>Total Tickets</th>
+
+            </tr>
+
+            {% for row in priority_report %}
+
+            <tr>
+
+                <td>{{ row.priority }}</td>
+
+                <td>{{ row.total }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- Agent Report -->
+
+<div class="card shadow-sm">
+
+    <div class="card-header">
+
+        <h5>Agent Wise Report</h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered">
+
+            <tr>
+                <th>Agent</th>
+                <th>Total Assigned Tickets</th>
+            </tr>
+
+            {% for row in agent_report %}
+
+            <tr>
+
+                <td>
+                    {% if row.assigned_to__first_name %}
+
+                        {{ row.assigned_to__first_name }}
+                        {{ row.assigned_to__last_name }}
+
+                    {% else %}
+
+                        {{ row.assigned_to__email }}
+
+                    {% endif %}
+                </td>
+
+                <td>
+                    {{ row.total }}
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+
+    </div>
+
+</div>
+
+{% endblock %}
