@@ -2,8 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from notifications.utils import send_ticket_email
 from .forms import TicketForm
-from .models import Ticket, TicketComment
+from .models import Ticket, TicketComment, Notification
 from accounts.models import User
+
 
 
 
@@ -23,6 +24,18 @@ def create_ticket(request):
 
             ticket.save()
 
+            Notification.objects.create(
+
+                user=request.user,
+
+                ticket=ticket,
+
+                title="Ticket Created",
+
+                message=f'Your ticket "{ticket.title}" has been created.'
+
+            )
+
 
             send_ticket_email(
 
@@ -30,7 +43,7 @@ def create_ticket(request):
 
                 message=f"""
             Hello {request.user.first_name or request.user.email},
-6
+
             Your support ticket has been created successfully.
 
             Ticket Number: {ticket.ticket_number}
@@ -252,6 +265,37 @@ def assigned_tickets(request):
         {'tickets': tickets}
     )
 
+
+
+@login_required
+def delete_notification(request, notification_id):
+
+    notification = get_object_or_404(
+        Notification,
+        id=notification_id,
+        user=request.user
+    )
+
+    notification.delete()
+
+    return redirect(request.META.get("HTTP_REFERER", "dashboard"))
+
+
+def open_notification(request, notification_id):
+
+    notification = get_object_or_404(
+        Notification,
+        id=notification_id,
+        user=request.user
+    )
+
+    notification.is_read = True
+    notification.save()
+
+    return redirect(
+        "ticket_detail",
+        notification.ticket.id
+    )
 
 
 
