@@ -374,6 +374,210 @@ body.dark-mode .text-muted{
 }
 
 
+        /* ---------- Global Search ---------- */
+
+.search-overlay{
+
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    display:none;
+
+    justify-content:center;
+    align-items:flex-start;
+
+    padding-top:90px;
+
+    z-index:9999;
+
+}
+
+.search-modal{
+
+    width:700px;
+
+    background:#fff;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:0 25px 60px rgba(0,0,0,.25);
+
+}
+
+.search-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:16px;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.search-header input{
+
+    flex:1;
+
+    border:none;
+
+    outline:none;
+
+    font-size:16px;
+
+}
+
+.search-header button{
+
+    border:1px solid #ddd;
+
+    background:white;
+
+    border-radius:8px;
+
+    padding:3px 10px;
+
+    font-size:12px;
+
+}
+
+.search-results{
+
+    max-height:420px;
+
+    overflow-y:auto;
+
+}
+
+.search-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px 20px;
+
+    text-decoration:none;
+
+    color:#111;
+
+    border-bottom:1px solid #f3f4f6;
+
+}
+
+.search-item:hover{
+
+    background:#f8fafc;
+
+}
+
+.search-ticket{
+
+    font-weight:600;
+
+    font-size:15px;
+
+}
+
+.search-dept{
+
+    color:#6b7280;
+
+    font-size:13px;
+
+}
+
+.search-empty{
+
+    text-align:center;
+
+    padding:40px;
+
+    color:#9ca3af;
+
+}
+
+body.dark-mode .search-modal{
+
+    background:#111827;
+
+}
+
+body.dark-mode .search-header{
+
+    border-bottom:1px solid #2d3748;
+
+}
+
+body.dark-mode .search-header input{
+
+    background:#111827;
+
+    color:white;
+
+}
+
+body.dark-mode .search-item{
+
+    color:white;
+
+    border-bottom:1px solid #374151;
+
+}
+
+
+body.dark-mode .search-dept{
+
+    color:#9ca3af;
+
+}
+
+
+.search-item{
+
+display:block;
+
+padding:14px 18px;
+
+text-decoration:none;
+
+color:#111827;
+
+border-bottom:1px solid #eee;
+
+transition:.2s;
+
+}
+
+.search-item:hover{
+
+background:#f3f4f6;
+
+}
+
+body.dark-mode .search-item{
+
+color:white;
+
+border-bottom:1px solid #374151;
+
+}
+
+body.dark-mode .search-item:hover{
+
+background:#1f2937;
+
+}
+
     </style>
 </head>
 <body>
@@ -480,8 +684,10 @@ body.dark-mode .text-muted{
 
                 <input
                     type="text"
+                    id="openSearch"
                     class="form-control"
-                    placeholder="Search tickets...">
+                    placeholder="Search tickets, departments..."
+                    readonly>
 
             </div>
 
@@ -683,6 +889,220 @@ toggle.addEventListener("click",function(){
         toggle.classList.add("bi-moon");
 
     }
+
+});
+
+</script>
+
+
+<!-- Global Search -->
+
+<div id="searchOverlay" class="search-overlay">
+
+    <div class="search-modal">
+
+        <div class="search-header">
+
+            <i class="bi bi-search"></i>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search ticket no, title, department...">
+
+            <button id="closeSearch">
+                ESC
+            </button>
+
+        </div>
+
+        <div id="searchResults" class="search-results">
+
+            <div class="search-empty">
+
+                Start typing...
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const overlay = document.getElementById("searchOverlay");
+const openBtn = document.getElementById("openSearch");
+const closeBtn = document.getElementById("closeSearch");
+const searchInput = document.getElementById("searchInput");
+const results = document.getElementById("searchResults");
+
+
+// Open Popup
+function openSearch(){
+
+    overlay.style.display = "flex";
+
+    searchInput.value = "";
+
+    results.innerHTML = `
+        <div class="search-empty">
+            Start typing...
+        </div>
+    `;
+
+    setTimeout(() => searchInput.focus(),100);
+
+}
+
+
+// Close Popup
+function closeSearch(){
+
+    overlay.style.display = "none";
+
+}
+
+
+// Search box click
+openBtn.addEventListener("click", openSearch);
+
+
+// ESC Button
+closeBtn.addEventListener("click", closeSearch);
+
+
+// Click outside
+overlay.addEventListener("click", function(e){
+
+    if(e.target===overlay){
+
+        closeSearch();
+
+    }
+
+});
+
+
+// Ctrl + K
+document.addEventListener("keydown",function(e){
+
+    if(e.ctrlKey && e.key==="k"){
+
+        e.preventDefault();
+
+        openSearch();
+
+    }
+
+    if(e.key==="Escape"){
+
+        closeSearch();
+
+    }
+
+});
+
+
+// Live Search
+searchInput.addEventListener("keyup",function(){
+
+    let query = this.value.trim();
+
+    if(query.length===0){
+
+        results.innerHTML=`
+            <div class="search-empty">
+                Start typing...
+            </div>
+        `;
+
+        return;
+
+    }
+
+    fetch(`/tickets/search/?q=${encodeURIComponent(query)}`)
+
+    .then(res=>res.json())
+
+    .then(data=>{
+
+        if(data.length===0){
+
+            results.innerHTML=`
+                <div class="search-empty">
+                    No results found
+                </div>
+            `;
+
+            return;
+
+        }
+
+        let html = "";
+
+        data.forEach(item => {
+
+            let icon = "";
+
+            if(item.type=="ticket")
+                icon="🎫";
+
+            else if(item.type=="user")
+                icon="👤";
+
+            else
+                icon="🏢";
+
+
+            html += `
+
+            <a href="${item.url}" class="search-item">
+
+                <div class="d-flex align-items-start">
+
+                    <div class="me-3 fs-5">
+
+                        ${icon}
+
+                    </div>
+
+                    <div>
+
+                        <div class="fw-semibold">
+
+                            ${item.title}
+
+                        </div>
+
+                        <div class="text-muted small">
+
+                            ${item.subtitle}
+
+                        </div>
+
+                        <div class="small text-primary">
+
+                            ${item.extra}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+            `;
+
+        });
+
+        results.innerHTML = html;
+
+
+
+    });
 
 });
 

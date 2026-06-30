@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import create_ticket,my_tickets, ticket_detail, all_tickets, assigned_tickets, delete_notification, open_notification
+from .views import create_ticket,my_tickets, ticket_detail, all_tickets, assigned_tickets, delete_notification, open_notification, global_search
 
 urlpatterns = [
     path('create/', create_ticket, name='create_ticket'),
@@ -9,5 +9,6 @@ urlpatterns = [
     path('assigned/', assigned_tickets, name='assigned_tickets' ),
     path("notification/delete/<int:notification_id>/", delete_notification, name="delete_notification" ),
     path("notification/<int:notification_id>/", open_notification, name="open_notification"),
+    path("search/", global_search, name="global_search" ),
 ]
 

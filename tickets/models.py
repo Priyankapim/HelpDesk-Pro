@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 from departments.models import Department
+from django.utils import timezone
+from datetime import timedelta
 
 
 
@@ -16,9 +18,13 @@ class Ticket(models.Model):
 
     STATUS_CHOICES = [
         ('Open', 'Open'),
+        ('Assigned', 'Assigned'),
         ('In Progress', 'In Progress'),
+        ('Pending User', 'Pending User'),
+        ('Escalated', 'Escalated'),
         ('Resolved', 'Resolved'),
         ('Closed', 'Closed'),
+        ('Reopened', 'Reopened'),
     ]
 
     ticket_number = models.CharField(
@@ -81,6 +87,50 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.ticket_number
+
+    @property
+    def sla_deadline(self):
+
+        if self.priority == "Critical":
+            hours = 8
+
+        elif self.priority == "High":
+            hours = 24
+
+        elif self.priority == "Medium":
+            hours = 48
+
+        else:
+            hours = 72
+
+        return self.created_at + timedelta(hours=hours)
+
+    @property
+    def sla_status(self):
+
+        diff = self.sla_deadline - timezone.now()
+
+        if diff.total_seconds() < 0:
+
+            overdue = abs(diff)
+
+            days = overdue.days
+            hours = overdue.seconds // 3600
+
+            return {
+                "text": f"{days}d {hours}h overdue",
+                "class": "danger"
+            }
+
+        else:
+
+            days = diff.days
+            hours = diff.seconds // 3600
+
+            return {
+                "text": f"{days}d {hours}h left",
+                "class": "success"
+            }
 
 class TicketComment(models.Model):
 

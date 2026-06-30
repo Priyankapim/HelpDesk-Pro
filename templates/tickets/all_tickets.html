@@ -7,61 +7,844 @@ All Tickets
 {% block page_title %}
 All Tickets
 {% endblock %}
+
 {% block content %}
+<style>
+    /* ==========================================
+   ALL TICKETS - COMPACT ENTERPRISE TABLE
+========================================== */
+.ticket-table thead th{
 
-<div class="card">
+    padding:12px 14px;
+
+    font-size:11px;
+
+    font-weight:600;
+
+    color:#64748b;
+
+    text-transform:uppercase;
+
+}
+
+.ticket-table tbody td{
+
+    padding:12px 14px;
+
+    font-size:13px;
+
+    vertical-align:middle;
+
+}
+
+.ticket-table tbody tr{
+
+    height:60px;
+
+}
+
+.ticket-table tbody tr:hover{
+
+    background:#f8fafc;
+}
+.user-cell{
+
+    min-width:170px;
+
+}
+
+.user-cell .fw-semibold{
+
+    font-size:13px;
+
+    margin-bottom:2px;
+
+}
+
+.user-cell small{
+
+    font-size:11px;
+
+    color:#94a3b8;
+
+}
+.ticket-table .badge{
+
+    min-width:72px;
+
+    padding:5px 10px;
+
+    font-size:10px;
+
+    border-radius:20px;
+
+    font-weight:600;
+
+}
+.ticket-table .btn{
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:50%;
+
+    padding:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+h2{
+     font-size:24px;
+     margin-top:00px;
+}
+
+    p{
+     font-size:14px;
+    }
+
+ /* ===================================
+   FILTER BAR (Compact)
+=================================== */
+
+.filter-card{
+
+    padding:02px 02px;
+    border-radius:14px;
+
+}
+
+.filter-card .form-control{
+
+    height:30px;
+
+    font-size:12px;
+
+    border-radius:10px;
+
+    padding: 8px 14px;
+
+}
+
+.filter-card .form-select{
+
+    height:30px;
+
+    font-size:12px;
+
+    border-radius:10px;
+
+    padding-left:12px;
+
+}
+
+.filter-card .btn{
+
+   height:30px;
+
+    font-size:12px;
+
+    border-radius:10px;
+
+    padding:0 16px;
+
+}
+
+.filter-card .card-body{
+    padding:8px 12px !important;
+}
+
+
+  /* ===================================
+   ALL TICKETS DARK MODE
+=================================== */
+
+body.dark-mode .ticket-table-card{
+    background:#111827 !important;
+    border:1px solid #273449 !important;
+}
+
+/* TABLE */
+
+body.dark-mode .ticket-table{
+    background:#111827 !important;
+    color:#e5e7eb !important;
+}
+
+body.dark-mode .ticket-table thead{
+    background:#111827 !important;
+}
+
+body.dark-mode .ticket-table thead tr{
+    background:#111827 !important;
+}
+
+body.dark-mode .ticket-table thead th{
+    background:#111827 !important;
+    color:#94a3b8 !important;
+    border-bottom:1px solid #273449 !important;
+}
+
+/* BODY */
+
+body.dark-mode .ticket-table tbody{
+    background:#111827 !important;
+}
+
+body.dark-mode .ticket-table tbody tr{
+    background:#111827 !important;
+}
+
+body.dark-mode .ticket-table tbody td{
+    background:#111827 !important;
+    color:#e5e7eb !important;
+    border-top:1px solid #273449 !important;
+}
+
+/* Hover */
+
+body.dark-mode .ticket-table tbody tr:hover td{
+    background:#1f2937 !important;
+}
+
+/* USER EMAIL */
+
+body.dark-mode .user-cell small{
+    color:#94a3b8 !important;
+}
+
+/* LINKS */
+
+body.dark-mode .ticket-table a{
+    color:#60a5fa !important;
+}
+
+body.dark-mode .ticket-table a:hover{
+    color:#93c5fd !important;
+}
+
+/* FILTER */
+
+body.dark-mode .filter-card{
+    background:#111827 !important;
+    border:1px solid #273449 !important;
+}
+
+body.dark-mode .filter-card .form-control,
+body.dark-mode .filter-card .form-select{
+    background:#1f2937 !important;
+    color:#fff !important;
+    border:1px solid #374151 !important;
+}
+
+body.dark-mode .filter-card .form-control::placeholder{
+    color:#94a3b8;
+}
+
+/* PAGINATION */
+
+body.dark-mode .page-link{
+    background:#1f2937;
+    color:#fff;
+    border-color:#374151;
+}
+
+body.dark-mode .page-item.active .page-link{
+    background:#2563eb;
+    border-color:#2563eb;
+}
+
+/* VIEW BUTTON */
+
+body.dark-mode .btn-outline-primary{
+    color:#60a5fa;
+    border-color:#60a5fa;
+}
+
+body.dark-mode .btn-outline-primary:hover{
+    background:#2563eb;
+    color:white;
+}
+
+/* EMPTY */
+
+body.dark-mode .empty-row td{
+    background:#111827 !important;
+    color:#94a3b8 !important;
+}
+
+.sla-overdue{
+    color:#ef4444 !important;
+    font-weight:600;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.sla-overdue i{
+    color:#ef4444 !important;
+}
+
+.sla-normal{
+    color:#22c55e !important;
+    font-weight:600;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.sla-normal i{
+    color:#22c55e !important;
+}
+    /* ==========================
+   Priority Badges
+========================== */
+
+.badge-priority{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:68px;
+    height:22px;
+    padding:0 12px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:600;
+}
+
+/* Low */
+
+.priority-low{
+    background:#DCFCE7;
+    color:#15803D;
+}
+
+/* Medium */
+
+.priority-medium{
+    background:#FEF3C7;
+    color:#B45309;
+}
+
+/* High */
+
+.priority-high{
+    background:#FEE2E2;
+    color:#EA580C;
+}
+
+/* Critical */
+
+.priority-critical{
+    background:#FECACA;
+    color:#DC2626;
+}
+
+
+/* ==========================
+   Status Badges
+========================== */
+
+.badge-status{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:68px;
+    height:22px;
+    padding:0 12px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:600;
+}
+
+/* Open */
+
+.status-open{
+    background:#DBEAFE;
+    color:#2563EB;
+}
+
+/* In Progress */
+
+.status-progress{
+    background:#FEF3C7;
+    color:#CA8A04;
+}
+
+/* Resolved */
+
+.status-resolved{
+    background:#DCFCE7;
+    color:#15803D;
+}
+
+/* Closed */
+
+.status-closed{
+    background:#E5E7EB;
+    color:#4B5563;
+}
+</style>
+
+<div class="d-flex justify-content-between align-items-start mb-4">
+
+    <div>
+
+        <h2 class="fw-bold mb-1">
+            All Tickets
+        </h2>
+
+        <p class="text-muted mb-3">
+            Manage all tickets across the organization
+        </p>
+
+        <div class="d-flex gap-2">
+
+            <span class="badge rounded-pill bg-primary px-3 py-2">
+                Total {{ total_tickets }}
+            </span>
+
+            <span class="badge rounded-pill bg-warning text-dark px-3 py-2">
+                Open {{ open_tickets }}
+            </span>
+
+            <span class="badge rounded-pill bg-success px-3 py-2">
+                Resolved {{ resolved_tickets }}
+            </span>
+
+            <span class="badge rounded-pill bg-danger px-3 py-2">
+                Unassigned {{ unassigned }}
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
 
 
 
-    <div class="card-body">
+<form method="GET">
 
-        <table class="table table-striped">
+<div class="card border-0 shadow-sm rounded-4 mb-4 filter-card">
 
-            <thead>
-                <tr>
-                    <th>Ticket No</th>
-                    <th>User</th>
-                    <th>Priority</th>
-                    <th>Status</th>
-                    <th>Assigned To</th>
-                </tr>
-            </thead>
+<div class="card-body">
 
-            <tbody>
+<div class="row g-2">
 
-            {% for ticket in tickets %}
+    <!-- Search -->
 
-                <tr>
+    <div class="col-lg-4">
 
-                    <td>
-                        <a href="{% url 'ticket_detail' ticket.id %}">
-                            {{ ticket.ticket_number }}
-                        </a>
-                    </td>
+        <input
+            type="text"
+            class="form-control"
+            name="search"
+            value="{{ search|default:'' }}"
+            placeholder="Search ticket, title, user...">
 
-                    <td>{{ ticket.created_by }}</td>
+    </div>
 
-                    <td>{{ ticket.priority }}</td>
+    <!-- Status -->
 
-                    <td>{{ ticket.status }}</td>
+    <div class="col-lg-2">
 
-                    <td>
-                        {% if ticket.assigned_to %}
-                            {{ ticket.assigned_to }}
-                        {% else %}
-                            Not Assigned
-                        {% endif %}
-                    </td>
+        <select class="form-select" name="status">
 
-                </tr>
+            <option value="">All Status</option>
+
+            {% for value,label in status_choices %}
+
+            <option value="{{ value }}"
+            {% if selected_status == value %}selected{% endif %}>
+
+                {{ label }}
+
+            </option>
 
             {% endfor %}
 
-            </tbody>
-
-        </table>
+        </select>
 
     </div>
+
+    <!-- Priority -->
+
+    <div class="col-lg-2">
+
+        <select class="form-select" name="priority">
+
+            <option value="">All Priority</option>
+
+            {% for value,label in priority_choices %}
+
+            <option value="{{ value }}"
+            {% if selected_priority == value %}selected{% endif %}>
+
+                {{ label }}
+
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+    </div>
+
+    <!-- Department -->
+
+    <div class="col-lg-2">
+
+        <select class="form-select" name="department">
+
+            <option value="">Department</option>
+
+            {% for dept in departments %}
+
+            <option value="{{ dept.id }}"
+            {% if selected_department == dept.id|stringformat:"s" %}selected{% endif %}>
+
+                {{ dept.name }}
+
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+    </div>
+
+    <!-- Assigned -->
+
+    <div class="col-lg-2">
+
+        <select class="form-select" name="assigned">
+
+            <option value="">Assigned</option>
+
+            <option value="yes"
+            {% if selected_assigned == "yes" %}selected{% endif %}>
+
+                Assigned
+
+            </option>
+
+            <option value="no"
+            {% if selected_assigned == "no" %}selected{% endif %}>
+
+                Unassigned
+
+            </option>
+
+        </select>
+
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+</form>
+
+
+
+
+
+<script>
+
+document.querySelectorAll("select").forEach(function(item){
+
+    item.addEventListener("change",function(){
+
+        this.form.submit();
+
+    });
+
+});
+
+</script>
+
+
+
+
+<div class="card ticket-table-card">
+
+<div class="card-body">
+
+<table class="table ticket-table">
+
+    <thead>
+
+        <tr>
+
+            <th>Ticket ID</th>
+
+            <th>User</th>
+
+            <th>Department</th>
+
+            <th>Priority</th>
+
+            <th>Status</th>
+
+            <th>Assigned To</th>
+
+            <th>SLA</th>
+
+            <th>Created</th>
+
+            <th></th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for ticket in tickets %}
+
+    <tr>
+
+        <td>
+
+            <a href="{% url 'ticket_detail' ticket.id %}"
+               class="fw-semibold text-decoration-none">
+
+                {{ ticket.ticket_number }}
+
+            </a>
+
+        </td>
+
+        <td class="user-cell">
+
+            {% if ticket.created_by.first_name %}
+
+                {{ ticket.created_by.first_name }} {{ ticket.created_by.last_name }}
+
+            {% else %}
+
+                {{ ticket.created_by.username }}
+
+            {% endif %}
+
+        </td>
+
+        <td>
+
+            {{ ticket.department.name }}
+
+        </td>
+
+        <td>
+
+            {% if ticket.priority == "Critical" %}
+
+            <span class="badge-priority priority-critical">
+                Critical
+            </span>
+
+            {% elif ticket.priority == "High" %}
+
+            <span class="badge-priority priority-high">
+                High
+            </span>
+
+            {% elif ticket.priority == "Medium" %}
+
+            <span class="badge-priority priority-medium">
+                Medium
+            </span>
+
+            {% else %}
+
+            <span class="badge-priority priority-low">
+                Low
+            </span>
+
+            {% endif %}
+
+        </td>
+
+        <td>
+
+            {% if ticket.status == "Open" %}
+
+            <span class="badge-status status-open">
+                Open
+            </span>
+
+            {% elif ticket.status == "In Progress" %}
+
+            <span class="badge-status status-progress">
+                In Progress
+            </span>
+
+            {% elif ticket.status == "Resolved" %}
+
+            <span class="badge-status status-resolved">
+                Resolved
+            </span>
+
+            {% else %}
+
+            <span class="badge-status status-closed">
+                Closed
+            </span>
+
+            {% endif %}
+
+        </td>
+
+       <td>
+
+    {% if ticket.assigned_to %}
+
+        {% if ticket.assigned_to.first_name %}
+
+            {{ ticket.assigned_to.first_name }} {{ ticket.assigned_to.last_name }}
+
+        {% else %}
+
+            {{ ticket.assigned_to.username }}
+
+        {% endif %}
+
+    {% else %}
+
+        <span class="text-danger fw-semibold">
+
+            Not Assigned
+
+        </span>
+
+    {% endif %}
+
+</td>
+
+        <td>
+
+            {% if ticket.sla_status.class == "danger" %}
+
+            <span class="sla-overdue">
+
+                <i class="bi bi-exclamation-triangle"></i>
+
+                {{ ticket.sla_status.text }}
+
+            </span>
+
+            {% else %}
+
+            <span class="sla-normal">
+
+                <i class="bi bi-clock-history"></i>
+
+                {{ ticket.sla_status.text }}
+
+            </span>
+
+            {% endif %}
+
+        </td>
+
+        <td>
+
+            {{ ticket.created_at|date:"d M Y" }}
+
+        </td>
+
+        <td>
+
+            <a href="{% url 'ticket_detail' ticket.id %}"
+               class="btn btn-sm btn-outline-primary rounded-pill">
+
+                <i class="bi bi-eye"></i>
+
+            </a>
+
+        </td>
+
+    </tr>
+
+    {% empty %}
+
+    <tr class="empty-row">
+
+        <td colspan="9" class="text-center py-5">
+
+            <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+
+            No tickets found.
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+<nav class="mt-4">
+
+<ul class="pagination justify-content-end">
+
+{% if tickets.has_previous %}
+
+<li class="page-item">
+
+<a class="page-link"
+href="?page={{ tickets.previous_page_number }}">
+
+Previous
+
+</a>
+
+</li>
+
+{% endif %}
+
+<li class="page-item active">
+
+<span class="page-link">
+
+{{ tickets.number }}
+
+</span>
+
+</li>
+
+{% if tickets.has_next %}
+
+<li class="page-item">
+
+<a class="page-link"
+href="?page={{ tickets.next_page_number }}">
+
+Next
+
+</a>
+
+</li>
+
+{% endif %}
+
+</ul>
+
+</nav>
+
+</div>
 
 </div>
 
