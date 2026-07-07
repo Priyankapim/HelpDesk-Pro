@@ -12,80 +12,75 @@ Dashboard
 
 <style>
 
-.kpi-card{
-    border:none;
-    border-radius:16px;
-    box-shadow:0 2px 10px rgba(0,0,0,.05);
-    transition:.3s;
-    height:120px;
+    .kpi-card{
+        border:none;
+        border-radius:16px;
+        box-shadow:0 2px 10px rgba(0,0,0,.05);
+        transition:.3s;
+        height:120px;
+    }
 
-}
+    .kpi-card:hover{
+        transform:translateY(-3px);
+    }
 
-.kpi-card:hover{
-    transform:translateY(-3px);
-}
+    .kpi-label{
+        font-size:10px;
+        font-weight:600;
+        color:#6b7280;
+        text-transform:uppercase;
+        min-height:28px;
+    }
 
-.kpi-label{
-    font-size:10px;
-    font-weight:600;
-    color:#6b7280;
-    text-transform:uppercase;
-    min-height:28px;
-}
+    .kpi-value{
+        font-size:25px;
+        font-weight:700;
+        margin-top:15px;
+        text-align:left;
+    }
 
-.kpi-value{
-    font-size:25px;
-    font-weight:700;
-    margin-top:15px;
-    text-align:left;
+    .kpi-icon{
+        width:15px;
+        height:15px;
+        border-radius:12px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:18px;
+    }
 
-}
+    .bg-blue{
+        background:#dbeafe;
+        color:#2563eb;
+    }
 
-.kpi-icon{
-    width:15px;
-    height:15px;
-    border-radius:12px;
+    .bg-yellow{
+        background:#fef3c7;
+        color:#d97706;
+    }
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    .bg-purple{
+        background:#f3e8ff;
+        color:#9333ea;
+    }
 
-    font-size:18px;
-}
+    .bg-green{
+        background:#dcfce7;
+        color:#16a34a;
+    }
 
-.bg-blue{
-    background:#dbeafe;
-    color:#2563eb;
-}
+    .bg-red{
+        background:#fee2e2;
+        color:#dc2626;
+    }
 
-.bg-yellow{
-    background:#fef3c7;
-    color:#d97706;
-}
-
-.bg-purple{
-    background:#f3e8ff;
-    color:#9333ea;
-}
-
-.bg-green{
-    background:#dcfce7;
-    color:#16a34a;
-}
-
-.bg-red{
-    background:#fee2e2;
-    color:#dc2626;
-}
-
-h2{
-     font-size:24px;
-     margin-top:00px;
-
-}
+    h2{
+        font-size:24px;
+        margin-top:00px;
+    }
 
     p{
-     font-size:14px;
+        font-size:14px;
     }
 
     .table-card{
@@ -174,11 +169,9 @@ h2{
 
     .chart-small{
         height:250px;
-
     }
 
     .chart-small canvas{
-
         height:170px !important;
         max-height:170px !important;
     }
@@ -203,32 +196,20 @@ h2{
         font-size:12px;
     }
 
-
-
 </style>
 
 <div class="container-fluid">
-
-
-
     <div class="mb-4">
-
     <div class="d-flex justify-content-between align-items-start mb-3">
 
         <div>
-
-            <h2 class="fw-bold mb-1">
-                Dashboard
-            </h2>
-
+            <h2 class="fw-bold mb-1"> Dashboard </h2>
             <p class="text-muted mb-0">
                 Analytics & Service Desk Overview
             </p>
-
         </div>
 
         <div class="d-flex gap-2" >
-
             <a href="?days=7"
                class="btn btn-sm {% if selected_days == '7' %}btn-primary{% else %}btn-outline-secondary{% endif %}">
                 Last 7d
@@ -250,7 +231,6 @@ h2{
             </a>
 
         </div>
-
     </div>
 
     <div class="d-flex flex-wrap gap-2">
@@ -268,17 +248,12 @@ h2{
         {% endfor %}
 
     </div>
-
 </div>
 
     <div class="row g-2 mb-4">
-
         <div class="col-md">
-
             <div class="card kpi-card">
-
                 <div class="card-body">
-
                     <div class="d-flex justify-content-between">
 
                         <span class="kpi-label">
@@ -294,19 +269,13 @@ h2{
                     <div class="kpi-value">
                         {{ total_tickets }}
                     </div>
-
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-md">
-
             <div class="card kpi-card">
-
                 <div class="card-body">
-
                     <div class="d-flex justify-content-between">
 
                         <span class="kpi-label">
@@ -324,17 +293,12 @@ h2{
                     </div>
 
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-md">
-
             <div class="card kpi-card">
-
                 <div class="card-body">
-
                     <div class="d-flex justify-content-between">
 
                         <span class="kpi-label">
@@ -350,19 +314,13 @@ h2{
                     <div class="kpi-value">
                         {{ in_progress_tickets }}
                     </div>
-
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-md">
-
             <div class="card kpi-card">
-
                 <div class="card-body">
-
                     <div class="d-flex justify-content-between">
 
                         <span class="kpi-label">
@@ -378,19 +336,13 @@ h2{
                     <div class="kpi-value">
                         {{ resolved_tickets }}
                     </div>
-
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-md">
-
             <div class="card kpi-card">
-
                 <div class="card-body">
-
                     <div class="d-flex justify-content-between">
 
                         <span class="kpi-label">
@@ -406,21 +358,14 @@ h2{
                     <div class="kpi-value">
                         {{ closed_tickets }}
                     </div>
-
                 </div>
-
             </div>
-
         </div>
 
 
-
         <div class="col-md">
-
             <div class="card kpi-card">
-
                 <div class="card-body">
-
                     <div class="d-flex justify-content-between">
 
                         <span class="kpi-label">
@@ -436,19 +381,13 @@ h2{
                     <div class="kpi-value">
                         {{ critical_tickets }}
                     </div>
-
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-md">
-
             <div class="card kpi-card">
-
                 <div class="card-body">
-
                     <div class="d-flex justify-content-between">
 
                         <span class="kpi-label">
@@ -464,19 +403,13 @@ h2{
                     <div class="kpi-value">
                         {{ escalated_tickets }}
                     </div>
-
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-md">
-
             <div class="card kpi-card">
-
                 <div class="card-body">
-
                     <div class="d-flex justify-content-between">
 
                         <span class="kpi-label">
@@ -492,19 +425,13 @@ h2{
                     <div class="kpi-value">
                         {{ pending_tickets }}
                     </div>
-
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-md">
-
             <div class="card kpi-card">
-
                 <div class="card-body">
-
                     <div class="d-flex justify-content-between">
 
                         <span class="kpi-label">
@@ -520,39 +447,28 @@ h2{
                     <div class="kpi-value">
                         {{ sla_rate }}%
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
      </div>
 
 
     <hr class="my-4">
 
     <div class="card chart-card chart-large mb-4">
-
         <div class="card-body">
-
             <div class="chart-title">
                 Ticket Volume Trend (Last 30 Days)
             </div>
 
             <canvas id="trendChart"></canvas>
-
         </div>
-
     </div>
 
 
    <div class="row g-3 mb-4">
-
         <div class="col-lg-4">
-
             <div class="card chart-card chart-small">
-
                 <div class="card-body">
 
                     <div class="chart-title">
@@ -562,33 +478,23 @@ h2{
                     <canvas id="statusChart"></canvas>
 
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-lg-4">
-
             <div class="card chart-card chart-small">
-
                 <div class="card-body">
-
                     <div class="chart-title">
                         Tickets by Priority
                     </div>
 
                     <canvas id="priorityChart"></canvas>
-
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-lg-4">
-
             <div class="card chart-card chart-medium">
-
                 <div class="card-body">
 
                     <div class="chart-title">
@@ -598,15 +504,13 @@ h2{
                     <canvas id="departmentChart"></canvas>
 
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -836,7 +740,6 @@ h2{
     <div class="d-flex justify-content-between align-items-center mb-3">
 
         <h4 class="fw-bold mb-0">
-
             {% if request.user.role == "EMPLOYEE" %}
                 My Recent Tickets
             {% elif request.user.role == "AGENT" %}
@@ -844,10 +747,9 @@ h2{
             {% else %}
                 Recent Tickets
             {% endif %}
-
         </h4>
 
-            {% if request.user.role == "EMPLOYEE" %}
+        {% if request.user.role == "EMPLOYEE" %}
 
             <a href="{% url 'my_tickets' %}" class="text-decoration-none">
                 View All →
@@ -866,9 +768,7 @@ h2{
             </a>
 
         {% endif %}
-
     </div>
-
 
 
     <div class="row g-3">
@@ -876,9 +776,7 @@ h2{
     {% for ticket in recent_tickets %}
 
     <div class="col-md-6">
-
         <div class="card ticket-card">
-
             <div class="card-body">
 
                 <div class="ticket-number">
@@ -938,30 +836,22 @@ h2{
                     </a>
 
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
     {% empty %}
 
     <div class="col-12">
-
         <div class="alert alert-light">
             No recent tickets found.
         </div>
-
     </div>
 
     {% endfor %}
 
     </div>
-
-
 </div>
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

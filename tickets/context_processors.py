@@ -15,11 +15,8 @@ def notification_context(request):
         ).count()
 
         return {
-
             "notifications": notifications,
-
             "unread_notifications": unread_count
-
         }
 
     return {}

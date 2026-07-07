@@ -1,5 +1,4 @@
 from datetime import timezone
-
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -14,12 +13,9 @@ import csv
 from django.http import HttpResponse
 
 
-
-
 def login_view(request):
 
     if request.method == "POST":
-
         email = request.POST.get("email")
         password = request.POST.get("password")
 
@@ -36,13 +32,8 @@ def login_view(request):
     return render(request, "login.html")
 
 
-
-
-
 @login_required
 def dashboard_view(request):
-
-
     days_filter = request.GET.get("days", "30")
 
     if days_filter == "7":
@@ -52,42 +43,40 @@ def dashboard_view(request):
     else:
         filter_days = 30
 
-
     if request.user.role == "EMPLOYEE":
-
         tickets = Ticket.objects.filter(
             created_by=request.user
         )
 
     elif request.user.role == "AGENT":
-
         tickets = Ticket.objects.filter(
             assigned_to=request.user
         )
 
     else:
-
         tickets = Ticket.objects.all()
 
     total_tickets = tickets.count()
 
-    total_closed_resolved = tickets.filter(
-        status__in=['Resolved', 'Closed']
-    ).count()
+    breached_tickets = sum(
+        1 for ticket in tickets
+        if timezone.now() > ticket.sla_deadline
+        and ticket.status not in ["Resolved", "Closed"]
+    )
+
 
     if total_tickets > 0:
         sla_rate = round(
-            (total_closed_resolved / total_tickets) * 100
+            ((total_tickets - breached_tickets) / total_tickets) * 100
         )
     else:
-        sla_rate = 0
+        sla_rate = 100
 
     days = []
     ticket_counts = []
 
     for i in range(filter_days - 1, -1, -1):
         date = timezone.now().date() - timedelta(days=i)
-
         days.append(date.strftime("%d %b"))
 
         ticket_counts.append(
@@ -95,7 +84,6 @@ def dashboard_view(request):
                 created_at__date=date
             ).count()
         )
-
 
     status_labels = [
         'Open',
@@ -116,6 +104,14 @@ def dashboard_view(request):
         'Medium',
         'High',
         'Critical'
+    ]
+
+    status_flow = [
+        "Open",
+        "Assigned",
+        "In Progress",
+        "Resolved",
+        "Closed"
     ]
 
     priority_data = [
@@ -145,9 +141,7 @@ def dashboard_view(request):
 
 
     context = {
-
         "total_tickets": total_tickets,
-
         "open_tickets": tickets.filter(
             status="Open"
         ).count(),
@@ -198,6 +192,10 @@ def dashboard_view(request):
         "trend_data": ticket_counts,
 
         "selected_days": days_filter,
+        "sla_rate": sla_rate,
+        "breached_tickets": breached_tickets,
+
+        'status_flow': status_flow,
     }
 
     return render(
@@ -208,9 +206,7 @@ def dashboard_view(request):
 
 
 def logout_view(request):
-
     logout(request)
-
     return redirect('login')
 
 
@@ -234,8 +230,6 @@ def users_list(request):
     )
 
 
-
-
 @login_required
 def edit_user(request, user_id):
 
@@ -245,12 +239,9 @@ def edit_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
 
     if request.method == "POST":
-
         role = request.POST.get("role")
-
         user.role = role
         user.save()
-
         return redirect("users_list")
 
     return render(
@@ -262,18 +253,14 @@ def edit_user(request, user_id):
     )
 
 
-
 @login_required
 def export_tickets_csv(request):
-
     response = HttpResponse(content_type='text/csv')
-
     response['Content-Disposition'] = (
         'attachment; filename="tickets.csv"'
     )
 
     writer = csv.writer(response)
-
     writer.writerow([
         'Ticket No',
         'Title',

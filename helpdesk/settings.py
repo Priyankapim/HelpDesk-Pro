@@ -11,10 +11,15 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv.load_dotenv(BASE_DIR / ".env")
 
+MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -42,7 +47,7 @@ INSTALLED_APPS = [
     'dashboard',
     'tickets',
     'departments',
-    'reports',
+    'old_reports',
     'notifications',
 ]
 
@@ -158,3 +163,5 @@ EMAIL_HOST_USER = 'priyankapimpariya178@gmail.com'
 EMAIL_HOST_PASSWORD =  'lfilseahkssuqkwr'
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+

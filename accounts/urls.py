@@ -1,5 +1,3 @@
-
-
 from django.urls import path
 from .views import login_view, dashboard_view, logout_view, users_list, edit_user, export_tickets_csv
 

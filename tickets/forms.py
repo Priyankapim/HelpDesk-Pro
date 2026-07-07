@@ -12,7 +12,10 @@ class TicketForm(forms.ModelForm):
             "title",
             "description",
             "department",
+            "category",
             "priority",
+            "affected_system",
+            "tags",
         ]
 
         widgets = {
@@ -32,15 +35,38 @@ class TicketForm(forms.ModelForm):
                 }
             ),
 
-            "department": forms.Select(
+            "priority": forms.Select(
                 attrs={
                     "class": "form-select",
                 }
             ),
 
-            "priority": forms.Select(
+            "department": forms.Select(
                 attrs={
                     "class": "form-select",
+                    "id": "id_department",
+                }
+            ),
+
+            "category": forms.Select(
+                attrs={
+                    "class": "form-select",
+                    "id": "id_category",
+                }
+            ),
+
+
+
+            "affected_system": forms.Select(
+                attrs={
+                    "class": "form-select",
+                }
+            ),
+
+            "tags": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "laptop, windows, printer",
                 }
             ),
 

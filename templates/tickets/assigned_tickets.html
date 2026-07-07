@@ -7,24 +7,347 @@ Assigned Tickets
 {% block page_title %}
 Assigned Tickets
 {% endblock %}
+
 {% block content %}
 
-<div class="card shadow-sm">
+<style>
+
+.assigned-card{
+    border:none;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 8px 24px rgba(15,23,42,.08);
+}
+
+.assigned-header{
+    padding:18px 22px;
+    background:#fff;
+    border-bottom:1px solid #eef2f7;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.assigned-title{
+    font-size:18px;
+    font-weight:700;
+    color:#111827;
+    margin:0;
+}
+
+.ticket-count{
+    background:#2563eb;
+    color:#fff;
+    font-size:12px;
+    padding:6px 12px;
+    border-radius:20px;
+    font-weight:600;
+}
+
+.table{
+    margin-bottom:0;
+}
+
+.table thead th{
+    background:#f8fafc;
+    border-bottom:2px solid #e5e7eb;
+    color:#475569;
+    font-size:13px;
+    font-weight:700;
+    padding:14px;
+    white-space:nowrap;
+}
+
+.table tbody td{
+    padding:15px 14px;
+    vertical-align:middle;
+}
+
+.table tbody tr{
+    transition:.2s;
+}
+
+.table tbody tr:hover{
+    background:#f8fbff;
+}
+
+.ticket-link{
+    color:#2563eb;
+    font-weight:600;
+    text-decoration:none;
+}
+
+.ticket-link:hover{
+    text-decoration:underline;
+}
+
+.priority-badge,
+.status-badge{
+
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:600;
+}
+
+/* Priority */
+
+.priority-low{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.priority-medium{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.priority-high{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.priority-critical{
+    background:#dc2626;
+    color:#fff;
+}
+
+/* Status */
+
+.status-open{
+    background:#dbeafe;
+    color:#2563eb;
+}
+
+.status-progress{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.status-resolved{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.status-closed{
+    background:#e5e7eb;
+    color:#374151;
+}
+
+.status-pending{
+    background:#fde68a;
+    color:#92400e;
+}
+
+.status-assigned{
+    background:#ede9fe;
+    color:#6d28d9;
+}
+
+.status-escalated{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.status-reopened{
+    background:#fce7f3;
+    color:#be185d;
+}
+
+.empty-box{
+    padding:50px;
+    text-align:center;
+    color:#94a3b8;
+}
 
 
+    /* ===================================================
+                DARK THEME
+=================================================== */
 
-    <div class="card-body">
+body.dark-mode{
 
-        <table class="table table-striped">
+    background:#0f172a;
+}
+
+/* Card */
+
+body.dark-mode .assigned-card{
+
+    background:#1e293b;
+    box-shadow:none;
+    border:1px solid #334155;
+}
+
+body.dark-mode .assigned-header{
+
+    background:#1e293b;
+    border-bottom:1px solid #334155;
+}
+
+body.dark-mode .assigned-title{
+
+    color:#f8fafc;
+}
+
+/* Table */
+
+body.dark-mode .table{
+
+    color:#e2e8f0;
+}
+
+body.dark-mode .table thead th{
+
+    background:#273449;
+    color:#f8fafc;
+    border-bottom:1px solid #475569;
+}
+
+body.dark-mode .table tbody td{
+
+    background:#1e293b;
+    color:#e2e8f0;
+    border-color:#334155;
+}
+
+body.dark-mode .table tbody tr:hover td{
+
+    background:#273449;
+}
+
+/* Ticket Link */
+
+body.dark-mode .ticket-link{
+
+    color:#60a5fa;
+}
+
+body.dark-mode .ticket-link:hover{
+
+    color:#93c5fd;
+}
+
+/* Count Badge */
+
+body.dark-mode .ticket-count{
+
+    background:#2563eb;
+}
+
+/* Empty State */
+
+body.dark-mode .empty-box{
+
+    color:#94a3b8;
+}
+
+/* Priority */
+
+body.dark-mode .priority-low{
+
+    background:#14532d;
+    color:#bbf7d0;
+}
+
+body.dark-mode .priority-medium{
+
+    background:#78350f;
+    color:#fde68a;
+}
+
+body.dark-mode .priority-high{
+
+    background:#7f1d1d;
+    color:#fecaca;
+}
+
+body.dark-mode .priority-critical{
+
+    background:#dc2626;
+    color:#fff;
+}
+
+/* Status */
+
+body.dark-mode .status-open{
+
+    background:#1d4ed8;
+    color:#dbeafe;
+}
+
+body.dark-mode .status-progress{
+
+    background:#92400e;
+    color:#fde68a;
+}
+
+body.dark-mode .status-resolved{
+
+    background:#166534;
+    color:#bbf7d0;
+}
+
+body.dark-mode .status-closed{
+
+    background:#374151;
+    color:#f1f5f9;
+}
+
+body.dark-mode .status-pending{
+
+    background:#854d0e;
+    color:#fde68a;
+}
+
+body.dark-mode .status-assigned{
+
+    background:#5b21b6;
+    color:#ede9fe;
+}
+
+body.dark-mode .status-escalated{
+
+    background:#991b1b;
+    color:#fecaca;
+}
+
+body.dark-mode .status-reopened{
+
+    background:#831843;
+    color:#fbcfe8;
+}
+</style>
+
+
+<div class="card assigned-card">
+
+    <div class="assigned-header">
+
+        <h5 class="assigned-title">
+            Assigned Tickets
+        </h5>
+
+        <span class="ticket-count">
+            {{ tickets.count }} Ticket{{ tickets.count|pluralize }}
+        </span>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table align-middle">
 
             <thead>
 
-                <tr>
-                    <th>Ticket Number</th>
-                    <th>Title</th>
-                    <th>Status</th>
-                    <th>Priority</th>
-                </tr>
+            <tr>
+
+                <th>Ticket No</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Priority</th>
+
+            </tr>
 
             </thead>
 
@@ -32,41 +355,96 @@ Assigned Tickets
 
             {% for ticket in tickets %}
 
-                <tr>
+            <tr>
 
-                    <td>
+                <td>
 
-                        <a href="{% url 'ticket_detail' ticket.id %}">
+                    <a href="{% url 'ticket_detail' ticket.id %}"
+                       class="ticket-link">
 
-                            {{ ticket.ticket_number }}
+                        {{ ticket.ticket_number }}
 
-                        </a>
+                    </a>
 
-                    </td>
+                </td>
 
-                    <td>
-                        {{ ticket.title }}
-                    </td>
+                <td>
 
-                    <td>
+                    <strong>{{ ticket.title }}</strong>
+
+                </td>
+
+                <td>
+
+                    <span class="status-badge
+
+                    {% if ticket.status == 'Open' %}
+                        status-open
+                    {% elif ticket.status == 'Assigned' %}
+                        status-assigned
+                    {% elif ticket.status == 'In Progress' %}
+                        status-progress
+                    {% elif ticket.status == 'Pending User' %}
+                        status-pending
+                    {% elif ticket.status == 'Resolved' %}
+                        status-resolved
+                    {% elif ticket.status == 'Closed' %}
+                        status-closed
+                    {% elif ticket.status == 'Escalated' %}
+                        status-escalated
+                    {% elif ticket.status == 'Reopened' %}
+                        status-reopened
+                    {% endif %}
+                    ">
+
                         {{ ticket.status }}
-                    </td>
 
-                    <td>
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <span class="priority-badge
+
+                    {% if ticket.priority == 'Low' %}
+                        priority-low
+                    {% elif ticket.priority == 'Medium' %}
+                        priority-medium
+                    {% elif ticket.priority == 'High' %}
+                        priority-high
+                    {% elif ticket.priority == 'Critical' %}
+                        priority-critical
+                    {% endif %}
+                    ">
+
                         {{ ticket.priority }}
-                    </td>
 
-                </tr>
+                    </span>
+
+                </td>
+
+            </tr>
 
             {% empty %}
 
-                <tr>
+            <tr>
 
-                    <td colspan="4">
-                        No assigned tickets.
-                    </td>
+                <td colspan="4">
 
-                </tr>
+                    <div class="empty-box">
+
+                        <h5>No Assigned Tickets</h5>
+
+                        <p class="mb-0">
+                            You don't have any assigned tickets at the moment.
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
 
             {% endfor %}
 

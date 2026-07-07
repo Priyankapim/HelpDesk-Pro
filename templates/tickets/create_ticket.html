@@ -1,91 +1,983 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Create Ticket
+Raise a Ticket
 {% endblock %}
 
 {% block page_title %}
-Create Ticket
+Raise a Ticket
 {% endblock %}
 
 {% block content %}
 
-<div class="card shadow-sm border-0">
+<style>
+    /* PAGE */
 
-    <div class="card-body p-4">
+    .ticket-wrapper{
+        max-width:620px;
+        margin:10px auto 40px;
+    }
+
+    .page-header{
+        margin-bottom:18px;
+    }
+
+    .page-title{
+        font-size:18px;
+        font-weight:700;
+        margin-bottom:2px;
+    }
+
+    .page-title i{
+        font-size:16px;
+        color:#475569;
+    }
+
+    .page-subtitle{
+        font-size:13px;
+        color:#64748b;
+        margin-bottom:0;
+    }
+
+    /* CARD */
+
+    .ticket-card{
+        background:#fff;
+        border:1px solid #e2e8f0;
+        border-radius:14px;
+        padding:20px;
+        box-shadow:0 3px 12px rgba(15,23,42,.05);
+    }
+
+    .ticket-card-header{
+        display:flex;
+        align-items:flex-start;
+        gap:12px;
+        margin-bottom:22px;
+    }
+
+    .header-icon{
+        width:34px;
+        height:34px;
+        border-radius:8px;
+        background:#eef4ff;
+        color:#2563eb;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:15px;
+    }
+
+    .ticket-card-header h5{
+        font-size:16px;
+        font-weight:700;
+        margin-bottom:2px;
+    }
+
+    .ticket-card-header small{
+        color:#64748b;
+        font-size:12px;
+    }
+
+    /* === LABELS === */
+
+    .form-label{
+        font-size:13px;
+        font-weight:600;
+        margin-bottom:6px;
+    }
+
+    /* ===  INPUTS === */
+
+    .ticket-card .form-control,
+    .ticket-card .form-select{
+        height:40px;
+        border-radius:8px;
+        font-size:13px;
+        border:1px solid #cbd5e1;
+    }
+
+    .ticket-card textarea.form-control{
+        min-height:90px;
+        resize:vertical;
+        padding-top:10px;
+    }
+
+    .ticket-card .form-control::placeholder{
+        color:#94a3b8;
+        font-size:13px;
+    }
+
+
+    /* === AI TRIAGE === */
+
+    .ai-triage{
+        display:flex;
+        align-items:center;
+    }
+
+    .ai-triage .btn{
+        font-size:12px;
+        border-radius:8px;
+        height:34px;
+        padding:0 14px;
+    }
+
+    .ai-triage small{
+        font-size:12px;
+        color:#64748b;
+    }
+
+    /* === PRIORITY === */
+
+    .priority-grid{
+        display:grid;
+        grid-template-columns:repeat(4,1fr);
+        gap:10px;
+        margin-top:6px;
+    }
+
+    .priority-card{
+        position:relative;
+        border:1px solid #cbd5e1;
+        border-radius:10px;
+        padding:12px 8px;
+        cursor:pointer;
+        transition:.25s;
+        text-align:center;
+        background:#fff;
+    }
+
+    .priority-card:hover{
+        border-color:#2563eb;
+    }
+
+    .priority-card input{
+        display:none;
+    }
+
+    .priority-card input:checked + .priority-name{
+        font-weight:700;
+    }
+
+    .priority-card:has(input:checked){
+        border:2px solid #2563eb;
+        background:#f8fbff;
+    }
+
+    .priority-name{
+        display:block;
+        font-size:13px;
+        font-weight:600;
+        margin-bottom:4px;
+    }
+
+    .priority-card small{
+        display:block;
+        font-size:11px;
+        color:#64748b;
+        line-height:1.2;
+    }
+
+    /* Priority Colors */
+
+    .priority-name.low{
+        color:#16a34a;
+    }
+
+    .priority-name.medium{
+        color:#f59e0b;
+    }
+
+    .priority-name.high{
+        color:#ea580c;
+    }
+
+    .priority-name.critical{
+        color:#dc2626;
+    }
+
+
+    /* === BUTTONS === */
+
+ .ticket-card .btn-light{
+
+    height:40px;
+    border-radius:8px;
+    font-size:13px;
+    padding:0 22px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+}
+
+   .ticket-card .btn-primary{
+        height:40px;
+        border-radius:8px;
+        font-size:13px;
+        font-weight:600;
+    }
+
+    /* ==== SPACING === */
+
+    .mb-3{
+        margin-bottom:16px !important;
+    }
+
+    .mb-4{
+        margin-bottom:22px !important;
+    }
+
+
+    /* === DARK MODE === */
+
+    body.dark-mode .ticket-card{
+        background:#111827;
+        border-color:#374151;
+    }
+
+    body.dark-mode .page-title,
+    body.dark-mode .ticket-card h5,
+    body.dark-mode .form-label{
+        color:#f8fafc;
+    }
+
+    body.dark-mode .page-subtitle,
+    body.dark-mode .ticket-card small{
+        color:#94a3b8;
+    }
+
+    body.dark-mode .ticket-card .form-control,
+    body.dark-mode .ticket-card .form-select{
+        background:#1f2937;
+        border-color:#374151;
+        color:#fff;
+    }
+
+    body.dark-mode textarea.form-control{
+        background:#1f2937;
+    }
+
+    body.dark-mode .form-control::placeholder{
+        color:#94a3b8;
+    }
+
+    body.dark-mode .priority-card{
+        background:#1f2937;
+        border-color:#374151;
+    }
+
+    body.dark-mode .priority-card:has(input:checked){
+        background:#172554;
+        border-color:#3b82f6;
+    }
+
+    body.dark-mode .header-icon{
+        background:#1e3a8a;
+        color:#bfdbfe;
+    }
+
+    body.dark-mode .btn-light{
+        background:#374151;
+        border-color:#374151;
+        color:#fff;
+    }
+
+/* ==========================================
+   AI TRIAGE RESULT CARD
+========================================== */
+
+.ai-card{
+
+    max-width:500px;
+
+    margin:20px auto;
+
+    border:1px solid #dbeafe;
+
+    border-radius:14px;
+
+    background:#fff;
+
+}
+
+/* Heading */
+
+.ai-card h6{
+    font-size:15px;
+    font-weight:700;
+    margin-bottom:0;
+    color:#0f172a;
+}
+
+.ai-tag{
+
+    font-size:10px;
+
+    padding:3px 8px;
+
+}
+/* Compact spacing */
+
+.ai-card .card-body{
+    padding:14px 16px;
+}
+
+.ai-card .row{
+    margin-bottom:0;
+    row-gap:8px;
+}
+
+.ai-card .mb-3{
+    margin-bottom:.55rem !important;
+}
+
+/* Labels */
+
+.ai-card small{
+    display:block;
+    font-size:11px;
+    color:#64748b;
+    margin-bottom:2px;
+    font-weight:500;
+    text-transform:none;
+}
+
+/* Values */
+
+.ai-card .fw-semibold{
+    font-size:14px;
+    font-weight:600;
+    color:#111827;
+}
+
+/* Reason */
+
+.ai-card .reason{
+    font-size:13px;
+    color:#64748b;
+    font-style:italic;
+    line-height:1.45;
+    margin-top:4px;
+}
+
+/* Tag badges */
+
+.ai-card .badge{
+    background:#f1f5f9;
+    color:#334155;
+    border-radius:12px;
+    padding:4px 10px;
+    font-size:11px;
+    font-weight:500;
+    margin-right:6px;
+    margin-top:4px;
+}
+
+/* Apply Button */
+
+
+
+.ai-card .btn{
+ padding:6px 16px;
+
+    font-size:13px;
+
+    min-width:80px;
+    border-radius:8px;
+
+    font-weight:500;
+
+}
+
+/* Priority Colors */
+
+.ai-card .priority-low{
+    color:#16a34a;
+    font-weight:700;
+}
+
+.ai-card .priority-medium{
+    color:#f59e0b;
+    font-weight:700;
+}
+
+.ai-card .priority-high{
+    color:#ea580c;
+    font-weight:700;
+}
+
+.ai-card .priority-critical{
+    color:#dc2626;
+    font-weight:700;
+}
+</style>
+
+<div class="ticket-wrapper">
+    <div class="page-header mb-4">
+
+        <h2 class="page-title">
+            <i class="bi bi-arrow-left me-2"></i>
+            Raise a Ticket
+        </h2>
+
+        <p class="page-subtitle">
+            Submit a new service request
+        </p>
+
+    </div>
+
+
+    <div class="ticket-card">
+        <div class="ticket-card-header">
+            <div class="header-icon">
+                <i class="bi bi-ticket-perforated-fill"></i>
+            </div>
+
+            <div>
+                <h5 class="mb-0">
+                    New Service Request
+                </h5>
+
+                <small>
+                    Fill in the details below
+                </small>
+            </div>
+        </div>
+
 
         <form method="POST">
-
             {% csrf_token %}
 
-            <!-- Title -->
+            <!-- Subject -->
 
             <div class="mb-3">
-
-                <label class="form-label fw-semibold">
-                    Title
+                <label class="form-label">
+                    Subject <span class="text-danger">*</span>
                 </label>
 
                 {{ form.title }}
-
             </div>
+
 
             <!-- Description -->
 
             <div class="mb-3">
-
-                <label class="form-label fw-semibold">
-                    Description
+                <label class="form-label">
+                    Description <span class="text-danger">*</span>
                 </label>
 
                 {{ form.description }}
+            </div>
+
+
+            <!-- AI Triage -->
+
+            <div class="ai-triage mb-4">
+                <button
+                    type="button" id="aiTriageBtn" class="btn btn-light btn-sm">
+                    <i class="bi bi-stars"></i>
+                    AI Triage
+                </button>
+
+                <small class="text-muted ms-2">
+                    Let AI suggest priority, category and tags
+                </small>
 
             </div>
 
+            <div id="aiResultCard" class="card ai-card mb-1" style="display:none;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h7 class="fw-bold mb-1">
+                                <i class="bi bi-stars text-primary"></i>
+                                AI Suggestions
+                            </h7>
+                        </div>
+
+                        <button type="button" id="applyAISuggestion" class="btn btn-primary btn-sm">
+                            Apply
+                        </button>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <small class="text-muted">
+                                Department
+                            </small>
+
+                            <div id="aiDepartment"
+                                 class="fw-semibold">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <small class="text-muted">
+                                Category
+                            </small>
+
+                            <div id="aiCategory"
+                                 class="fw-semibold">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <small class="text-muted">
+                                Priority
+                            </small>
+
+                            <div id="aiPriority"
+                                 class="fw-semibold text-danger">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <small class="text-muted">
+                                Affected System
+                            </small>
+
+                            <div id="aiSystem"
+                                 class="fw-semibold">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <small class="text-muted">
+                            Tags
+                        </small>
+
+                        <div id="aiTags">
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <!-- Department + Category -->
+
             <div class="row">
-
-                <!-- Department -->
-
                 <div class="col-md-6 mb-3">
 
-                    <label class="form-label fw-semibold">
+                    <label class="form-label">
                         Department
+                        <span class="text-danger">*</span>
                     </label>
 
                     {{ form.department }}
-
                 </div>
 
-                <!-- Priority -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                        Category
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    {{ form.category }}
+                </div>
+            </div>
+
+
+            <!-- Priority -->
+
+            <div class="mb-4">
+
+                <label class="form-label">
+                    Priority
+                    <span class="text-danger">*</span>
+                </label>
+
+                <div class="priority-grid">
+
+                    <label class="priority-card">
+
+                        <input type="radio" name="priority" value="Low"
+                               {% if form.priority.value == "Low" or not form.priority.value %}checked{% endif %}>
+
+                        <span class="priority-name low">
+                            Low
+                        </span>
+
+                        <small>
+                            Can wait up to 72 hours
+                        </small>
+
+                    </label>
+
+                    <label class="priority-card">
+
+                        <input type="radio" name="priority" value="Medium"
+                               {% if form.priority.value == "Medium" %}checked{% endif %}>
+
+                        <span class="priority-name medium">
+                            Medium
+                        </span>
+
+                        <small>
+                            Response within 24 hours
+                        </small>
+
+                    </label>
+
+                    <label class="priority-card">
+
+                        <input type="radio" name="priority" value="High"
+                               {% if form.priority.value == "High" %}checked{% endif %}>
+
+                        <span class="priority-name high">
+                            High
+                        </span>
+
+                        <small>
+                            Response within 8 hours
+                        </small>
+                    </label>
+
+                    <label class="priority-card">
+
+                        <input type="radio" name="priority" value="Critical"
+                               {% if form.priority.value == "Critical" %}checked{% endif %}>
+
+                        <span class="priority-name critical">
+                            Critical
+                        </span>
+
+                        <small>
+                            Immediate response (2 hours)
+                        </small>
+
+                    </label>
+                </div>
+            </div>
+
+
+            <!-- Affected System + Tags -->
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Affected System
+                    </label>
+
+                    {{ form.affected_system }}
+
+                </div>
 
                 <div class="col-md-6 mb-3">
 
-                    <label class="form-label fw-semibold">
-                        Priority
+                    <label class="form-label">
+                        Tags
                     </label>
 
-                    {{ form.priority }}
+                    {{ form.tags }}
 
                 </div>
-
             </div>
 
-            <div class="mt-4">
 
-                <button type="submit" class="btn btn-primary px-4">
-                    Submit Ticket
-                </button>
+            <!-- Buttons -->
 
-                <a href="{% url 'dashboard' %}" class="btn btn-secondary ms-2">
+            <div class="d-flex justify-content-end mt-4">
+
+                <a href="{% url 'dashboard' %}"  class="btn btn-light me-2">
                     Cancel
                 </a>
 
+                <button type="submit" class="btn btn-primary px-5">
+                    Submit Ticket
+                </button>
+
             </div>
-
         </form>
-
     </div>
-
 </div>
+<script>
 
+const categoryMap = {
+
+    "IT Support": [
+        "Hardware Issue",
+        "Software Issue",
+        "Network Issue",
+        "Email / Outlook"
+    ],
+
+    "HR Support": [
+        "New Employee Onboarding",
+        "Leave Policy",
+        "Payroll Inquiry"
+    ],
+
+    "Admin Support": [
+        "Office Supplies",
+        "Facility Request"
+    ],
+
+    "Finance Requests": [
+        "Invoice Processing",
+        "Budget Approval"
+    ],
+
+    "Asset Requests": [
+        "Laptop Request",
+        "Software License"
+    ],
+
+    "Access Management": [
+        "Account Creation",
+        "Permission Request",
+        "VPN Access"
+    ],
+
+    "General Services": [
+        "General Inquiry"
+    ]
+
+};
+
+
+const department = document.getElementById("id_department");
+const category = document.getElementById("id_category");
+
+
+function loadCategories(){
+
+    const deptName =
+        department.options[department.selectedIndex].text;
+
+    category.innerHTML = "";
+
+    const placeholder = document.createElement("option");
+
+    placeholder.value = "";
+
+    placeholder.text = "Select Category";
+
+    category.appendChild(placeholder);
+
+    if(categoryMap[deptName]){
+
+        categoryMap[deptName].forEach(function(item){
+
+            let option = document.createElement("option");
+
+            option.value = item;
+
+            option.text = item;
+
+            category.appendChild(option);
+
+        });
+
+    }
+
+}
+
+department.addEventListener("change", loadCategories);
+
+window.onload = loadCategories;
+
+
+
+
+
+const btn = document.getElementById("aiTriageBtn");
+
+btn.addEventListener("click", function () {
+
+    const subject =
+        document.getElementById("id_title").value;
+
+    const description =
+        document.getElementById("id_description").value;
+
+    if(subject.trim()=="" || description.trim()==""){
+
+        alert("Please enter Subject and Description first.");
+
+        return;
+
+    }
+
+    btn.disabled=true;
+
+    btn.innerHTML='<i class="bi bi-hourglass-split"></i> Analyzing...';
+
+    fetch("/tickets/ai-triage/",{
+
+        method:"POST",
+
+        headers:{
+
+            "Content-Type":"application/json",
+
+            "X-CSRFToken":"{{ csrf_token }}"
+
+        },
+
+        body:JSON.stringify({
+
+            subject:subject,
+
+            description:description
+
+        })
+
+    })
+
+    .then(r=>r.json())
+
+    .then(data=>{
+
+        btn.disabled=false;
+
+        btn.innerHTML='<i class="bi bi-stars"></i> AI Triage';
+
+        if(!data.success){
+
+            alert(data.error);
+
+            return;
+
+        }
+
+        const ai=data.result;
+
+        document.getElementById("aiResultCard").style.display="block";
+
+
+        document.getElementById("aiDepartment").innerHTML=
+            ai.department;
+
+        document.getElementById("aiCategory").innerHTML=
+            ai.category;
+
+        document.getElementById("aiPriority").innerHTML=
+            ai.priority;
+
+        document.getElementById("aiSystem").innerHTML=
+            ai.affected_system;
+
+
+
+        let tagHTML="";
+
+        ai.tags.forEach(function(tag){
+
+            tagHTML +=
+            '<span class="badge bg-light text-dark me-2">'+tag+'</span>';
+
+        });
+
+        document.getElementById("aiTags").innerHTML=tagHTML;
+
+        window.aiResult=ai;
+        document.getElementById("applyAISuggestion").onclick = applyAISuggestions;
+
+    });
+
+});
+
+function applyAISuggestions(){
+
+    if(!window.aiResult){
+
+        return;
+
+    }
+
+    const ai = window.aiResult;
+
+    /* -- Department --*/
+
+    const dept = document.getElementById("id_department");
+
+    for(let i=0;i<dept.options.length;i++){
+
+        if(dept.options[i].text.trim()==ai.department){
+
+            dept.selectedIndex=i;
+
+            break;
+
+        }
+
+    }
+
+    /* Refresh category dropdown */
+
+    loadCategories();
+
+    /* ------------------------
+       Category
+    -------------------------*/
+
+    const category = document.getElementById("id_category");
+
+    for(let i=0;i<category.options.length;i++){
+
+        if(category.options[i].text.trim()==ai.category){
+
+            category.selectedIndex=i;
+
+            break;
+
+        }
+
+    }
+
+    /* ------------------------
+       Affected System
+    -------------------------*/
+
+    const system = document.getElementById("id_affected_system");
+
+    for(let i=0;i<system.options.length;i++){
+
+        if(system.options[i].text.trim()==ai.affected_system){
+
+            system.selectedIndex=i;
+
+            break;
+
+        }
+
+    }
+
+    /* ------------------------
+       Tags
+    -------------------------*/
+
+    document.getElementById("id_tags").value = ai.tags.join(", ");
+
+    /* ------------------------
+       Priority Cards
+    -------------------------*/
+
+    const radios = document.querySelectorAll('input[name="priority"]');
+
+    radios.forEach(function(radio){
+
+        radio.checked = false;
+
+        if(radio.value==ai.priority){
+
+            radio.checked = true;
+
+        }6
+
+    });
+
+}
+
+</script>
 {% endblock %}

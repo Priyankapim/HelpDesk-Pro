@@ -6,146 +6,1217 @@ Reports
 {% block page_title %}
 Reports
 {% endblock %}
+
 {% block content %}
+<style>
+    /* ======================================================
+                REPORT PAGE
+======================================================*/
+
+.report-page{
+    font-size:13px;
+}
+
+/* Cards */
+
+.report-card{
+    border:none;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 2px 8px rgba(15,23,42,.06);
+    margin-bottom:20px;
+    transition:.25s;
+}
+
+.report-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px rgba(15,23,42,.08);
+}
+
+.report-header{
+    background:#fff;
+    border-bottom:1px solid #eef2f7;
+    padding:16px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.report-header h5{
+    margin:0;
+    font-size:15px;
+    font-weight:700;
+    color:#1f2937;
+}
+
+.report-body{
+    padding:18px;
+}
+
+/* ===============================
+SUMMARY CARDS
+================================*/
+
+.summary-card{
+    background:#fff;
+    border-radius:12px;
+    padding:18px;
+    border:1px solid #edf2f7;
+    transition:.25s;
+    height:100%;
+}
+
+.summary-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 22px rgba(15,23,42,.08);
+}
+
+.summary-icon{
+    width:44px;
+    height:44px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    color:#2563eb;
+    background:#eff6ff;
+    margin-bottom:12px;
+}
+
+.summary-title{
+    font-size:12px;
+    color:#64748b;
+    margin-bottom:6px;
+}
+
+.summary-value{
+    font-size:26px;
+    font-weight:700;
+    color:#111827;
+}
+
+/* ===============================
+FILTER BAR
+================================*/
+
+.filter-card{
+    background:#fff;
+    border-radius:12px;
+    padding:18px;
+    margin-bottom:22px;
+    border:1px solid #eef2f7;
+}
+
+.filter-card label{
+    font-size:12px;
+    font-weight:600;
+    margin-bottom:6px;
+    color:#475569;
+}
+
+.filter-card .form-control,
+.filter-card .form-select{
+    height:38px;
+    font-size:13px;
+    border-radius:8px;
+}
+
+.filter-btn{
+    height:38px;
+    min-width:120px;
+    font-size:13px;
+    border-radius:8px;
+}
+
+/* ===============================
+TABLE
+================================*/
+
+.report-table{
+    margin-bottom:0;
+    font-size:13px;
+}
+
+.report-table thead th{
+    background:#f8fafc;
+    color:#334155;
+    font-size:12px;
+    font-weight:700;
+    border-bottom:2px solid #e2e8f0;
+    padding:12px;
+    white-space:nowrap;
+}
+
+.report-table tbody td{
+    padding:11px 12px;
+    vertical-align:middle;
+}
+
+.report-table tbody tr:hover{
+    background:#f8fbff;
+}
+
+/* Badge */
+
+.report-badge{
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:600;
+}
+
+/* Export Buttons */
+
+.export-btn{
+    height:34px;
+    padding:0 16px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:600;
+}
+
+/* Empty */
+
+.empty-report{
+    text-align:center;
+    color:#94a3b8;
+    padding:35px;
+    font-size:13px;
+}
+
+/* ===============================
+Responsive
+================================*/
+
+@media(max-width:992px){
+
+.summary-card{
+margin-bottom:15px;
+}
+
+.report-header{
+flex-direction:column;
+align-items:flex-start;
+gap:10px;
+}
+
+.filter-btn{
+width:100%;
+margin-top:10px;
+}
+
+.report-table{
+font-size:12px;
+}
+
+}
 
 
+ .export-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none !important;
+}
 
-<!-- Department Report -->
+.export-btn:hover{
+    text-decoration:none !important;
+}
 
-<div class="card shadow-sm mb-4">
+/* =========================================================
+   REPORT PAGE - DARK MODE
+   Paste this at the END of report.html <style>
+========================================================= */
 
-    <div class="card-header">
+body.dark-mode{
+    background:#0f172a !important;
+    color:#e5e7eb !important;
+}
 
-        <h5>Department Wise Report</h5>
+/* Summary Cards */
+
+body.dark-mode .summary-card{
+    background:#1e293b !important;
+    border:1px solid #334155 !important;
+    box-shadow:none !important;
+}
+
+body.dark-mode .summary-title{
+    color:#94a3b8 !important;
+}
+
+body.dark-mode .summary-value{
+    color:#ffffff !important;
+}
+
+body.dark-mode .summary-icon{
+    background:#2563eb !important;
+    color:#ffffff !important;
+}
+
+/* Report Cards */
+
+body.dark-mode .report-card{
+    background:#1e293b !important;
+    border:1px solid #334155 !important;
+    box-shadow:none !important;
+}
+
+body.dark-mode .report-header{
+    background:#111827 !important;
+    border-bottom:1px solid #334155 !important;
+}
+
+body.dark-mode .report-header h5{
+    color:#ffffff !important;
+}
+
+body.dark-mode .report-body{
+    background:#1e293b !important;
+}
+
+/* Filter */
+
+body.dark-mode .filter-card{
+    background:#1e293b !important;
+    border:1px solid #334155 !important;
+}
+
+body.dark-mode .filter-card label{
+    color:#cbd5e1 !important;
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select{
+
+    background:#111827 !important;
+    color:#ffffff !important;
+    border:1px solid #334155 !important;
+
+}
+
+body.dark-mode .form-control::placeholder{
+    color:#94a3b8 !important;
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus{
+
+    background:#111827 !important;
+    color:#ffffff !important;
+    border-color:#2563eb !important;
+    box-shadow:none !important;
+
+}
+
+/* Tables */
+
+body.dark-mode .report-table{
+
+    background:#1e293b !important;
+    color:#ffffff !important;
+
+}
+
+body.dark-mode .report-table thead{
+
+    background:#111827 !important;
+
+}
+
+body.dark-mode .report-table thead th{
+
+    background:#111827 !important;
+    color:#ffffff !important;
+    border-bottom:2px solid #334155 !important;
+
+}
+
+body.dark-mode .report-table tbody{
+
+    background:#1e293b !important;
+
+}
+
+body.dark-mode .report-table tbody tr{
+
+    background:#1e293b !important;
+
+}
+
+body.dark-mode .report-table tbody td{
+
+    background:#1e293b !important;
+    color:#e5e7eb !important;
+    border-top:1px solid #334155 !important;
+
+}
+
+body.dark-mode .report-table tbody tr:hover{
+
+    background:#273449 !important;
+
+}
+
+body.dark-mode .table{
+
+    background:#1e293b !important;
+    color:#ffffff !important;
+
+}
+
+body.dark-mode .table th{
+
+    background:#111827 !important;
+    color:#ffffff !important;
+
+}
+
+body.dark-mode .table td{
+
+    background:#1e293b !important;
+    color:#e5e7eb !important;
+
+}
+
+/* Empty */
+
+body.dark-mode .empty-report{
+
+    color:#94a3b8 !important;
+
+}
+
+/* Export Buttons */
+
+body.dark-mode .export-btn{
+
+    color:#ffffff !important;
+
+}
+
+</style>
+
+
+<div class="report-page">
+
+    <!-- ================= Summary ================= -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    <i class="bi bi-ticket-perforated"></i>
+                </div>
+
+                <div class="summary-title">
+                    Total Tickets
+                </div>
+
+                <div class="summary-value">
+                    {{ total_tickets }}
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    <i class="bi bi-folder"></i>
+                </div>
+
+                <div class="summary-title">
+                    Departments
+                </div>
+
+                <div class="summary-value">
+                    {{ department_report|length }}
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+
+                <div class="summary-title">
+                    Agents
+                </div>
+
+                <div class="summary-value">
+                    {{ agent_report|length }}
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    <i class="bi bi-bar-chart"></i>
+                </div>
+
+                <div class="summary-title">
+                    Categories
+                </div>
+
+                <div class="summary-value">
+                    {{ category_report|length }}
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
-    <div class="card-body">
 
-        <table class="table table-bordered">
 
-            <tr>
+    <!-- ================= Filter =================
 
-                <th>Department</th>
+    <div class="filter-card">
 
-                <th>Total Tickets</th>
+        <form method="GET">
 
-            </tr>
+            <div class="row g-3 align-items-end">
 
-            {% for row in department_report %}
+                <div class="col-lg-3">
 
-            <tr>
+                    <label>
 
-                <td>
+                        Department
 
-                    {{ row.department__name }}
+                    </label>
 
-                </td>
+                    <select class="form-select" name="department">
 
-                <td>
+                        <option value="">All Departments</option>
 
-                    {{ row.total }}
+                        {% for department in departments %}
 
-                </td>
+                        <option value="{{ department.id }}">
 
-            </tr>
+                            {{ department.name }}
 
-            {% endfor %}
+                        </option>
 
-        </table>
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    <label>
+
+                        Priority
+
+                    </label>
+
+                    <select class="form-select" name="priority">
+
+                        <option value="">All Priority</option>
+
+                        {% for value,label in priority_choices %}
+
+                        <option value="{{ value }}">
+
+                        {{ label }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    <label>
+
+                        Status
+
+                    </label>
+
+                    <select class="form-select" name="status">
+
+                        <option value="">All Status</option>
+
+                        {% for value,label in status_choices %}
+
+                            <option value="{{ value }}">
+
+                                {{ label }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    <button class="btn btn-primary filter-btn">
+
+                        <i class="bi bi-funnel me-1"></i>
+
+                        Apply Filter
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+-->
+
+
+    <!-- ================= Export ================= -->
+
+    <div class="report-card">
+
+        <div class="report-header">
+
+            <h5>
+
+                <i class="bi bi-file-earmark-bar-graph me-2"></i>
+
+                Reports Dashboard
+
+            </h5>
+
+            <div>
+
+
+
+
+
+                <a href="{% url 'export_reports_excel' %}"
+                   class="btn btn-success export-btn me-2">
+
+                    <i class="bi bi-file-earmark-excel"></i>
+
+                    Excel
+
+                </a>
+
+                <a href="{% url 'export_reports_pdf' %}"
+                   class="btn btn-danger export-btn">
+
+                    <i class="bi bi-file-earmark-pdf"></i>
+
+                    PDF
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =======================================================
+                    DEPARTMENT REPORT
+======================================================= -->
+
+<div class="report-card">
+
+    <div class="report-header">
+
+        <h5>
+
+            <i class="bi bi-building me-2"></i>
+
+            Department Wise Report
+
+        </h5>
+
+    </div>
+
+    <div class="report-body">
+
+        <div class="table-responsive">
+
+            <table class="table report-table align-middle">
+
+                <thead>
+
+                <tr>
+
+                    <th width="60">#</th>
+
+                    <th>Department</th>
+
+                    <th>Total Tickets</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for row in department_report %}
+
+                <tr>
+
+                    <td>{{ forloop.counter }}</td>
+
+                    <td>{{ row.department__name }}</td>
+
+                    <td>
+
+                        <span class="badge bg-primary">
+
+                            {{ row.total }}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="3" class="empty-report">
+
+                        No Records Found
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
 
 </div>
 
-<!-- Priority Report -->
 
-<div class="card shadow-sm mb-4">
 
-    <div class="card-header">
+<!-- =======================================================
+                    PRIORITY REPORT
+======================================================= -->
 
-        <h5>Priority Wise Report</h5>
+<div class="report-card">
+
+    <div class="report-header">
+
+        <h5>
+
+            <i class="bi bi-flag me-2"></i>
+
+            Priority Wise Report
+
+        </h5>
 
     </div>
 
-    <div class="card-body">
+    <div class="report-body">
 
-        <table class="table table-bordered">
+        <div class="table-responsive">
 
-            <tr>
+            <table class="table report-table align-middle">
 
-                <th>Priority</th>
+                <thead>
 
-                <th>Total Tickets</th>
+                <tr>
 
-            </tr>
+                    <th width="60">#</th>
 
-            {% for row in priority_report %}
+                    <th>Priority</th>
 
-            <tr>
+                    <th>Total Tickets</th>
 
-                <td>{{ row.priority }}</td>
+                </tr>
 
-                <td>{{ row.total }}</td>
+                </thead>
 
-            </tr>
+                <tbody>
 
-            {% endfor %}
+                {% for row in priority_report %}
 
-        </table>
+                <tr>
+
+                    <td>{{ forloop.counter }}</td>
+
+                    <td>
+
+                        {% if row.priority == "Critical" %}
+                        <span class="badge bg-danger">{{ row.priority }}</span>
+
+                        {% elif row.priority == "High" %}
+                        <span class="badge bg-warning text-dark">{{ row.priority }}</span>
+
+                        {% elif row.priority == "Medium" %}
+                        <span class="badge bg-info text-dark">{{ row.priority }}</span>
+
+                        {% else %}
+                        <span class="badge bg-success">{{ row.priority }}</span>
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        <span class="badge bg-dark">
+
+                            {{ row.total }}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="3" class="empty-report">
+
+                        No Records Found
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
 
 </div>
 
-<!-- Agent Report -->
 
-<div class="card shadow-sm">
 
-    <div class="card-header">
+<!-- =======================================================
+                    AGENT REPORT
+======================================================= -->
 
-        <h5>Agent Wise Report</h5>
+<div class="report-card">
+
+    <div class="report-header">
+
+        <h5>
+
+            <i class="bi bi-person-workspace me-2"></i>
+
+            Agent Wise Report
+
+        </h5>
+
+    </div>
+
+    <div class="report-body">
+
+        <div class="table-responsive">
+
+            <table class="table report-table align-middle">
+
+                <thead>
+
+                <tr>
+
+                    <th width="60">#</th>
+
+                    <th>Agent</th>
+
+                    <th>Assigned Tickets</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for row in agent_report %}
+
+                <tr>
+
+                    <td>{{ forloop.counter }}</td>
+
+                    <td>
+
+                        {% if row.assigned_to__first_name %}
+
+                            {{ row.assigned_to__first_name }}
+                            {{ row.assigned_to__last_name }}
+
+                        {% else %}
+
+                            Unassigned
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        <span class="badge bg-success">
+
+                            {{ row.total }}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="3" class="empty-report">
+
+                        No Records Found
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
 
-    <div class="card-body">
+</div>
 
-        <table class="table table-bordered">
 
-            <tr>
-                <th>Agent</th>
-                <th>Total Assigned Tickets</th>
-            </tr>
 
-            {% for row in agent_report %}
+<!-- =======================================================
+                STATUS REPORT
+======================================================= -->
 
-            <tr>
+<div class="report-card">
 
-                <td>
-                    {% if row.assigned_to__first_name %}
+    <div class="report-header">
 
-                        {{ row.assigned_to__first_name }}
-                        {{ row.assigned_to__last_name }}
+        <h5>
 
-                    {% else %}
+            <i class="bi bi-pie-chart me-2"></i>
 
-                        {{ row.assigned_to__email }}
+            Status Wise Report
 
-                    {% endif %}
-                </td>
-
-                <td>
-                    {{ row.total }}
-                </td>
-
-            </tr>
-
-            {% endfor %}
-
-        </table>
-
+        </h5>
 
     </div>
+
+    <div class="report-body">
+
+        <div class="table-responsive">
+
+            <table class="table report-table">
+
+                <thead>
+
+                <tr>
+
+                    <th>Status</th>
+
+                    <th>Total Tickets</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for row in status_report %}
+
+                <tr>
+
+                    <td>{{ row.status }}</td>
+
+                    <td>{{ row.total }}</td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="2" class="empty-report">
+
+                        No Records
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =======================================================
+                CATEGORY REPORT
+======================================================= -->
+
+<div class="report-card">
+
+    <div class="report-header">
+
+        <h5>
+
+            <i class="bi bi-tags me-2"></i>
+
+            Category Wise Report
+
+        </h5>
+
+    </div>
+
+    <div class="report-body">
+
+        <div class="table-responsive">
+
+            <table class="table report-table">
+
+                <thead>
+
+                <tr>
+
+                    <th>Category</th>
+
+                    <th>Total Tickets</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for row in category_report %}
+
+                <tr>
+
+                    <td>{{ row.category }}</td>
+
+                    <td>{{ row.total }}</td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="2" class="empty-report">
+
+                        No Records
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =======================================================
+                MONTHLY REPORT
+======================================================= -->
+
+<div class="report-card">
+
+    <div class="report-header">
+
+        <h5>
+
+            <i class="bi bi-calendar3 me-2"></i>
+
+            Monthly Ticket Report
+
+        </h5>
+
+    </div>
+
+    <div class="report-body">
+
+        <div class="table-responsive">
+
+            <table class="table report-table">
+
+                <thead>
+
+                <tr>
+
+                    <th>Month</th>
+
+                    <th>Total Tickets</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for row in monthly_report %}
+
+                <tr>
+
+                    <td>{{ row.month }}</td>
+
+                    <td>{{ row.total }}</td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="2" class="empty-report">
+
+                        No Records
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =======================================================
+                SLA REPORT
+======================================================= -->
+
+<div class="report-card mb-4">
+
+    <div class="report-header">
+
+        <h5>
+
+            <i class="bi bi-alarm me-2"></i>
+
+            SLA Report
+
+        </h5>
+
+    </div>
+
+    <div class="report-body">
+
+        <div class="table-responsive">
+
+            <table class="table report-table">
+
+                <thead>
+
+                <tr>
+
+                    <th>SLA Status</th>
+
+                    <th>Total Tickets</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for row in sla_report %}
+
+                <tr>
+
+                    <td>{{ row.sla }}</td>
+
+                    <td>{{ row.total }}</td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="2" class="empty-report">
+
+                        No Records
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
 
 </div>
 

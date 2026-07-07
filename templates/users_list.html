@@ -3,27 +3,400 @@
 {% block title %}
 Users
 {% endblock %}
+
 {% block page_title %}
 Users
 {% endblock %}
+
 {% block content %}
 
-<div class="card shadow-sm">
+<style>
+
+/* ===================================================
+                    USERS PAGE
+===================================================*/
+
+.users-card{
+    border:none;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 2px 10px rgba(15,23,42,.06);
+}
+
+.users-header{
+    padding:14px 18px;
+    background:#fff;
+    border-bottom:1px solid #eef2f7;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.users-title{
+    margin:0;
+    font-size:16px;
+    font-weight:600;
+    color:#1e293b;
+}
+
+.user-count{
+    background:#2563eb;
+    color:#fff;
+    padding:4px 12px;
+    border-radius:18px;
+    font-size:11px;
+    font-weight:600;
+}
+
+.table{
+    margin-bottom:0;
+}
+
+.table thead th{
+
+    background:#f8fafc;
+    color:#64748b;
+    border-bottom:1px solid #e5e7eb;
+    font-size:12px;
+    font-weight:600;
+    padding:11px 14px;
+    white-space:nowrap;
+
+}
+
+.table tbody td{
+
+    padding:11px 14px;
+    vertical-align:middle;
+    font-size:12px;
+    color:#475569;
+
+}
+
+.table tbody tr{
+
+    transition:.2s;
+
+}
+
+.table tbody tr:hover{
+
+    background:#f8fbff;
+
+}
+
+/* User */
+
+.user-info{
+
+    display:flex;
+    align-items:center;
+
+}
+
+.user-avatar{
+
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#2563eb;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:600;
+    margin-right:10px;
+
+}
+
+.user-name{
+
+    font-size:12px;
+    font-weight:600;
+    color:#334155;
+
+}
+
+.user-id{
+
+    font-size:10px;
+    color:#94a3b8;
+    margin-top:2px;
+
+}
+
+.table tbody td:nth-child(2){
+
+    color:#64748b;
+    font-size:12px;
+
+}
+
+/* Role */
+
+.role-badge{
+
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:10px;
+    font-weight:600;
+
+}
+
+.role-admin{
+
+    background:#dbeafe;
+    color:#2563eb;
+
+}
+
+.role-super{
+
+    background:#fee2e2;
+    color:#dc2626;
+
+}
+
+.role-agent{
+
+    background:#dcfce7;
+    color:#15803d;
+
+}
+
+.role-employee{
+
+    background:#f3f4f6;
+    color:#475569;
+
+}
+
+/* Button */
+
+.edit-btn{
+
+    height:30px;
+    min-width:70px;
+    border-radius:7px;
+    font-size:11px;
+    font-weight:600;
+    padding:0 12px;
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+
+}
+
+.empty-users{
+
+    padding:55px;
+    text-align:center;
+    color:#94a3b8;
+
+}
+
+.empty-users i{
+
+    font-size:40px;
+    display:block;
+    margin-bottom:10px;
+
+}
+
+@media(max-width:768px){
+
+.users-header{
+
+flex-direction:column;
+align-items:flex-start;
+gap:10px;
+
+}
+
+}
 
 
 
-    <div class="card-body">
+/* ===================================================
+                USERS PAGE DARK MODE
+===================================================*/
 
-        <table class="table table-hover">
+body.dark-mode .users-card{
+
+    background:#1e293b !important;
+    border:1px solid #334155 !important;
+    box-shadow:none;
+
+}
+
+body.dark-mode .users-header{
+
+    background:#111827 !important;
+    border-bottom:1px solid #334155 !important;
+
+}
+
+body.dark-mode .users-title{
+
+    color:#f8fafc !important;
+
+}
+
+body.dark-mode .user-count{
+
+    background:#2563eb !important;
+    color:#fff !important;
+
+}
+
+/* ================= TABLE ================= */
+
+body.dark-mode .table{
+
+    color:#e5e7eb !important;
+
+}
+
+body.dark-mode .table thead th{
+
+    background:#111827 !important;
+    color:#f8fafc !important;
+    border-color:#334155 !important;
+
+}
+
+body.dark-mode .table > :not(caption) > * > *{
+
+    background:#1e293b !important;
+    color:#e5e7eb !important;
+    border-color:#334155 !important;
+
+}
+
+body.dark-mode .table tbody tr:hover td{
+
+    background:#273449 !important;
+
+}
+
+/* ================= USER ================= */
+
+body.dark-mode .user-name{
+
+    color:#f8fafc !important;
+
+}
+
+body.dark-mode .user-id{
+
+    color:#94a3b8 !important;
+
+}
+
+body.dark-mode .user-avatar{
+
+    background:#2563eb !important;
+    color:#fff !important;
+
+}
+
+/* ================= ROLE BADGES ================= */
+
+body.dark-mode .role-super{
+
+    background:#7f1d1d !important;
+    color:#fecaca !important;
+
+}
+
+body.dark-mode .role-admin{
+
+    background:#1e3a8a !important;
+    color:#bfdbfe !important;
+
+}
+
+body.dark-mode .role-agent{
+
+    background:#14532d !important;
+    color:#bbf7d0 !important;
+
+}
+
+body.dark-mode .role-employee{
+
+    background:#374151 !important;
+    color:#e5e7eb !important;
+
+}
+
+/* ================= BUTTON ================= */
+
+body.dark-mode .edit-btn{
+
+    background:#2563eb !important;
+    border-color:#2563eb !important;
+    color:#fff !important;
+
+}
+
+body.dark-mode .edit-btn:hover{
+
+    background:#1d4ed8 !important;
+    border-color:#1d4ed8 !important;
+
+}
+
+/* ================= EMPTY ================= */
+
+body.dark-mode .empty-users{
+
+    color:#94a3b8 !important;
+
+}
+
+body.dark-mode .empty-users h5{
+
+    color:#f8fafc !important;
+
+}
+
+</style>
+
+<div class="card users-card">
+
+    <div class="users-header">
+
+        <h5 class="users-title">
+            Users
+        </h5>
+
+        <span class="user-count">
+            {{ users.count }} User{{ users.count|pluralize }}
+        </span>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table table-sm align-middle">
 
             <thead>
 
                 <tr>
 
-                    <th>Name</th>
+                    <th>User</th>
+
                     <th>Email</th>
+
                     <th>Role</th>
-                    <th>Actions</th>
+
+                    <th width="110">
+                        Action
+                    </th>
 
                 </tr>
 
@@ -31,37 +404,86 @@ Users
 
             <tbody>
 
-                {% for user in users %}
+            {% for user in users %}
 
                 <tr>
 
                     <td>
 
-                        {% if user.first_name %}
+                        <div class="user-info">
 
-                            {{ user.first_name }}
-                            {{ user.last_name }}
+                            <div class="user-avatar">
 
+                                {% if user.first_name %}
+                                    {{ user.first_name|slice:":1"|upper }}
+                                {% else %}
+                                    {{ user.email|slice:":1"|upper }}
+                                {% endif %}
+
+                            </div>
+
+                            <div>
+
+                                <div class="user-name">
+
+                                    {% if user.first_name %}
+
+                                        {{ user.first_name }}
+                                        {{ user.last_name }}
+
+                                    {% else %}
+
+                                        -
+
+                                    {% endif %}
+
+                                </div>
+
+                                <div class="user-id">
+
+                                    ID : {{ user.id }}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        {{ user.email }}
+
+                    </td>
+
+                    <td>
+
+                        <span class="role-badge
+
+                        {% if user.role == 'SUPER_ADMIN' %}
+                            role-super
+                        {% elif user.role == 'ADMIN' %}
+                            role-admin
+                        {% elif user.role == 'AGENT' %}
+                            role-agent
                         {% else %}
-
-                            -
-
+                            role-employee
                         {% endif %}
 
+                        ">
+                            {{ user.role }}
+                        </span>
+
                     </td>
 
                     <td>
-                        {{ user.email }}
-                    </td>
 
-                    <td>
-                        {{ user.role }}
-                    </td>
+                        <a href="{% url 'edit_user' user.id %}"
 
-                    <td>
-                        <a
-                            href="{% url 'edit_user' user.id %}"
-                            class="btn btn-sm btn-primary">
+                           class="btn btn-primary edit-btn">
+
+                            <i class="bi bi-pencil-square me-1"></i>
 
                             Edit
 
@@ -71,7 +493,31 @@ Users
 
                 </tr>
 
-                {% endfor %}
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="4">
+
+                        <div class="empty-users">
+
+                            <i class="bi bi-people"></i>
+
+                            <h6>No Users Found</h6>
+
+                            <p class="mb-0">
+
+                                No users available.
+
+                            </p>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
 
             </tbody>
 

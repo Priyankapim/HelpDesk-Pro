@@ -8,279 +8,1547 @@ Ticket Details
 {% endblock %}
 {% block content %}
 
-<div class="card shadow-sm">
+<style>
+
+/* =====*/
+
+body{
+    font-family:Inter,sans-serif;
+    font-size:14px;
+    background:#f7f9fc;
+}
+
+/*---------------- CARD ----------------*/
+
+.card{
+    border:none;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(15,23,42,.05);
+    transition:.2s;
+}
+
+.card:hover{
+    box-shadow:0 5px 18px rgba(15,23,42,.08);
+}
+
+.card-body{
+    padding:20px;
+}
+
+/*---------------- BACK ----------------*/
+
+.back-link{
+    font-size:13px;
+    color:#64748b;
+    text-decoration:none;
+}
+
+.back-link:hover{
+    color:#2563eb;
+}
+
+/*---------------- TITLE ----------------*/
+
+.ticket-title{
+    font-size:20px;
+    font-weight:700;
+    margin-top:8px;
+    margin-bottom:4px;
+}
+
+.ticket-meta{
+    font-size:12px;
+    color:#64748b;
+}
+
+/*---------------- BADGES ----------------*/
+
+.badge{
+    font-size:11px;
+    padding:5px 10px;
+    border-radius:20px;
+    font-weight:600;
+    letter-spacing:.2px;
+}
+
+/*---------------- DIVIDER ----------------*/
+
+hr{
+    margin:18px 0;
+    opacity:.08;
+}
+
+/*==================================================
+        STATUS TIMELINE
+==================================================*/
+
+.timeline-card{
+    padding:10px;
+    border-radius:12px;
+    background:white;
+    border:1px solid #eef2f7;
+}
+
+.timeline{
+    display:flex;
+    justify-content:space-between;
+    position:relative;
+}
+
+.timeline::before{
+    content:'';
+    position:absolute;
+    top:08px;
+    left:8%;
+    right:8%;
+    height:2px;
+    background:#dbe3ef;
+    z-index:0;
+}
+
+.timeline-step{
+    position:relative;
+    z-index:2;
+    text-align:center;
+    width:20%;
+}
+
+.status-circle{
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    border:2px solid #cbd5e1;
+    background:white;
+    margin:auto;
+    transition:.25s;
+}
+
+.status-active{
+    border-color:#2563eb;
+    background:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,.10);
+}
+
+.status-complete{
+    border-color:#22c55e;
+    background:#22c55e;
+}
+
+.timeline-step small{
+
+    display:block;
+    margin-top:8px;
+    font-size:12px;
+    color:#64748b;
+
+}
+
+/*==================================================
+        DESCRIPTION
+==================================================*/
+
+.description-card{
+
+    min-height:170px;
+
+}
+
+.description-card h5{
+    font-size:16px;
+    font-weight:700;
+    margin-bottom:18px;
+}
+
+.description-box{
+    font-size:14px;
+    line-height:1.7;
+    color:#374151;
+}
+
+.ticket-tag{
+    display:inline-block;
+    background:#f1f5f9;
+    border-radius:18px;
+    padding:4px 10px;
+    font-size:11px;
+    margin-right:6px;
+    margin-top:12px;
+    font-weight:600;
+
+}
+
+/*==================================================
+        SLA
+==================================================*/
+
+.sla-card{
+
+    border-radius:12px;
+    padding:16px;
+    border:1px solid #ffe08a;
+
+}
+
+.sla-header{
+
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:12px;
+
+}
+
+.progress{
+
+    height:8px;
+    border-radius:20px;
+    background:#eceff5;
+
+}
+
+.progress-bar{
+
+    border-radius:20px;
+    transition:1s;
+
+}
+
+/*==================================================
+        DETAILS
+==================================================*/
+
+.details-card{
+
+    margin-top:15px;
+
+}
+
+.details-card h5{
+
+    font-size:17px;
+    font-weight:700;
+    margin-bottom:20px;
+
+}
+
+.details-item{
+
+    margin-bottom:18px;
+
+}
+
+.details-item small{
+
+    display:block;
+    color:#64748b;
+    font-size:12px;
+    margin-bottom:4px;
+
+}
+
+.details-item strong{
+
+    font-size:15px;
+    font-weight:600;
+    color:#1e293b;
+    word-break:break-word;
+
+}
+
+.details-item i{
+
+    margin-right:6px;
+    color:#64748b;
+    font-size:12px;
+
+}
+
+/*==================================================
+        CONVERSATION
+==================================================*/
+
+.conversation-card{
+
+    margin-top:18px;
+
+}
+
+.conversation-card h5{
+
+    font-size:17px;
+    font-weight:700;
+
+}
+
+.chat-message{
+
+    padding:14px;
+    border-radius:10px;
+    background:#f8fafc;
+    margin-bottom:12px;
+
+}
+
+.chat-avatar{
+
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#2563eb;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:13px;
+    font-weight:600;
+
+}
+
+textarea.form-control{
+
+    border-radius:10px;
+    font-size:13px;
+    min-height:90px;
+    resize:none;
+
+}
+
+/*==================================================
+        BUTTONS
+==================================================*/
+
+.btn{
+
+    border-radius:9px;
+    font-size:13px;
+    padding:9px 16px;
+    font-weight:600;
+
+}
+
+.form-select{
+
+    border-radius:10px;
+    font-size:13px;
+
+}
+
+/*==================================================
+        EMPTY CHAT
+==================================================*/
+
+.empty-chat{
+
+    text-align:center;
+    padding:40px 10px;
+    color:#94a3b8;
+
+}
+
+.empty-chat i{
+
+    font-size:40px;
+    margin-bottom:10px;
+
+}
+
+/*==================================================
+        MOBILE
+==================================================*/
+
+@media(max-width:992px){
+
+.ticket-title{
+
+font-size:18px;
+
+}
+
+.timeline{
+
+overflow:auto;
+
+}
+
+.timeline-step{
+
+min-width:120px;
+
+}
+
+.details-card{
+
+margin-top:20px;
+
+}
+
+.card-body{
+
+padding:16px;
+
+}
+
+}
+
+  /* ==========================================
+   Assign Ticket + Update Status Cards
+========================================== */
+
+.card .card-body h5{
+    font-size:15px;
+    font-weight:600;
+    color:#1e293b;
+    margin-bottom:16px;
+}
+
+.card .card-body h5 i{
+    color:#2563eb;
+    font-size:14px;
+}
+
+/* Select */
+
+.form-select{
+    height:38px;
+    border-radius:10px;
+    border:1px solid #dbe3ef;
+    font-size:13px;
+    box-shadow:none;
+    transition:.2s;
+}
+
+.form-select:focus{
+    border-color:#3b82f6;
+    box-shadow:0 0 0 .15rem rgba(59,130,246,.15);
+}
+
+/* Buttons */
+
+.ticket-detail-page .btn-primary,
+.ticket-detail-page .btn-success{
+    height:32px;
+    min-width:125px;
+    font-size:11px;
+    font-weight:600;
+    border-radius:7px;
+    padding:0 14px;
+
+}
+
+.ticket-detail-page .btn-primary:hover,
+.ticket-detail-page .btn-success:hover{
+
+    transform:translateY(-1px);
+
+}
+
+/* ==========================================
+   TICKET DETAIL PAGE DARK MODE
+========================================== */
+
+body.dark-mode{
+    background:#0f172a;
+    color:#e5e7eb;
+}
+
+/* Main Card */
+
+body.dark-mode .card{
+    background:#1e293b !important;
+    border:1px solid #334155 !important;
+    color:#e5e7eb !important;
+    box-shadow:none;
+}
+
+/* Card Body */
+
+body.dark-mode .card-body{
+    background:#1e293b !important;
+    color:#e5e7eb !important;
+}
+
+/* Headings */
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6{
+    color:#f8fafc !important;
+}
+
+/* Paragraph */
+
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode strong{
+    color:#e5e7eb;
+}
+
+/* Small Text */
+
+body.dark-mode small,
+body.dark-mode .text-muted{
+    color:#94a3b8 !important;
+}
+
+/* Divider */
+
+body.dark-mode hr{
+    border-color:#334155;
+}
+
+/* Timeline */
+
+body.dark-mode .timeline-card{
+    background:#1e293b;
+    border:1px solid #334155;
+}
+
+body.dark-mode .timeline::before{
+    background:#475569;
+}
+
+body.dark-mode .status-circle{
+    background:#1e293b;
+    border-color:#64748b;
+}
+
+body.dark-mode .status-active{
+    background:#2563eb;
+    border-color:#2563eb;
+}
+
+body.dark-mode .status-complete{
+    background:#22c55e;
+    border-color:#22c55e;
+}
+
+/* Description */
+
+body.dark-mode .description-box{
+    color:#e5e7eb;
+}
+
+/* Tags */
+
+body.dark-mode .ticket-tag{
+    background:#334155;
+    color:#f1f5f9;
+}
+
+/* Details */
+
+body.dark-mode .details-item small{
+    color:#94a3b8 !important;
+}
+
+body.dark-mode .details-item strong{
+    color:#f8fafc !important;
+}
+
+body.dark-mode .details-item i{
+    color:#60a5fa;
+}
+
+/* SLA Card */
+
+body.dark-mode .sla-card{
+    background:#1e293b;
+    border:1px solid #475569;
+}
+
+body.dark-mode .sla-header{
+    color:#f8fafc;
+}
+
+body.dark-mode .progress{
+    background:#334155;
+}
+
+/* Conversation */
+
+body.dark-mode .conversation-card{
+    background:#1e293b;
+}
+
+body.dark-mode .chat-message{
+    background:#273449;
+    border:1px solid #334155;
+}
+
+body.dark-mode .chat-avatar{
+    background:#2563eb;
+    color:white;
+}
+
+/* Empty Conversation */
+
+body.dark-mode .empty-chat{
+    color:#94a3b8;
+}
+
+/* Textarea */
+
+body.dark-mode textarea.form-control{
+    background:#273449;
+    color:#f8fafc;
+    border:1px solid #475569;
+}
+
+body.dark-mode textarea.form-control::placeholder{
+    color:#94a3b8;
+}
+
+/* Select */
+
+body.dark-mode .form-select{
+    background:#273449;
+    color:#fff;
+    border:1px solid #475569;
+}
+
+body.dark-mode .form-select option{
+    background:#273449;
+    color:#fff;
+}
+
+/* Buttons */
+
+body.dark-mode .btn-outline-secondary{
+    border-color:#64748b;
+    color:#e5e7eb;
+}
+
+body.dark-mode .btn-outline-secondary:hover{
+    background:#334155;
+    color:#fff;
+}
+
+/* Bootstrap bg-light */
+
+body.dark-mode .bg-light{
+    background:#334155 !important;
+    color:#f8fafc !important;
+}
+
+/* Bootstrap Text */
+
+body.dark-mode .text-dark{
+    color:#f8fafc !important;
+}
+
+/* Links */
+
+body.dark-mode a{
+    color:#93c5fd;
+}
+
+body.dark-mode a:hover{
+    color:#bfdbfe;
+}
+
+/* Progress */
+
+body.dark-mode .progress-bar{
+    color:#fff;
+}
+</style>
 
 
 
-    <div class="card-body">
+<div class="ticket-detail-page">
+    <div class="card">
 
-        <div class="row mb-3">
+        <div class="card-body">
 
-            <div class="col-md-3">
-                <strong>Ticket Number</strong>
+            <!-- Header -->
+
+            <div class="d-flex justify-content-between align-items-start flex-wrap">
+
+                <div>
+
+                    <a href="{% url 'my_tickets' %}" class="back-link">
+
+                        <i class="bi bi-arrow-left"></i>
+
+                        Back to Tickets
+
+                    </a>
+
+                    <div class="mt-3">
+
+                        <span class="badge bg-light text-dark">
+
+                            {{ ticket.ticket_number }}
+
+                        </span>
+
+                        <span class="badge
+                        {% if ticket.priority == 'Critical' %}
+                            bg-danger
+                        {% elif ticket.priority == 'High' %}
+                            bg-warning text-dark
+                        {% elif ticket.priority == 'Medium' %}
+                            bg-info text-dark
+                        {% else %}
+                            bg-success
+                        {% endif %}
+                        ">
+
+                            {{ ticket.priority }}
+
+                        </span>
+
+                        <span class="badge
+                        {% if ticket.status == 'Closed' %}
+                            bg-secondary
+                        {% elif ticket.status == 'Resolved' %}
+                            bg-success
+                        {% elif ticket.status == 'In Progress' %}
+                            bg-primary
+                        {% elif ticket.status == 'Assigned' %}
+                            bg-info text-dark
+                        {% else %}
+                            bg-warning text-dark
+                        {% endif %}
+                        ">
+
+                            {{ ticket.status }}
+
+                        </span>
+
+                    </div>
+
+                    <h2 class="ticket-title">
+
+                        {{ ticket.title }}
+
+                    </h2>
+
+                    <div class="ticket-meta">
+
+                        Opened by
+
+                        <strong>
+
+                            {% if ticket.created_by.first_name %}
+                                {{ ticket.created_by.first_name }}
+                                {{ ticket.created_by.last_name }}
+                            {% else %}
+                                {{ ticket.created_by.email }}
+                            {% endif %}
+
+                        </strong>
+
+                        •
+
+                        {{ ticket.created_at|timesince }} ago
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="col-md-9">
-                {{ ticket.ticket_number }}
+            <hr>
+
+            <!-- Timeline -->
+
+            <div class="timeline-card">
+
+                <div class="timeline">
+
+                    <!-- Open -->
+
+                    <div class="timeline-step">
+
+                        <div class="status-circle
+                        {% if ticket.status == 'Open' %}
+                            status-active
+                        {% endif %}
+                        ">
+                        </div>
+
+                        <small>Open</small>
+
+                    </div>
+
+                    <!-- Assigned -->
+
+                    <div class="timeline-step">
+
+                        <div class="status-circle
+                        {% if ticket.status == 'Assigned' %}
+                            status-active
+                        {% endif %}
+                        ">
+                        </div>
+
+                        <small>Assigned</small>
+
+                    </div>
+
+                    <!-- Progress -->
+
+                    <div class="timeline-step">
+
+                        <div class="status-circle
+                        {% if ticket.status == 'In Progress' %}
+                            status-active
+                        {% endif %}
+                        ">
+                        </div>
+
+                        <small>In Progress</small>
+
+                    </div>
+
+                    <!-- Resolved -->
+
+                    <div class="timeline-step">
+
+                        <div class="status-circle
+                        {% if ticket.status == 'Resolved' %}
+                            status-complete
+                        {% endif %}
+                        ">
+                        </div>
+
+                        <small>Resolved</small>
+
+                    </div>
+
+                    <!-- Closed -->
+
+                    <div class="timeline-step">
+
+                        <div class="status-circle
+                        {% if ticket.status == 'Closed' %}
+                            status-complete
+                        {% endif %}
+                        ">
+                        </div>
+
+                        <small>Closed</small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+            <!-- LEFT COLUMN -->
+
+            <div class="row g-3 mt-2">
+
+    <!-- ================= LEFT SIDE ================= -->
+
+            <div class="col-lg-8">
+
+                <!-- Description -->
+
+                <div class="card description-card">
+
+                    <div class="card-body">
+
+                        <h5 class="section-title">
+                            <i class="bi bi-card-text me-2"></i>
+                            Description
+                        </h5>
+
+                        <div class="description-box">
+
+                            {{ ticket.description|linebreaks }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Ticket Information -->
+
+                <div class="card mt-3">
+
+                    <div class="card-body">
+
+                        <h5 class="section-title">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Ticket Information
+                        </h5>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+                                <div class="details-item">
+
+                                    <small>
+                                        <i class="bi bi-tags"></i>
+                                        Category
+                                    </small>
+
+                                    <strong>
+
+                                        {{ ticket.category }}
+
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="details-item">
+
+                                    <small>
+                                        <i class="bi bi-pc-display-horizontal"></i>
+                                        Affected System
+                                    </small>
+
+                                    <strong>
+
+                                        {{ ticket.affected_system }}
+
+                                    </strong>
+
+                                </div>
+
+                             </div>
+
+                        </div>
+
+                        <hr>
+
+                        <div class="details-item">
+
+                            <small>
+
+                                <i class="bi bi-tag"></i>
+
+                                Tags
+
+                            </small>
+
+                            {% if ticket.tags %}
+
+                                {% for tag in ticket.tags.split %}
+
+                                    <span class="ticket-tag">
+
+                                        #{{ tag }}
+
+                                    </span>
+
+                                {% endfor %}
+
+                            {% else %}
+
+                                <span class="text-muted">
+
+                                    No tags added
+
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                        <hr>
+
+                        <div class="details-item">
+
+                            <small>
+
+                                <i class="bi bi-paperclip"></i>
+
+                                Attachments
+
+                            </small>
+
+                            <strong class="text-muted">
+
+                                No attachments uploaded
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ================= RIGHT SIDE ================= -->
+
+            <div class="col-lg-4">
+
+                <!-- SLA -->
+
+                <div class="card sla-card">
+
+                    <div class="card-body">
+
+                        <div class="sla-header">
+
+                            <span>
+
+                                <i class="bi bi-alarm"></i>
+
+                                SLA Timer
+
+                            </span>
+
+                            <span class="text-danger">
+
+                                {{ ticket.sla_status.text }}
+
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div class="progress-bar bg-warning"
+
+                                 style="width:65%;">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Details -->
+
+                <div class="card details-card mt-3">
+
+                    <div class="card-body">
+
+                        <h5>
+
+                            Ticket Details
+
+                        </h5>
+
+                        <div class="details-item">
+
+                            <small>
+
+                                <i class="bi bi-hash"></i>
+
+                                Ticket ID
+
+                            </small>
+
+                            <strong>
+
+                                {{ ticket.ticket_number }}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="details-item">
+
+                            <small>
+
+                                <i class="bi bi-building"></i>
+
+                                Department
+
+                            </small>
+
+                            <strong>
+
+                                {{ ticket.department }}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="details-item">
+
+                            <small>
+
+                                <i class="bi bi-person"></i>
+
+                                Requester
+
+                            </small>
+
+                            <strong>
+
+                                {% if ticket.created_by.first_name %}
+
+                                    {{ ticket.created_by.first_name }}
+
+                                    {{ ticket.created_by.last_name }}
+
+                                {% else %}
+
+                                    {{ ticket.created_by.email }}
+
+                                {% endif %}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="details-item">
+
+                            <small>
+
+                                <i class="bi bi-person-check"></i>
+
+                                Assigned To
+
+                            </small>
+
+                            <strong>
+
+                                {% if ticket.assigned_to %}
+
+                                    {{ ticket.assigned_to }}
+
+                                {% else %}
+
+                                    Unassigned
+
+                                {% endif %}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="details-item">
+
+                            <small>
+
+                                <i class="bi bi-calendar-event"></i>
+
+                                Created
+
+                            </small>
+
+                            <strong>
+
+                                {{ ticket.created_at|date:"d M Y h:i A" }}
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
 
-        <div class="row mb-3">
 
-            <div class="col-md-3">
-                <strong>Title</strong>
+
+        <!-- ================= Conversation ================= -->
+
+            <div class="card conversation-card mt-3">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <h5 class="mb-0">
+
+                            <i class="bi bi-chat-dots me-2"></i>
+
+                            Conversation
+
+                        </h5>
+
+                        <span class="badge bg-light text-dark">
+
+                            {{ comments|length }} Messages
+
+                        </span>
+
+                    </div>
+
+                    <hr>
+
+                    <div style="max-height:420px;overflow-y:auto;">
+
+                        {% for comment in comments %}
+
+                        <div class="chat-message">
+
+                            <div class="d-flex">
+
+                                <!-- Avatar -->
+
+                                <div class="chat-avatar me-3">
+
+                                    {{ comment.user.first_name|default:comment.user.email|slice:":1"|upper }}
+
+                                </div>
+
+                                <!-- Message -->
+
+                                <div class="flex-grow-1">
+
+                                    <div class="d-flex justify-content-between">
+
+                                        <strong>
+
+                                            {% if comment.user.first_name %}
+
+                                                {{ comment.user.first_name }}
+
+                                                {{ comment.user.last_name }}
+
+                                            {% else %}
+
+                                                {{ comment.user.email }}
+
+                                            {% endif %}
+
+                                        </strong>
+
+                                        <small class="text-muted">
+
+                                            {{ comment.created_at|timesince }} ago
+
+                                        </small>
+
+                                    </div>
+
+                                    <div class="mt-2">
+
+                                        {{ comment.comment|linebreaks }}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        {% empty %}
+
+                        <div class="empty-chat">
+
+                            <i class="bi bi-chat-square-dots"></i>
+
+                            <h6 class="mt-3">
+
+                                No conversation yet
+
+                            </h6>
+
+                            <p class="mb-0">
+
+                                Start the discussion by adding a comment.
+
+                            </p>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <hr>
+
+                    <!-- Add Comment -->
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <label class="form-label fw-semibold">
+
+                            Add Reply
+
+                        </label>
+
+                        <textarea
+
+                            class="form-control"
+
+                            name="comment"
+
+                            placeholder="Write your message here...">
+
+                        </textarea>
+
+                        <div class="text-end mt-3">
+
+                            <button
+
+                                class="btn btn-primary">
+
+                                <i class="bi bi-send me-1"></i>
+
+                                Send Reply
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
             </div>
 
-            <div class="col-md-9">
-                {{ ticket.title }}
-            </div>
 
-        </div>
+        <div class="row g-3 mt-1">
+
+    <!-- ================= Assign Ticket ================= -->
+            {% if request.user.role == 'ADMIN' or request.user.role == 'SUPER_ADMIN' %}
+
+                <div class="col-lg-6">
+
+                    <div class="card">
+
+                        <div class="card-body">
+
+                            <h5 class="mb-3">
+
+                                <i class="bi bi-person-check me-2"></i>
+
+                                Assign Ticket
+
+                            </h5>
+
+                            <form method="POST">
+
+                                {% csrf_token %}
+
+                                <select
+                                    name="assigned_to"
+                                    class="form-select mb-3">
+
+                                    <option value="">
+                                        Select Agent
+                                    </option>
+
+                                    {% for agent in agents %}
+
+                                    <option
+                                        value="{{ agent.id }}"
+                                        {% if ticket.assigned_to == agent %}
+                                        selected
+                                        {% endif %}>
+
+                                        {% if agent.first_name %}
+                                            {{ agent.first_name }}
+                                            {{ agent.last_name }}
+                                        {% else %}
+                                            {{ agent.email }}
+                                        {% endif %}
+
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+                                <div class="text-center">
+                                    <button
+                                        class="btn btn-primary ">
+
+                                        <i class="bi bi-person-plus me-1"></i>
+
+                                        Assignment
+
+                                    </button>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
 
 
-        <div class="row mb-3">
 
-            <div class="col-md-3">
-                <strong>Description</strong>
-            </div>
+                <!-- ================= Update Status ================= -->
 
-            <div class="col-md-9">
-                {{ ticket.description }}
-            </div>
+                {% if request.user.role == 'ADMIN' or request.user.role == 'SUPER_ADMIN' or request.user.role == 'AGENT' %}
 
-        </div>
+                <div class="col-lg-6">
 
-        <div class="row mb-3">
+                    <div class="card">
 
-            <div class="col-md-3">
-                <strong>Department</strong>
-            </div>
+                        <div class="card-body">
 
-            <div class="col-md-9">
-                {{ ticket.department }}
-            </div>
+                            <h5 class="mb-3">
 
-        </div>
+                                <i class="bi bi-arrow-repeat me-2"></i>
 
-        <div class="row mb-3">
+                                Update Status
 
-            <div class="col-md-3">
-                <strong>Priority</strong>
-            </div>
+                            </h5>
 
-            <div class="col-md-9">
-                {{ ticket.priority }}
-            </div>
+                            <form method="POST">
 
-        </div>
+                                {% csrf_token %}
 
-        <div class="row mb-3">
+                                <select
+                                    name="status"
+                                    class="form-select mb-3">
 
-            <div class="col-md-3">
-                <strong>Status</strong>
-            </div>
+                                    {% for value,label in ticket.STATUS_CHOICES %}
 
-            <div class="col-md-9">
-                {{ ticket.status }}
-            </div>
+                                    <option
+                                        value="{{ value }}"
+                                        {% if ticket.status == value %}
+                                        selected
+                                        {% endif %}>
 
-        </div>
+                                        {{ label }}
 
-        <div class="row mb-3">
+                                    </option>
 
-            <div class="col-md-3">
-                <strong>Created By</strong>
-            </div>
+                                    {% endfor %}
 
-            <div class="col-md-9">
-                {{ ticket.created_by }}
-            </div>
+                                </select>
 
-        </div>
+                                <div class="text-center">
+                                    <button
+                                        class="btn btn-success">
 
-        <div class="row mb-3">
+                                        <i class="bi bi-check-circle me-1"></i>
 
-            <div class="col-md-3">
-                <strong>Assigned To</strong>
-            </div>
+                                        Workflow
 
-            <div class="col-md-9">
+                                    </button>
+                                </div>
 
-                {% if ticket.assigned_to %}
-                    {{ ticket.assigned_to }}
-                {% else %}
-                    Not Assigned
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
                 {% endif %}
 
             </div>
 
-        </div>
 
-        {% if request.user.role == 'ADMIN' or request.user.role == 'SUPER_ADMIN' %}
 
-            <hr>
+            <!-- ================= Quick Information ================= -->
 
-            {% if ticket.assigned_to %}
-                <h5>Reassign Ticket</h5>
-            {% else %}
-                <h5>Assign Ticket</h5>
-            {% endif %}
-
-            <form method="POST">
-
-                {% csrf_token %}
-
-                <div class="mb-3">
-
-                    <select name="assigned_to" class="form-select">
-
-                        <option value="">
-                            Select Agent
-                        </option>
-
-                        {% for agent in agents %}
-
-                        <option value="{{ agent.id }}">
-                            {% if agent.first_name %}
-                                {{ agent.first_name }} {{ agent.last_name }}
-                            {% else %}
-                                {{ agent.email }}
-                            {% endif %}
-                        </option>
-
-                        {% endfor %}
-
-                    </select>
-
-                </div>
-
-                <button type="submit" class="btn btn-primary">
-
-                    {% if ticket.assigned_to %}
-                        Reassign Ticket
-                    {% else %}
-                        Assign Ticket
-                    {% endif %}
-
-                </button>
-
-            </form>
-
-        {% endif %}
-
-        {% if request.user.role == 'ADMIN' or request.user.role == 'SUPER_ADMIN' or request.user.role == 'AGENT' %}
-
-            <hr>
-
-            <h5>Update Status</h5>
-
-            <form method="POST">
-
-                {% csrf_token %}
-
-                <div class="mb-3">
-
-                    <select name="status" class="form-select">
-
-                        <option value="Open" {% if ticket.status == 'Open' %}selected{% endif %}>
-                            Open
-                        </option>
-
-                        <option value="In Progress" {% if ticket.status == 'In Progress' %}selected{% endif %}>
-                            In Progress
-                        </option>
-
-                        <option value="Resolved" {% if ticket.status == 'Resolved' %}selected{% endif %}>
-                            Resolved
-                        </option>
-
-                        <option value="Closed" {% if ticket.status == 'Closed' %}selected{% endif %}>
-                            Closed
-                        </option>
-
-                    </select>
-
-                </div>
-
-                <button type="submit" class="btn btn-success">
-                    Update Status
-                </button>
-
-            </form>
-
-        {% endif %}
-
-        <hr>
-            <h5>Comments</h5>
-
-            <form method="POST">
-
-                {% csrf_token %}
-
-                <textarea
-                    name="comment"
-                    class="form-control"
-                    rows="3"
-                    placeholder="Add comment...">
-                </textarea>
-
-                <br>
-
-                <button
-                    type="submit"
-                    class="btn btn-primary">
-
-                    Add Comment
-
-                </button>
-
-            </form>
-
-            {% for comment in comments %}
-
-            <div class="card mb-2">
+            <div class="card mt-3">
 
                 <div class="card-body">
 
-                    <strong>
-                        {{ comment.user }}
-                    </strong>
+                    <div class="row text-center">
 
-                    <small>
-                        {{ comment.created_at }}
-                    </small>
+                        <div class="col-md-3">
 
-                    <hr>
+                            <small class="text-muted d-block">
 
-                    {{ comment.comment }}
+                                Created
+
+                            </small>
+
+                            <strong>
+
+                                {{ ticket.created_at|timesince }}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <small class="text-muted d-block">
+
+                                Last Updated
+
+                            </small>
+
+                            <strong>
+
+                                {{ ticket.updated_at|timesince }}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <small class="text-muted d-block">
+
+                                Comments
+
+                            </small>
+
+                            <strong>
+
+                                {{ comments|length }}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <small class="text-muted d-block">
+
+                                SLA
+
+                            </small>
+
+                            <strong class="text-danger">
+
+                                {{ ticket.sla_status.text }}
+
+                            </strong>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
             </div>
 
-            {% empty %}
-
-            <p>No comments yet.</p>
-
-            {% endfor %}
-            <hr>
 
 
-        <div class="row mb-3">
+            <!-- ================= Footer ================= -->
 
-            <div class="col-md-3">
-                <strong>Created At</strong>
-            </div>
+            <div class="text-end mt-3">
 
-            <div class="col-md-9">
-                {{ ticket.created_at }}
+                <a
+                    href="{% url 'my_tickets' %}"
+                    class="btn btn-outline-secondary">
+
+                    <i class="bi bi-arrow-left"></i>
+
+                    Back
+
+                </a>
+
             </div>
 
         </div>
-
     </div>
-
 </div>
-
 {% endblock %}

@@ -10,43 +10,351 @@ Departments
 
 {% block content %}
 
+<style>
 
- <div class="d-flex justify-content-end mb-3">
+/* ===================================================
+                DEPARTMENT PAGE
+===================================================*/
 
-        <a href="{% url 'add_department' %}" class="btn btn-success">
-            + Add Department
-        </a>
+.department-card{
+    border:none;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 8px 24px rgba(15,23,42,.08);
+}
 
- </div>
+.department-header{
+    padding:14px 18px;
+    background:#fff;
+    border-bottom:1px solid #eef2f7;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
 
-<div class="card shadow-sm">
+.department-title{
+    margin:0;
+    font-size:16px;
+    font-weight:700;
+    color:#111827;
+}
+
+.department-count{
+    background:#2563eb;
+    color:#fff;
+    padding:5px 12px;
+    border-radius:18px;
+    font-size:11px;
+    font-weight:600;
+}
+
+.add-btn{
+    height:30px;
+    border-radius:7px;
+    font-size:11px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.table{
+    margin-bottom:0;
+    font-size:11px;
+}
+
+.table thead th{
+    background:#f8fafc;
+    color:#64748b;
+    border-bottom:2px solid #e5e7eb;
+    font-size:11px;
+    font-weight:700;
+    padding:10px 12px;
+}
+
+.table tbody td{
+    padding:10px 12px;
+    vertical-align:middle;
+}
+
+.table tbody tr:hover{
+    background:#f8fbff;
+}
+
+.action-btn{
+    height:28px;
+    min-width:60px;
+    border-radius:7px;
+    font-size:10px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    margin-right:4px;
+}
+
+.empty-row{
+    text-align:center;
+    color:#94a3b8;
+    padding:40px;
+}
 
 
+    /* ===================================================
+            DEPARTMENT PAGE DARK MODE
+===================================================*/
 
-    <div class="card-body">
-        <table class="table table-bordered">
+body.dark-mode .department-card{
+
+    background:#1e293b !important;
+    border:1px solid #334155 !important;
+    box-shadow:none;
+
+}
+
+body.dark-mode .department-header{
+
+    background:#111827 !important;
+    border-bottom:1px solid #334155 !important;
+
+}
+
+body.dark-mode .department-title{
+
+    color:#f8fafc !important;
+
+}
+
+body.dark-mode .department-count{
+
+    background:#2563eb !important;
+    color:#fff !important;
+
+}
+
+/* ================= TABLE ================= */
+
+body.dark-mode .table{
+
+    color:#e5e7eb !important;
+
+}
+
+body.dark-mode .table thead th{
+
+    background:#111827 !important;
+    color:#f8fafc !important;
+    border-color:#334155 !important;
+
+}
+
+body.dark-mode .table > :not(caption) > * > *{
+
+    background:#1e293b !important;
+    color:#e5e7eb !important;
+    border-color:#334155 !important;
+
+}
+
+body.dark-mode .table tbody tr:hover td{
+
+    background:#273449 !important;
+
+}
+
+/* ================= TEXT ================= */
+
+body.dark-mode .table strong{
+
+    color:#f8fafc !important;
+
+}
+
+body.dark-mode .table td{
+
+    color:#e5e7eb !important;
+
+}
+
+/* ================= BUTTONS ================= */
+
+body.dark-mode .add-btn{
+
+    background:#16a34a !important;
+    border-color:#16a34a !important;
+    color:#fff !important;
+
+}
+
+body.dark-mode .add-btn:hover{
+
+    background:#15803d !important;
+    border-color:#15803d !important;
+
+}
+
+body.dark-mode .action-btn.btn-primary{
+
+    background:#2563eb !important;
+    border-color:#2563eb !important;
+    color:#fff !important;
+
+}
+
+body.dark-mode .action-btn.btn-primary:hover{
+
+    background:#1d4ed8 !important;
+    border-color:#1d4ed8 !important;
+
+}
+
+body.dark-mode .action-btn.btn-danger{
+
+    background:#dc2626 !important;
+    border-color:#dc2626 !important;
+    color:#fff !important;
+
+}
+
+body.dark-mode .action-btn.btn-danger:hover{
+
+    background:#b91c1c !important;
+    border-color:#b91c1c !important;
+
+}
+
+/* ================= EMPTY ================= */
+
+body.dark-mode .empty-row{
+
+    color:#94a3b8 !important;
+
+}
+
+body.dark-mode .empty-row i{
+
+    color:#64748b !important;
+
+}
+
+</style>
+
+<div class="department-card">
+
+    <div class="department-header">
+
+        <h5 class="department-title">
+
+            Departments
+
+        </h5>
+
+        <div class="d-flex align-items-center gap-2">
+
+            <span class="department-count">
+
+                {{ departments.count }} Department{{ departments.count|pluralize }}
+
+            </span>
+
+            <a href="{% url 'add_department' %}"
+               class="btn btn-success add-btn">
+
+                <i class="bi bi-plus-lg me-1"></i>
+
+                Add Department
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table table-sm align-middle">
 
             <thead>
+
                 <tr>
-                    <th>Name</th>
+
+                    <th width="25%">Department</th>
+
                     <th>Description</th>
-                    <th>Actions</th>
+
+                    <th class="text-center" width="170">Action</th>
+
                 </tr>
+
             </thead>
 
             <tbody>
-                {% for department in departments %}
+
+            {% for department in departments %}
+
                 <tr>
-                    <td> {{ department.name }} </td>
-                    <td> {{ department.description }} </td>
-                    <td> <a href="{% url 'edit_department' department.id %}" class="btn btn-sm btn-primary">
-                             Edit </a>
-                         <a href="{% url 'delete_department' department.id %}" class="btn btn-sm btn-danger">
-                             Delete </a>
+
+                    <td>
+
+                        <strong>
+
+                            {{ department.name }}
+
+                        </strong>
+
                     </td>
+
+                    <td>
+
+                        {{ department.description|default:"-" }}
+
+                    </td>
+
+                    <td class="text-center">
+
+                        <a href="{% url 'edit_department' department.id %}"
+                           class="btn btn-primary action-btn">
+
+                            <i class="bi bi-pencil-square"></i>
+
+                            Edit
+
+                        </a>
+
+                        <a href="{% url 'delete_department' department.id %}"
+                           class="btn btn-danger action-btn">
+
+                            <i class="bi bi-trash"></i>
+
+                            Delete
+
+                        </a>
+
+                    </td>
+
                 </tr>
 
-                {% endfor %}
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="3">
+
+                        <div class="empty-row">
+
+                            <i class="bi bi-building fs-2"></i>
+
+                            <br><br>
+
+                            No Departments Found
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
 
             </tbody>
 

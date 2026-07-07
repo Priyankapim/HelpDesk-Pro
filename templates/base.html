@@ -11,573 +11,438 @@
 
     <style>
 
-    body{
-        margin:0;
-        background:#f8fafc;
-        font-family:Segoe UI,sans-serif;
-    }
+        body{
+            margin:0;
+            background:#f8fafc;
+            font-family:Segoe UI,sans-serif;
+        }
 
-    .sidebar{
-        width:250px;
-        height:100vh;
-        position:fixed;
-        left:0;
-        top:0;
-        background:#0f172a;
-        color:white;
-        display:flex;
-        flex-direction:column;
-    }
+        .sidebar{
+            width:250px;
+            height:100vh;
+            position:fixed;
+            left:0;
+            top:0;
+            background:#0f172a;
+            color:white;
+            display:flex;
+            flex-direction:column;
+        }
 
-    .logo{
-        padding:20px 24px;
-        border-bottom:1px solid rgba(255,255,255,.08);
-    }
+        .logo{
+            padding:20px 24px;
+            border-bottom:1px solid rgba(255,255,255,.08);
+        }
 
-    .logo h3{
-        margin:0;
-        font-size:16px;
-        font-weight:700;
-        color:white;
-    }
+        .logo h3{
+            margin:0;
+            font-size:16px;
+            font-weight:700;
+            color:white;
+        }
 
-    .logo p{
-        margin:0;
-        font-size:11px;
-        color:#9ca3af;
-        letter-spacing:1px;
-    }
+        .logo p{
+            margin:0;
+            font-size:11px;
+            color:#9ca3af;
+            letter-spacing:1px;
+        }
 
-    .menu{
-        padding:15px 12px;
-    }
+        .menu{
+            padding:15px 12px;
+        }
 
-    .menu-title{
-        font-size:11px;
-        color:#6b7280;
-        text-transform:uppercase;
-        letter-spacing:1px;
-        margin:10px 12px;
-    }
+        .menu-title{
+            font-size:11px;
+            color:#6b7280;
+            text-transform:uppercase;
+            letter-spacing:1px;
+            margin:10px 12px;
+        }
 
-    .menu a{
-        display:flex;
-        align-items:center;
-        gap:10px;
+        .menu a{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            padding:10px 14px;
+            margin-bottom:4px;
+            font-size:14px;
+            font-weight:500;
+            color:#d1d5db;
+            text-decoration:none;
+            border-radius:10px;
+            transition:.2s;
+        }
 
-        padding:10px 14px;
-        margin-bottom:4px;
+        .menu a:hover{
+            background:#2563eb;
+            color:white;
+        }
 
-        font-size:14px;
-        font-weight:500;
+        .menu a.active{
+            background:#2563eb;
+            color:white;
+        }
 
-        color:#d1d5db;
-        text-decoration:none;
-        border-radius:10px;
+        .user-box{
+            display:flex;
+            flex-direction:column;
+            gap:0;
+        }
 
-        transition:.2s;
-    }
+        .user-box strong{
+            color:#ffffff;
+            font-size:14px;
+            font-weight:600;
+        }
 
-    .menu a:hover{
-        background:#2563eb;
-        color:white;
-    }
+        .user-box span{
+            color:#9ca3af;
+            font-size:11px;
+            text-transform:uppercase;
+        }
 
-    .menu a.active{
-        background:#2563eb;
-        color:white;
-    }
+        .sidebar-footer{
+            position:absolute;
+            bottom:0;
+            width:100%;
+            padding:14px 16px;
+            border-top:1px solid rgba(255,255,255,.08);
+            display:flex;
+            align-items:center;
+            gap:12px;
+        }
 
-    .user-box{
-        display:flex;
-        flex-direction:column;
-        gap:0;
-    }
+        .avatar{
+            width:38px;
+            height:38px;
+            border-radius:50%;
+            background:#2563eb;
+            color:white;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:15px;
+            font-weight:600;
+        }
 
-    .user-box strong{
-        color:#ffffff;
-        font-size:14px;
-        font-weight:600;
-    }
+        .content{
+            margin-left:250px;
+        }
 
-    .user-box span{
-        color:#9ca3af;
-        font-size:11px;
-        text-transform:uppercase;
-    }
+        .navbar-custom{
+            background:white;
+            height:40px;
+            border-bottom:1px solid #e2e8f0;
+            padding:0 10px;
+        }
 
-    .sidebar-footer{
-        position:absolute;
-        bottom:0;
-        width:100%;
+        .page-content{
+            padding:25px;
+        }
 
-        padding:14px 16px;
-        border-top:1px solid rgba(255,255,255,.08);
+       .search-box{
+            width:200px;
+            min-width:200px;
+            flex-shrink:0;
+        }
 
-        display:flex;
-        align-items:center;
-        gap:12px;
-    }
+        .search-box input{
+            width:100%;
+            border-radius:5px;
+            font-size:13px;
+            padding:4px 8px;
+        }
 
-    .avatar{
-        width:38px;
-        height:38px;
+        .nav-icons i{
+            font-size:13px;
+            margin-left:20px;
+            cursor:pointer;
+        }
 
-        border-radius:50%;
-
-        background:#2563eb;
-        color:white;
-
-        display:flex;
-        align-items:center;
-        justify-content:center;
-
-        font-size:15px;
-        font-weight:600;
-    }
-
-    .content{
-        margin-left:250px;
-    }
-
-    .navbar-custom{
-        background:white;
-        height:40px;
-        border-bottom:1px solid #e2e8f0;
-        padding:0 10px;
-    }
-
-    .page-content{
-        padding:25px;
-    }
-
-    .search-box{
-        width:200px;
-
-    }
-
-    .search-box input{
-        border-radius:05px;
-        font-size: 13px;
-        padding: 4px 08px;
-    }
-
-    .nav-icons i{
-        font-size:13px;
-        margin-left:20px;
-        cursor:pointer;
-    }
-
-    .new-ticket-btn{
-        border-radius:08px;
-        font-size: 13px;
-        padding: 4px 08px;
-    }
+        .new-ticket-btn{
+            border-radius:08px;
+            font-size: 13px;
+            padding: 4px 08px;
+        }
 
         .notification-area{
-
-    position:relative;
-
-}
-
-.notification-btn{
-
-    border:none;
-
-    background:white;
-
-    font-size:22px;
-
-    cursor:pointer;
-
-    position:relative;
-
-}
-
-.notification-count{
-
-    position:absolute;
-
-    top:-6px;
-
-    right:-6px;
-
-    background:red;
-
-    color:white;
-
-    width:18px;
-
-    height:18px;
-
-    border-radius:50%;
-
-    font-size:10px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-}
-
-.notification-dropdown{
-
-    display:none;
-
-    position:absolute;
-
-    right:0;
-
-    width:320px;
-
-    background:white;
-
-    border-radius:12px;
-
-    box-shadow:0 10px 25px rgba(0,0,0,.12);
-
-    z-index:999;
-
-    margin-top:12px;
-
-}
-
-.notification-header{
-
-    padding:14px;
-
-    font-weight:600;
-
-    border-bottom:1px solid #eee;
-
-}
-
-.notification-item{
-
-    padding:14px;
-
-    border-bottom:1px solid #f2f2f2;
-
-}
-
-.notification-item a{
-
-    text-decoration:none;
-
-    color:#111;
-
-}
-
-.notification-item:hover{
-
-    background:#f8f9fa;
-
-}
-
-
-/* ---------- DARK MODE ---------- */
-
-body.dark-mode{
-    background:#0f172a;
-    color:#f8fafc;
-}
-
-body.dark-mode .navbar-custom{
-    background:#111827;
-    border-color:#1f2937;
-}
-
-body.dark-mode .sidebar{
-    background:#020617;
-}
-
-body.dark-mode .logo{
-    border-color:#1f2937;
-}
-
-body.dark-mode .kpi-card,
-body.dark-mode .table-card,
-body.dark-mode .chart-card,
-body.dark-mode .card{
-    background:#1e293b;
-    color:white;
-}
-
-body.dark-mode .table{
-    color:white;
-}
-
-body.dark-mode .table thead{
-    background:#334155;
-}
-
-body.dark-mode .table td,
-body.dark-mode .table th{
-    border-color:#334155;
-}
-
-body.dark-mode .form-control{
-    background:#1e293b;
-    color:white;
-    border-color:#475569;
-}
-
-body.dark-mode .form-control::placeholder{
-    color:#94a3b8;
-}
-
-body.dark-mode .dropdown-menu{
-    background:#1e293b;
-    color:white;
-}
-
-body.dark-mode .dropdown-item{
-    color:white;
-}
-
-body.dark-mode .dropdown-item:hover{
-    background:#334155;
-}
-
-body.dark-mode h1,
-body.dark-mode h2,
-body.dark-mode h3,
-body.dark-mode h4,
-body.dark-mode h5,
-body.dark-mode h6{
-    color:white;
-}
-
-body.dark-mode .text-muted{
-    color:#cbd5e1 !important;
-}
-
-.dark-mode h2,
-.dark-mode h3,
-.dark-mode h4,
-.dark-mode h5,
-.dark-mode h6{
-    color:#f8fafc;
-}
-
-.dark-mode .nav-icons i,
-.dark-mode .bi-bell,
-.dark-mode .bi-calendar3,
-.dark-mode .bi-moon{
-    color:#f8fafc !important;
-}
-
-.dark-mode .dropdown button{
-    color:#f8fafc !important;
-}
-
+            position:relative;
+        }
+
+        .notification-btn{
+            border:none;
+            background:white;
+            font-size:22px;
+            cursor:pointer;
+            position:relative;
+        }
+
+        .notification-count{
+            position:absolute;
+            top:-6px;
+            right:-6px;
+            background:red;
+            color:white;
+            width:18px;
+            height:18px;
+            border-radius:50%;
+            font-size:10px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .notification-dropdown{
+            display:none;
+            position:absolute;
+            right:0;
+            width:320px;
+            background:white;
+            border-radius:12px;
+            box-shadow:0 10px 25px rgba(0,0,0,.12);
+            z-index:999;
+            margin-top:12px;
+        }
+
+        .notification-header{
+            padding:14px;
+            font-weight:600;
+            border-bottom:1px solid #eee;
+        }
+
+        .notification-item{
+            padding:14px;
+            border-bottom:1px solid #f2f2f2;
+        }
+
+        .notification-item a{
+            text-decoration:none;
+            color:#111;
+        }
+
+        .notification-item:hover{
+            background:#f8f9fa;
+        }
+
+        /* ---------- DARK MODE ---------- */
+
+        body.dark-mode{
+            background:#0f172a;
+            color:#f8fafc;
+        }
+
+        body.dark-mode .navbar-custom{
+            background:#111827;
+            border-color:#1f2937;
+        }
+
+        body.dark-mode .sidebar{
+            background:#020617;
+        }
+
+        body.dark-mode .logo{
+            border-color:#1f2937;
+        }
+
+        body.dark-mode .kpi-card,
+        body.dark-mode .table-card,
+        body.dark-mode .chart-card,
+        body.dark-mode .card{
+            background:#1e293b;
+            color:white;
+        }
+
+        body.dark-mode .table{
+            color:white;
+        }
+
+        body.dark-mode .table thead{
+            background:#334155;
+        }
+
+        body.dark-mode .table td,
+        body.dark-mode .table th{
+            border-color:#334155;
+        }
+
+        body.dark-mode .form-control{
+            background:#1e293b;
+            color:white;
+            border-color:#475569;
+        }
+
+        body.dark-mode .form-control::placeholder{
+            color:#94a3b8;
+        }
+
+        body.dark-mode .dropdown-menu{
+            background:#1e293b;
+            color:white;
+        }
+
+        body.dark-mode .dropdown-item{
+            color:white;
+        }
+
+        body.dark-mode .dropdown-item:hover{
+            background:#334155;
+        }
+
+        body.dark-mode h1,
+        body.dark-mode h2,
+        body.dark-mode h3,
+        body.dark-mode h4,
+        body.dark-mode h5,
+        body.dark-mode h6{
+            color:white;
+        }
+
+        body.dark-mode .text-muted{
+            color:#cbd5e1 !important;
+        }
+
+        .dark-mode h2,
+        .dark-mode h3,
+        .dark-mode h4,
+        .dark-mode h5,
+        .dark-mode h6{
+            color:#f8fafc;
+        }
+
+        .dark-mode .nav-icons i,
+        .dark-mode .bi-bell,
+        .dark-mode .bi-calendar3,
+        .dark-mode .bi-moon{
+            color:#f8fafc !important;
+        }
+
+        .dark-mode .dropdown button{
+            color:#f8fafc !important;
+        }
 
         /* ---------- Global Search ---------- */
 
-.search-overlay{
-
-    position:fixed;
-    inset:0;
-
-    background:rgba(0,0,0,.45);
-
-    display:none;
-
-    justify-content:center;
-    align-items:flex-start;
-
-    padding-top:90px;
-
-    z-index:9999;
-
-}
-
-.search-modal{
-
-    width:700px;
-
-    background:#fff;
-
-    border-radius:18px;
-
-    overflow:hidden;
-
-    box-shadow:0 25px 60px rgba(0,0,0,.25);
-
-}
-
-.search-header{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    padding:16px;
-
-    border-bottom:1px solid #eee;
-
-}
-
-.search-header input{
-
-    flex:1;
-
-    border:none;
-
-    outline:none;
-
-    font-size:16px;
-
-}
-
-.search-header button{
-
-    border:1px solid #ddd;
-
-    background:white;
-
-    border-radius:8px;
-
-    padding:3px 10px;
-
-    font-size:12px;
-
-}
-
-.search-results{
-
-    max-height:420px;
-
-    overflow-y:auto;
-
-}
-
-.search-item{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    padding:15px 20px;
-
-    text-decoration:none;
-
-    color:#111;
-
-    border-bottom:1px solid #f3f4f6;
-
-}
-
-.search-item:hover{
-
-    background:#f8fafc;
-
-}
-
-.search-ticket{
-
-    font-weight:600;
-
-    font-size:15px;
-
-}
-
-.search-dept{
-
-    color:#6b7280;
-
-    font-size:13px;
-
-}
-
-.search-empty{
-
-    text-align:center;
-
-    padding:40px;
-
-    color:#9ca3af;
-
-}
-
-body.dark-mode .search-modal{
-
-    background:#111827;
-
-}
-
-body.dark-mode .search-header{
-
-    border-bottom:1px solid #2d3748;
-
-}
-
-body.dark-mode .search-header input{
-
-    background:#111827;
-
-    color:white;
-
-}
-
-body.dark-mode .search-item{
-
-    color:white;
-
-    border-bottom:1px solid #374151;
-
-}
-
-
-body.dark-mode .search-dept{
-
-    color:#9ca3af;
-
-}
-
-
-.search-item{
-
-display:block;
-
-padding:14px 18px;
-
-text-decoration:none;
-
-color:#111827;
-
-border-bottom:1px solid #eee;
-
-transition:.2s;
-
-}
-
-.search-item:hover{
-
-background:#f3f4f6;
-
-}
-
-body.dark-mode .search-item{
-
-color:white;
-
-border-bottom:1px solid #374151;
-
-}
-
-body.dark-mode .search-item:hover{
-
-background:#1f2937;
-
-}
-
+        .search-overlay{
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,.45);
+            display:none;
+            justify-content:center;
+            align-items:flex-start;
+            padding-top:90px;
+            z-index:9999;
+        }
+
+        .search-modal{
+            width:700px;
+            background:#fff;
+            border-radius:18px;
+            overflow:hidden;
+            box-shadow:0 25px 60px rgba(0,0,0,.25);
+        }
+
+        .search-header{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:16px;
+            border-bottom:1px solid #eee;
+        }
+
+        .search-header input{
+            flex:1;
+            border:none;
+            outline:none;
+            font-size:16px;
+        }
+
+        .search-header button{
+            border:1px solid #ddd;
+            background:white;
+            border-radius:8px;
+            padding:3px 10px;
+            font-size:12px;
+        }
+
+        .search-results{
+            max-height:420px;
+            overflow-y:auto;
+        }
+
+        .search-item{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:15px 20px;
+            text-decoration:none;
+            color:#111;
+            border-bottom:1px solid #f3f4f6;
+        }
+
+        .search-item:hover{
+            background:#f8fafc;
+        }
+
+        .search-ticket{
+            font-weight:600;
+            font-size:15px;
+        }
+
+        .search-dept{
+            color:#6b7280;
+            font-size:13px;
+        }
+
+        .search-empty{
+            text-align:center;
+            padding:40px;
+            color:#9ca3af;
+        }
+
+        body.dark-mode .search-modal{
+            background:#111827;
+        }
+
+        body.dark-mode .search-header{
+            border-bottom:1px solid #2d3748;
+        }
+
+        body.dark-mode .search-header input{
+            background:#111827;
+            color:white;
+        }
+
+        body.dark-mode .search-item{
+            color:white;
+            border-bottom:1px solid #374151;
+        }
+
+        body.dark-mode .search-dept{
+            color:#9ca3af;
+        }
+
+        .search-item{
+            display:block;
+            padding:14px 18px;
+            text-decoration:none;
+            color:#111827;
+            border-bottom:1px solid #eee;
+            transition:.2s;
+        }
+
+        .search-item:hover{
+            background:#f3f4f6;
+        }
+
+        body.dark-mode .search-item{
+            color:white;
+            border-bottom:1px solid #374151;
+        }
+
+        body.dark-mode .search-item:hover{
+            background:#1f2937;
+        }
     </style>
 </head>
 <body>
@@ -612,8 +477,7 @@ background:#1f2937;
         {% if request.user.role == 'AGENT' %}
 
         <a href="{% url 'assigned_tickets' %}">
-            <i class="bi bi-ticket-perforated"></i>
-            Assigned Tickets
+            <i class="bi bi-ticket-perforated"></i> Assigned Tickets
         </a>
 
         {% endif %}
@@ -621,30 +485,27 @@ background:#1f2937;
         {% if request.user.role == 'ADMIN' or request.user.role == 'SUPER_ADMIN' %}
 
         <a href="{% url 'all_tickets' %}">
-            <i class="bi bi-ticket-detailed"></i>
-            All Tickets
+            <i class="bi bi-ticket-detailed"></i> All Tickets
         </a>
 
+        <!-- Search
         <a href="{% url 'users_list' %}">
-            <i class="bi bi-people"></i>
-            Users
+            <i class="bi bi-people"></i> Users
         </a>
 
         <a href="{% url 'department_list' %}">
-            <i class="bi bi-building"></i>
-            Departments
-        </a>
+            <i class="bi bi-building"></i> Departments
+        </a> -->
 
-        <a href="{% url 'reports_dashboard' %}">
-            <i class="bi bi-bar-chart"></i>
-            Reports
+
+        <a href="{% url 'reports' %}">
+            <i class="bi bi-bar-chart"></i> Reports
         </a>
 
         {% endif %}
 
         <a href="{% url 'logout' %}">
-            <i class="bi bi-box-arrow-right"></i>
-            Logout
+            <i class="bi bi-box-arrow-right"></i> Logout
         </a>
 
     </div>
@@ -673,26 +534,16 @@ background:#1f2937;
 
 
 <div class="content">
-
     <div class="navbar-custom">
-
-        <div class="d-flex justify-content-between align-items-center h-100">
+        <div class="d-flex justify-content-between align-items-center h-100 w-100">
 
             <!-- Search -->
-
             <div class="search-box">
-
-                <input
-                    type="text"
-                    id="openSearch"
-                    class="form-control"
-                    placeholder="Search tickets, departments..."
-                    readonly>
-
+                <input type="text" id="openSearch" class="form-control"
+                       placeholder="Search tickets, departments..." readonly>
             </div>
 
             <!-- Right Side -->
-
             <div class="d-flex align-items-center">
 
                 <!-- Calendar -->
@@ -704,14 +555,10 @@ background:#1f2937;
                    style="cursor:pointer;"></i>
 
                 <!-- Notification -->
-
                 <div class="dropdown me-3">
 
-                    <button
-                        class="btn p-0 border-0 bg-transparent position-relative"
-                        type="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">
+                    <button class="btn p-0 border-0 bg-transparent position-relative" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
 
                         <i class="bi bi-bell fs-5"></i>
 
@@ -757,7 +604,6 @@ background:#1f2937;
                                    class="text-danger ms-2">
 
                                     <i class="bi bi-trash"></i>
-
                                 </a>
 
                             </div>
@@ -767,9 +613,7 @@ background:#1f2937;
                         {% empty %}
 
                         <li class="text-center p-3 text-muted">
-
                             No Notifications
-
                         </li>
 
                         {% endfor %}
@@ -782,29 +626,19 @@ background:#1f2937;
 
                 <a href="{% url 'create_ticket' %}"
                    class="btn btn-primary new-ticket-btn">
-
-                    <i class="bi bi-plus-circle"></i>
-                    New Ticket
-
+                    <i class="bi bi-plus-circle"></i> New Ticket
                 </a>
 
             </div>
-
         </div>
-
     </div>
 
     <div class="page-content">
-
         {% block content %}
         {% endblock %}
-
     </div>
 
 </div>
-
-
-
 
 <script>
 
@@ -827,69 +661,41 @@ function trendBackground(){
 }
 
 function toggleNotifications(){
-
     let box=document.getElementById("notificationDropdown");
-
     if(box.style.display==="block"){
-
         box.style.display="none";
-
     }
-
     else{
-
         box.style.display="block";
-
     }
-
 }
 
 window.onclick=function(e){
-
     if(!e.target.closest(".notification-area")){
-
         document.getElementById("notificationDropdown").style.display="none";
-
     }
-
 }
 
 const toggle=document.getElementById("themeToggle");
 
 if(localStorage.getItem("theme")==="dark"){
-
     document.body.classList.add("dark-mode");
-
     toggle.classList.remove("bi-moon");
-
     toggle.classList.add("bi-sun");
-
 }
 
 toggle.addEventListener("click",function(){
-
     document.body.classList.toggle("dark-mode");
-
     if(document.body.classList.contains("dark-mode")){
-
         localStorage.setItem("theme","dark");
-
         toggle.classList.remove("bi-moon");
-
         toggle.classList.add("bi-sun");
-
     }
-
     else{
-
         localStorage.setItem("theme","light");
-
         toggle.classList.remove("bi-sun");
-
         toggle.classList.add("bi-moon");
-
     }
-
 });
 
 </script>
@@ -905,9 +711,7 @@ toggle.addEventListener("click",function(){
 
             <i class="bi bi-search"></i>
 
-            <input
-                type="text"
-                id="searchInput"
+            <input type="text" id="searchInput"
                 placeholder="Search ticket no, title, department...">
 
             <button id="closeSearch">
@@ -918,16 +722,11 @@ toggle.addEventListener("click",function(){
 
         <div id="searchResults" class="search-results">
 
-            <div class="search-empty">
-
-                Start typing...
-
+            <div class="search-empty"> Start typing...
             </div>
 
         </div>
-
     </div>
-
 </div>
 
 <script>
@@ -938,14 +737,10 @@ const closeBtn = document.getElementById("closeSearch");
 const searchInput = document.getElementById("searchInput");
 const results = document.getElementById("searchResults");
 
-
 // Open Popup
 function openSearch(){
-
     overlay.style.display = "flex";
-
     searchInput.value = "";
-
     results.innerHTML = `
         <div class="search-empty">
             Start typing...
@@ -953,65 +748,42 @@ function openSearch(){
     `;
 
     setTimeout(() => searchInput.focus(),100);
-
 }
-
 
 // Close Popup
 function closeSearch(){
-
     overlay.style.display = "none";
-
 }
-
 
 // Search box click
 openBtn.addEventListener("click", openSearch);
 
-
 // ESC Button
 closeBtn.addEventListener("click", closeSearch);
 
-
 // Click outside
 overlay.addEventListener("click", function(e){
-
     if(e.target===overlay){
-
         closeSearch();
-
     }
-
 });
-
 
 // Ctrl + K
 document.addEventListener("keydown",function(e){
-
     if(e.ctrlKey && e.key==="k"){
-
         e.preventDefault();
-
         openSearch();
-
     }
 
     if(e.key==="Escape"){
-
         closeSearch();
-
     }
-
 });
-
 
 // Live Search
 searchInput.addEventListener("keyup",function(){
-
     let query = this.value.trim();
-
     if(query.length===0){
-
         results.innerHTML=`
             <div class="search-empty">
                 Start typing...
@@ -1019,91 +791,59 @@ searchInput.addEventListener("keyup",function(){
         `;
 
         return;
-
     }
 
     fetch(`/tickets/search/?q=${encodeURIComponent(query)}`)
-
     .then(res=>res.json())
-
     .then(data=>{
 
         if(data.length===0){
-
             results.innerHTML=`
                 <div class="search-empty">
                     No results found
                 </div>
             `;
-
             return;
-
         }
 
         let html = "";
-
         data.forEach(item => {
-
             let icon = "";
-
             if(item.type=="ticket")
                 icon="🎫";
-
             else if(item.type=="user")
                 icon="👤";
-
             else
                 icon="🏢";
-
 
             html += `
 
             <a href="${item.url}" class="search-item">
-
                 <div class="d-flex align-items-start">
-
                     <div class="me-3 fs-5">
-
                         ${icon}
-
                     </div>
 
                     <div>
-
                         <div class="fw-semibold">
-
                             ${item.title}
-
                         </div>
 
                         <div class="text-muted small">
-
                             ${item.subtitle}
-
                         </div>
 
                         <div class="small text-primary">
-
                             ${item.extra}
-
                         </div>
 
                     </div>
-
                 </div>
-
             </a>
-
             `;
-
         });
-
         results.innerHTML = html;
-
-
-
     });
-
 });
 
 </script>

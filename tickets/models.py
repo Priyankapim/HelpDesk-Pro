@@ -5,8 +5,57 @@ from django.utils import timezone
 from datetime import timedelta
 
 
-
 class Ticket(models.Model):
+    CATEGORY_CHOICES = [
+
+        ("Hardware Issue", "Hardware Issue"),
+        ("Software Issue", "Software Issue"),
+        ("Network Issue", "Network Issue"),
+        ("Email / Outlook", "Email / Outlook"),
+
+        ("New Employee Onboarding", "New Employee Onboarding"),
+        ("Leave Policy", "Leave Policy"),
+        ("Payroll Inquiry", "Payroll Inquiry"),
+
+        ("Office Supplies", "Office Supplies"),
+        ("Facility Request", "Facility Request"),
+
+        ("Invoice Processing", "Invoice Processing"),
+        ("Budget Approval", "Budget Approval"),
+
+        ("Laptop Request", "Laptop Request"),
+        ("Software License", "Software License"),
+
+        ("Account Creation", "Account Creation"),
+        ("Permission Request", "Permission Request"),
+        ("VPN Access", "VPN Access"),
+
+        ("General Inquiry", "General Inquiry"),
+
+    ]
+
+    AFFECTED_SYSTEM_CHOICES = [
+
+        ("Laptop", "Laptop"),
+        ("Desktop", "Desktop"),
+        ("Printer", "Printer"),
+        ("Windows", "Windows"),
+        ("Office 365", "Office 365"),
+        ("Outlook", "Outlook"),
+        ("Email", "Email"),
+        ("Network", "Network"),
+        ("VPN", "VPN"),
+        ("Authentication", "Authentication"),
+        ("Active Directory", "Active Directory"),
+        ("HRMS", "HRMS"),
+        ("Payroll", "Payroll"),
+        ("Hardware", "Hardware"),
+        ("Software", "Software"),
+        ("Database", "Database"),
+        ("Website", "Website"),
+        ("Other", "Other"),
+
+    ]
 
     PRIORITY_CHOICES = [
         ('Low', 'Low'),
@@ -77,12 +126,28 @@ class Ticket(models.Model):
         auto_now=True
     )
 
+    category = models.CharField(
+        max_length=100,
+        choices=CATEGORY_CHOICES,
+        default="General Inquiry"
+    )
+
+    affected_system = models.CharField(
+        max_length=100,
+        choices=AFFECTED_SYSTEM_CHOICES,
+        default="Other"
+    )
+
+    tags = models.CharField(
+        max_length=255,
+        blank=True,
+        default=""
+    )
+
     def save(self, *args, **kwargs):
         if not self.ticket_number:
             last_ticket = Ticket.objects.count() + 1
-
             self.ticket_number = f"TKT-{last_ticket:04d}"
-
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -109,11 +174,8 @@ class Ticket(models.Model):
     def sla_status(self):
 
         diff = self.sla_deadline - timezone.now()
-
         if diff.total_seconds() < 0:
-
             overdue = abs(diff)
-
             days = overdue.days
             hours = overdue.seconds // 3600
 
@@ -123,7 +185,6 @@ class Ticket(models.Model):
             }
 
         else:
-
             days = diff.days
             hours = diff.seconds // 3600
 
