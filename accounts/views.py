@@ -11,7 +11,10 @@ from datetime import timedelta
 from tickets.models import Department
 import csv
 from django.http import HttpResponse
-
+from .forms import ChangePasswordForm
+import re
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
 
 def login_view(request):
 
@@ -64,13 +67,12 @@ def dashboard_view(request):
         and ticket.status not in ["Resolved", "Closed"]
     )
 
-
     if total_tickets > 0:
         sla_rate = round(
             ((total_tickets - breached_tickets) / total_tickets) * 100
         )
     else:
-        sla_rate = 100
+        sla_rate = None
 
     days = []
     ticket_counts = []
@@ -284,3 +286,94 @@ def export_tickets_csv(request):
         ])
 
     return response
+
+
+
+@login_required
+def change_password(request):
+
+    form = ChangePasswordForm()
+
+    if request.method == "POST":
+
+        form = ChangePasswordForm(request.POST)
+
+        if form.is_valid():
+
+            current_password = form.cleaned_data["current_password"]
+            new_password = form.cleaned_data["new_password"]
+            confirm_password = form.cleaned_data["confirm_password"]
+
+            if not request.user.check_password(current_password):
+
+                messages.error(
+                    request,
+                    "Current password is incorrect."
+                )
+
+            elif new_password != confirm_password:
+
+                messages.error(
+                    request,
+                    "New Password and Confirm Password do not match."
+                )
+
+            elif len(new_password) < 8:
+
+                messages.error(
+                    request,
+                    "Password must be at least 8 characters long."
+                )
+
+            elif not re.search(r"[A-Z]", new_password):
+
+                messages.error(
+                    request,
+                    "Password must contain at least one uppercase letter."
+                )
+
+            elif not re.search(r"[a-z]", new_password):
+
+                messages.error(
+                    request,
+                    "Password must contain at least one lowercase letter."
+                )
+
+            elif not re.search(r"\d", new_password):
+
+                messages.error(
+                    request,
+                    "Password must contain at least one number."
+                )
+
+            elif not re.search(r"[!@#$%^&*(),.?\":{}|<>]", new_password):
+
+                messages.error(
+                    request,
+                    "Password must contain at least one special character."
+                )
+
+            else:
+
+                request.user.set_password(new_password)
+                request.user.save()
+
+                update_session_auth_hash(
+                    request,
+                    request.user
+                )
+
+                messages.success(
+                    request,
+                    "Password changed successfully."
+                )
+
+                return redirect("dashboard")
+
+    return render(
+        request,
+        "change_password.html",
+        {
+            "form": form
+        }
+    )

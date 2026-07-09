@@ -445,7 +445,11 @@ Dashboard
                     </div>
 
                     <div class="kpi-value">
-                        {{ sla_rate }}%
+                        {% if total_tickets == 0 %}
+                            <span class="text-muted">N/A</span>
+                        {% else %}
+                            {{ sla_rate }}%
+                        {% endif %}
                     </div>
                 </div>
             </div>
