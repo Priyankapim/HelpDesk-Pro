@@ -132,7 +132,7 @@
 
         .navbar-custom{
             background:white;
-            height:40px;
+            height:50px;
             border-bottom:1px solid #e2e8f0;
             padding:0 10px;
         }
@@ -462,6 +462,14 @@
             <i class="bi bi-grid"></i> Dashboard
         </a>
 
+        <a href="{% url 'ai_assistant' %}">
+            <i class="bi bi-stars"></i> AI Assistant
+        </a>
+
+        <a href="{% url 'knowledge_base_list' %}">
+            <i class="bi bi-journal-bookmark"></i> Knowledge Base
+        </a>
+
         {% if request.user.role == 'EMPLOYEE' %}
 
         <a href="{% url 'my_tickets' %}">
@@ -488,18 +496,36 @@
             <i class="bi bi-ticket-detailed"></i> All Tickets
         </a>
 
-        <!-- Search
+
         <a href="{% url 'users_list' %}">
             <i class="bi bi-people"></i> Users
         </a>
 
         <a href="{% url 'department_list' %}">
             <i class="bi bi-building"></i> Departments
-        </a> -->
+        </a>
+
+        <a href="{% url 'automation_list' %}">
+            <i class="bi bi-lightning-charge"></i> Automation
+        </a>
+
+        {% if request.user.role == 'SUPER_ADMIN' %}
+        <a href="{% url 'tenant_list' %}">
+            <i class="bi bi-building"></i> Tenant Management
+        </a>
+        {% endif %}
 
 
         <a href="{% url 'reports' %}">
             <i class="bi bi-bar-chart"></i> Reports
+        </a>
+
+        <a href="{% url 'audit_logs' %}">
+            <i class="bi bi-clock-history"></i> Audit Logs
+        </a>
+
+        <a href="{% url 'config_home' %}">
+            <i class="bi bi-gear"></i> Configuration
         </a>
 
         {% endif %}
@@ -852,6 +878,24 @@ searchInput.addEventListener("keyup",function(){
 });
 
 </script>
+
+<script>
+
+// Auto-hide all Bootstrap alerts (success/error/warning messages) after 6 seconds
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll(".alert").forEach(function (alertEl) {
+
+        setTimeout(function () {
+
+            var bsAlert = bootstrap.Alert.getOrCreateInstance(alertEl);
+            bsAlert.close();
+
+        }, 6000);
+
+    });
+
+});
 </body>
 </html>
 

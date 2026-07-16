@@ -1,0 +1,958 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Admin Configuration
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.config-page{ animation:fadeIn .25s ease; }
+
+@keyframes fadeIn{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:none; }
+}
+
+.page-title{
+    font-size:24px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:2px;
+}
+
+.page-subtitle{
+    color:#64748b;
+    font-size:13px;
+    margin:0 0 20px 0;
+}
+
+/* Tabs */
+
+.config-tabs{
+    display:flex;
+    gap:6px;
+    border-bottom:1px solid #e5e7eb;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+}
+
+.config-tab-btn{
+    background:none;
+    border:none;
+    padding:10px 16px;
+    font-size:14px;
+    font-weight:600;
+    color:#64748b;
+    border-radius:10px 10px 0 0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+}
+
+.config-tab-btn.active{
+    background:#2563eb;
+    color:#fff;
+}
+
+.config-tab-panel{ display:none; }
+.config-tab-panel.active{ display:block; }
+
+/* Cards */
+
+.config-card{
+    background:#fff;
+    border:1px solid #edf2f7;
+    border-radius:16px;
+    padding:20px 22px;
+    margin-bottom:22px;
+}
+
+.config-card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.config-card-title{
+    font-size:16px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:2px;
+}
+
+.config-card-subtitle{
+    font-size:13px;
+    color:#64748b;
+    margin:0;
+}
+
+.form-label{
+    font-size:13px;
+    font-weight:600;
+    color:#334155;
+}
+
+.form-control, .form-select{
+    border-radius:10px;
+    font-size:14px;
+}
+
+/* SLA priority pills */
+
+.sla-pill{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.sla-critical{ background:#fee2e2; color:#dc2626; }
+.sla-high{ background:#ffedd5; color:#c2410c; }
+.sla-medium{ background:#fef3c7; color:#b45309; }
+.sla-low{ background:#dcfce7; color:#16a34a; }
+
+.table thead th{
+    font-size:12px;
+    text-transform:uppercase;
+    color:#64748b;
+    border-bottom:2px solid #e5e7eb;
+}
+
+.table td{ vertical-align:middle; font-size:13.5px; }
+
+/* Working hours row */
+
+.wh-row{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:12px 0;
+    border-bottom:1px solid #f1f5f9;
+}
+
+.wh-row:last-of-type{ border-bottom:none; }
+
+.wh-day{
+    width:140px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.wh-time{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#64748b;
+    font-size:13px;
+}
+
+.wh-time input{ width:120px; }
+
+.non-working-label{
+    color:#94a3b8;
+    font-style:italic;
+    font-size:13px;
+}
+
+/* Status badge */
+
+.status-badge{
+    padding:4px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.status-active{ background:#dcfce7; color:#16a34a; }
+.status-inactive{ background:#f1f5f9; color:#64748b; }
+
+.icon-btn{
+    border:none;
+    background:none;
+    color:#64748b;
+    padding:4px 6px;
+    cursor:pointer;
+}
+
+.icon-btn:hover{ color:#2563eb; }
+.icon-btn.text-danger:hover{ color:#dc2626; }
+
+/* Email template card */
+
+.template-card{
+    border:1px solid #edf2f7;
+    border-radius:12px;
+    padding:14px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.template-name{
+    font-weight:700;
+    color:#111827;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.template-tag{
+    background:#eff6ff;
+    color:#2563eb;
+    font-size:11px;
+    font-weight:600;
+    padding:2px 10px;
+    border-radius:20px;
+}
+
+.template-subject{
+    color:#64748b;
+    font-size:13px;
+    margin-top:4px;
+}
+
+/* Modal */
+
+.cfg-modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.45);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    padding:20px;
+}
+
+.cfg-modal{
+    width:480px;
+    max-width:100%;
+    max-height:88vh;
+    overflow-y:auto;
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 25px 60px rgba(0,0,0,.25);
+    padding:22px 24px;
+}
+
+.cfg-modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.cfg-modal-title{ font-size:16px; font-weight:700; color:#111827; }
+
+.cfg-modal-close{
+    border:1px solid #e2e8f0;
+    background:#fff;
+    border-radius:8px;
+    width:30px; height:30px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+}
+
+/* Dark mode */
+
+body.dark-mode .page-title{ color:#f8fafc; }
+body.dark-mode .page-subtitle{ color:#94a3b8; }
+body.dark-mode .config-tabs{ border-color:#334155; }
+body.dark-mode .config-tab-btn{ color:#94a3b8; }
+body.dark-mode .config-card{ background:#1e293b; border-color:#334155; }
+body.dark-mode .config-card-title{ color:#f8fafc; }
+body.dark-mode .form-label{ color:#e2e8f0; }
+body.dark-mode .table{ color:#e2e8f0; }
+body.dark-mode .table thead th{ border-color:#334155; }
+body.dark-mode .wh-row{ border-color:#334155; }
+body.dark-mode .template-card{ background:#0f172a; border-color:#334155; }
+body.dark-mode .template-name{ color:#f8fafc; }
+body.dark-mode .cfg-modal{ background:#1e293b; }
+body.dark-mode .cfg-modal-title{ color:#f8fafc; }
+body.dark-mode .cfg-modal-close{ background:#0f172a; border-color:#334155; color:#f8fafc; }
+body.dark-mode .non-working-label{ color:#64748b; }
+
+body.dark-mode .table > tbody > tr > *{
+    background-color:#1e293b !important;
+    color:#e2e8f0;
+    border-color:#334155;
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select{
+    background-color:#0f172a;
+    border-color:#334155;
+    color:#e2e8f0;
+}
+body.dark-mode .form-control::placeholder{ color:#64748b; }
+body.dark-mode .form-select option{ background:#0f172a; color:#e2e8f0; }
+
+
+    .config-alert{
+    transition:opacity .5s ease, max-height .5s ease, margin .5s ease, padding .5s ease;
+    overflow:hidden;
+}
+.config-alert.fade-out{
+    opacity:0; max-height:0; margin:0; padding:0; border-width:0;
+}
+
+</style>
+
+<div class="config-page">
+
+    <h2 class="page-title">Admin Configuration</h2>
+    <p class="page-subtitle">Manage SLA rules, working hours, escalations, and templates.</p>
+
+    {% if messages %}
+        <div id="configMessages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} config-alert">{{ message }}</div>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Tabs -->
+
+    <div class="config-tabs">
+        <button class="config-tab-btn active" data-tab="sla">
+            <i class="bi bi-shield-check"></i> SLA Rules
+        </button>
+        <button class="config-tab-btn" data-tab="hours">
+            <i class="bi bi-clock"></i> Working Hours
+        </button>
+        <button class="config-tab-btn" data-tab="holidays">
+            <i class="bi bi-calendar-event"></i> Holidays
+        </button>
+        <button class="config-tab-btn" data-tab="escalation">
+            <i class="bi bi-graph-up-arrow"></i> Escalation
+        </button>
+        <button class="config-tab-btn" data-tab="templates">
+            <i class="bi bi-envelope"></i> Email Templates
+        </button>
+    </div>
+
+    <!-- ============== SLA RULES TAB ============== -->
+
+    <div class="config-tab-panel active" id="tab-sla">
+
+        <div class="config-card">
+
+            <div class="config-card-title">SLA Rules by Department</div>
+            <p class="config-card-subtitle">Set resolution time targets (in hours) for each priority level per department.</p>
+
+            <label class="form-label mt-3 mb-2">Select Department</label>
+
+            <select class="form-select mb-3" id="slaDepartmentSelect" style="max-width:320px;">
+                <option value="">Choose a department...</option>
+                {% for dept in departments %}
+                <option value="{{ dept.id }}"
+                        data-critical="{{ dept.sla_critical }}"
+                        data-high="{{ dept.sla_high }}"
+                        data-medium="{{ dept.sla_medium }}"
+                        data-low="{{ dept.sla_low }}"
+                        {% if selected_department_id == dept.id|stringformat:"s" %}selected{% endif %}>
+                    {{ dept.name }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <form id="slaForm" method="post" action="/configuration/sla/0/save/">
+                {% csrf_token %}
+
+                <div class="row g-3" id="slaFieldsWrapper" style="display:none;">
+
+                    <div class="col-md-3">
+                        <label class="form-label"><span class="sla-pill sla-critical">CRITICAL</span></label>
+                        <input type="number" class="form-control" name="sla_critical" id="sla_critical">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label"><span class="sla-pill sla-high">HIGH</span></label>
+                        <input type="number" class="form-control" name="sla_high" id="sla_high">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label"><span class="sla-pill sla-medium">MEDIUM</span></label>
+                        <input type="number" class="form-control" name="sla_medium" id="sla_medium">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label"><span class="sla-pill sla-low">LOW</span></label>
+                        <input type="number" class="form-control" name="sla_low" id="sla_low">
+                    </div>
+
+                </div>
+
+                <div class="mt-3 d-flex align-items-center gap-3" id="slaSaveWrapper" style="display:none;">
+                    <button type="submit" class="btn btn-primary">Save SLA Rules</button>
+                    <span class="text-muted small">Applies to all new tickets in <strong id="slaDeptName"></strong></span>
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="config-card">
+
+            <div class="config-card-title">All Department SLA Overview</div>
+
+            <div class="table-responsive mt-3">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Critical</th>
+                            <th>High</th>
+                            <th>Medium</th>
+                            <th>Low</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dept in departments %}
+                        <tr>
+                            <td><strong>{{ dept.name }}</strong></td>
+                            <td>{{ dept.sla_critical }}h</td>
+                            <td>{{ dept.sla_high }}h</td>
+                            <td>{{ dept.sla_medium }}h</td>
+                            <td>{{ dept.sla_low }}h</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="5" class="text-center text-muted py-4">No departments yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ============== WORKING HOURS TAB ============== -->
+
+    <div class="config-tab-panel" id="tab-hours">
+
+        <div class="config-card">
+
+            <div class="config-card-title">Working Hours Schedule</div>
+            <p class="config-card-subtitle">Define business hours used for SLA calculations.</p>
+
+            <form method="post" action="{% url 'save_working_hours' %}" class="mt-3">
+                {% csrf_token %}
+
+                {% for wh in working_hours %}
+
+                <div class="wh-row">
+
+                    <div class="wh-day">
+                        <div class="form-check form-switch m-0">
+                            <input class="form-check-input" type="checkbox"
+                                   name="is_working_{{ wh.day }}"
+                                   onchange="toggleWhTimes('{{ wh.day }}', this.checked)"
+                                   {% if wh.is_working %}checked{% endif %}>
+                        </div>
+                        {{ wh.get_day_display }}
+                    </div>
+
+                    <div class="wh-time" id="wh-times-{{ wh.day }}" {% if not wh.is_working %}style="display:none;"{% endif %}>
+                        <input type="time" class="form-control" name="start_{{ wh.day }}" value="{{ wh.start_time|time:'H:i' }}">
+                        <span>to</span>
+                        <input type="time" class="form-control" name="end_{{ wh.day }}" value="{{ wh.end_time|time:'H:i' }}">
+                    </div>
+
+                    <span class="non-working-label" id="wh-nonworking-{{ wh.day }}" {% if wh.is_working %}style="display:none;"{% endif %}>
+                        Non-working day
+                    </span>
+
+                </div>
+
+                {% endfor %}
+
+                <button type="submit" class="btn btn-primary mt-3">Save Working Hours</button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- ============== HOLIDAYS TAB ============== -->
+
+    <div class="config-tab-panel" id="tab-holidays">
+
+        <div class="config-card">
+
+            <div class="config-card-header">
+                <div>
+                    <div class="config-card-title">Public Holidays</div>
+                    <p class="config-card-subtitle">Holidays are excluded from SLA calculations.</p>
+                </div>
+
+                <button class="btn btn-primary" onclick="openModal('holidayModal')">
+                    <i class="bi bi-plus-circle me-1"></i> Add Holiday
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Recurring</th>
+                            <th width="40"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for holiday in holidays %}
+                        <tr>
+                            <td><strong>{{ holiday.name }}</strong></td>
+                            <td>{{ holiday.date|date:"Y-m-d" }}</td>
+                            <td>{% if holiday.recurring %}Recurring{% else %}One-time{% endif %}</td>
+                            <td>
+                                <form method="post" action="{% url 'delete_holiday' holiday.id %}" onsubmit="return confirm('Delete this holiday?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="icon-btn text-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="4" class="text-center text-muted py-4">No holidays added yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ============== ESCALATION TAB ============== -->
+
+    <div class="config-tab-panel" id="tab-escalation">
+
+        <div class="config-card">
+
+            <div class="config-card-header">
+                <div>
+                    <div class="config-card-title">Escalation Rules</div>
+                    <p class="config-card-subtitle">Auto-escalate tickets that breach time thresholds.</p>
+                </div>
+
+                <button class="btn btn-primary" onclick="openEscalationModal()">
+                    <i class="bi bi-plus-circle me-1"></i> Add Rule
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Priority</th>
+                            <th>Escalate After</th>
+                            <th>Notify Email</th>
+                            <th>Status</th>
+                            <th width="70"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rule in escalation_rules %}
+                        <tr>
+                            <td><strong>{{ rule.department.name }}</strong></td>
+                            <td><span class="sla-pill sla-{{ rule.priority|lower }}">{{ rule.priority|lower }}</span></td>
+                            <td>{{ rule.escalate_after_hours }}h</td>
+                            <td>{{ rule.notify_email|default:"—" }}</td>
+                            <td>
+                                {% if rule.is_active %}
+                                <span class="status-badge status-active">Active</span>
+                                {% else %}
+                                <span class="status-badge status-inactive">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <button type="button" class="icon-btn"
+                                        onclick="openEscalationModal({{ rule.id }}, '{{ rule.department.id }}', '{{ rule.priority }}', {{ rule.escalate_after_hours }}, '{{ rule.notify_email }}', {{ rule.is_active|yesno:'true,false' }})">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+
+                                <form method="post" action="{% url 'delete_escalation_rule' rule.id %}" style="display:inline;" onsubmit="return confirm('Delete this rule?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="icon-btn text-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="6" class="text-center text-muted py-4">No escalation rules yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ============== EMAIL TEMPLATES TAB ============== -->
+
+    <div class="config-tab-panel" id="tab-templates">
+
+        <div class="config-card">
+
+            <div class="config-card-header">
+                <div>
+                    <div class="config-card-title">Email Templates</div>
+                    <p class="config-card-subtitle">
+                        Use {% templatetag openvariable %}variable{% templatetag closevariable %} placeholders: ticketNumber, ticketTitle, requesterName, agentName, priority, slaDeadline, resolutionNotes
+                    </p>
+                </div>
+
+                <button class="btn btn-primary" onclick="openTemplateModal()">
+                    <i class="bi bi-plus-circle me-1"></i> New Template
+                </button>
+            </div>
+
+            {% for template in templates %}
+            <div class="template-card">
+                <div>
+                    <div class="template-name">
+                        {{ template.name }}
+                        <span class="template-tag">{{ template.get_trigger_event_display }}</span>
+                    </div>
+                    <div class="template-subject">{{ template.subject }}</div>
+                </div>
+
+                <div>
+                    <button type="button" class="icon-btn"
+                            onclick='openTemplateModal({{ template.id }}, "{{ template.name|escapejs }}", "{{ template.trigger_event }}", "{{ template.subject|escapejs }}", "{{ template.body|escapejs }}", {{ template.is_active|yesno:"true,false" }})'>
+                        <i class="bi bi-pencil"></i>
+                    </button>
+
+                    <form method="post" action="{% url 'delete_email_template' template.id %}" style="display:inline;" onsubmit="return confirm('Delete this template?');">
+                        {% csrf_token %}
+                        <button type="submit" class="icon-btn text-danger">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted text-center py-4">No email templates yet.</p>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ============== HOLIDAY MODAL ============== -->
+
+<div class="cfg-modal-overlay" id="holidayModal">
+    <div class="cfg-modal">
+
+        <div class="cfg-modal-header">
+            <div class="cfg-modal-title">Add Holiday</div>
+            <button type="button" class="cfg-modal-close" onclick="closeModal('holidayModal')">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <form method="post" action="{% url 'add_holiday' %}">
+            {% csrf_token %}
+
+            <label class="form-label">Holiday Name</label>
+            <input type="text" class="form-control mb-3" name="name" placeholder="e.g. Christmas Day" required>
+
+            <label class="form-label">Date</label>
+            <input type="date" class="form-control mb-3" name="date" required>
+
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" name="recurring" id="holidayRecurring">
+                <label class="form-check-label" for="holidayRecurring">Recurring annually</label>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-light" onclick="closeModal('holidayModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">Add Holiday</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<!-- ============== ESCALATION RULE MODAL ============== -->
+
+<div class="cfg-modal-overlay" id="escalationModal">
+    <div class="cfg-modal">
+
+        <div class="cfg-modal-header">
+            <div class="cfg-modal-title" id="escalationModalTitle">New Escalation Rule</div>
+            <button type="button" class="cfg-modal-close" onclick="closeModal('escalationModal')">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <form method="post" id="escalationForm" action="{% url 'add_escalation_rule' %}">
+            {% csrf_token %}
+
+            <label class="form-label">Department</label>
+            <select class="form-select mb-3" name="department" id="escDepartment" required>
+                <option value="">Select department</option>
+                {% for dept in departments %}
+                <option value="{{ dept.id }}">{{ dept.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label class="form-label">Priority</label>
+            <select class="form-select mb-3" name="priority" id="escPriority">
+                <option value="LOW">Low</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="HIGH" selected>High</option>
+                <option value="CRITICAL">Critical</option>
+            </select>
+
+            <label class="form-label">Escalate After (hours)</label>
+            <input type="number" class="form-control mb-3" name="escalate_after_hours" id="escHours" value="4" required>
+
+            <label class="form-label">Notify Email (optional)</label>
+            <input type="email" class="form-control mb-3" name="notify_email" id="escEmail" placeholder="manager@company.com">
+
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" name="is_active" id="escActive" checked>
+                <label class="form-check-label" for="escActive">Active</label>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-light" onclick="closeModal('escalationModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="escSubmitBtn">Create</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<!-- ============== EMAIL TEMPLATE MODAL ============== -->
+
+<div class="cfg-modal-overlay" id="templateModal">
+    <div class="cfg-modal">
+
+        <div class="cfg-modal-header">
+            <div class="cfg-modal-title" id="templateModalTitle">New Email Template</div>
+            <button type="button" class="cfg-modal-close" onclick="closeModal('templateModal')">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <form method="post" id="templateForm" action="{% url 'add_email_template' %}">
+            {% csrf_token %}
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Template Name</label>
+                    <input type="text" class="form-control" name="name" id="tplName" placeholder="e.g. Ticket Created" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Trigger Event</label>
+                    <select class="form-select" name="trigger_event" id="tplTrigger">
+                        <option value="TICKET_CREATED">Ticket Created</option>
+                        <option value="TICKET_ASSIGNED">Ticket Assigned</option>
+                        <option value="TICKET_RESOLVED">Ticket Resolved</option>
+                        <option value="TICKET_ESCALATED">Ticket Escalated</option>
+                        <option value="SLA_WARNING">SLA Warning</option>
+                        <option value="CSAT_REQUEST">CSAT Request</option>
+                    </select>
+                </div>
+            </div>
+
+            <label class="form-label">Subject</label>
+            <input type="text" class="form-control mb-3" name="subject" id="tplSubject" placeholder="e.g. Your ticket {ticketNumber}" required>
+
+            <label class="form-label">Body</label>
+            <textarea class="form-control mb-3" name="body" id="tplBody" rows="5" required></textarea>
+
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" name="is_active" id="tplActive" checked>
+                <label class="form-check-label" for="tplActive">Active</label>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-light" onclick="closeModal('templateModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="tplSubmitBtn">Create</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<script>
+
+    document.querySelectorAll(".config-alert").forEach(function(alertEl){
+    setTimeout(function(){
+        alertEl.classList.add("fade-out");
+        setTimeout(function(){ alertEl.remove(); }, 500);
+    }, 6000); // visible for 6 seconds, then fades out
+});
+
+/* ===================== Tabs ===================== */
+
+const tabButtons = document.querySelectorAll(".config-tab-btn");
+const tabPanels = document.querySelectorAll(".config-tab-panel");
+
+function activateTab(tabName){
+    tabButtons.forEach(function(btn){
+        btn.classList.toggle("active", btn.dataset.tab === tabName);
+    });
+    tabPanels.forEach(function(panel){
+        panel.classList.toggle("active", panel.id === "tab-" + tabName);
+    });
+}
+
+tabButtons.forEach(function(btn){
+    btn.addEventListener("click", function(){
+        activateTab(btn.dataset.tab);
+    });
+});
+
+// Open the correct tab on load based on ?tab= in the URL
+const urlParams = new URLSearchParams(window.location.search);
+const initialTab = urlParams.get("tab");
+if(initialTab){
+    activateTab(initialTab);
+}
+
+/* ===================== SLA Rules ===================== */
+
+const slaSelect = document.getElementById("slaDepartmentSelect");
+const slaForm = document.getElementById("slaForm");
+
+function loadSlaValues(){
+    const selected = slaSelect.options[slaSelect.selectedIndex];
+
+    if(!selected.value){
+        document.getElementById("slaFieldsWrapper").style.display = "none";
+        document.getElementById("slaSaveWrapper").style.display = "none";
+        return;
+    }
+
+    document.getElementById("sla_critical").value = selected.dataset.critical;
+    document.getElementById("sla_high").value = selected.dataset.high;
+    document.getElementById("sla_medium").value = selected.dataset.medium;
+    document.getElementById("sla_low").value = selected.dataset.low;
+    document.getElementById("slaDeptName").textContent = selected.text;
+
+    slaForm.action = "/configuration/sla/" + selected.value + "/save/";
+
+    document.getElementById("slaFieldsWrapper").style.display = "flex";
+    document.getElementById("slaSaveWrapper").style.display = "flex";
+}
+
+slaSelect.addEventListener("change", loadSlaValues);
+
+if(slaSelect.value){
+    loadSlaValues();
+    activateTab("sla");
+}
+
+/* ===================== Working Hours ===================== */
+
+function toggleWhTimes(day, isWorking){
+    document.getElementById("wh-times-" + day).style.display = isWorking ? "flex" : "none";
+    document.getElementById("wh-nonworking-" + day).style.display = isWorking ? "none" : "inline";
+}
+
+/* ===================== Generic Modal Helpers ===================== */
+
+function openModal(id){
+    document.getElementById(id).style.display = "flex";
+}
+
+function closeModal(id){
+    document.getElementById(id).style.display = "none";
+}
+
+document.querySelectorAll(".cfg-modal-overlay").forEach(function(overlay){
+    overlay.addEventListener("click", function(e){
+        if(e.target === overlay){
+            overlay.style.display = "none";
+        }
+    });
+});
+
+/* ===================== Escalation Modal ===================== */
+
+function openEscalationModal(id, departmentId, priority, hours, email, isActive){
+
+    const form = document.getElementById("escalationForm");
+    const title = document.getElementById("escalationModalTitle");
+    const submitBtn = document.getElementById("escSubmitBtn");
+
+    if(id){
+        title.textContent = "Edit Escalation Rule";
+        submitBtn.textContent = "Update";
+        form.action = "/configuration/escalation/" + id + "/edit/";
+
+        document.getElementById("escDepartment").value = departmentId;
+        document.getElementById("escPriority").value = priority;
+        document.getElementById("escHours").value = hours;
+        document.getElementById("escEmail").value = email;
+        document.getElementById("escActive").checked = isActive;
+    } else {
+        title.textContent = "New Escalation Rule";
+        submitBtn.textContent = "Create";
+        form.action = "{% url 'add_escalation_rule' %}";
+        form.reset();
+        document.getElementById("escActive").checked = true;
+    }
+
+    openModal("escalationModal");
+}
+
+/* ===================== Email Template Modal ===================== */
+
+function openTemplateModal(id, name, trigger, subject, body, isActive){
+
+    const form = document.getElementById("templateForm");
+    const title = document.getElementById("templateModalTitle");
+    const submitBtn = document.getElementById("tplSubmitBtn");
+
+    if(id){
+        title.textContent = "Edit Template";
+        submitBtn.textContent = "Update";
+        form.action = "/configuration/templates/" + id + "/edit/";
+
+        document.getElementById("tplName").value = name;
+        document.getElementById("tplTrigger").value = trigger;
+        document.getElementById("tplSubject").value = subject;
+        document.getElementById("tplBody").value = body;
+        document.getElementById("tplActive").checked = isActive;
+    } else {
+        title.textContent = "New Email Template";
+        submitBtn.textContent = "Create";
+        form.action = "{% url 'add_email_template' %}";
+        form.reset();
+        document.getElementById("tplActive").checked = true;
+    }
+
+    openModal("templateModal");
+}
+
+</script>
+
+{% endblock %}

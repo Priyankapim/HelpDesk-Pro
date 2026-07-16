@@ -1,0 +1,1095 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load automation_extras %}
+
+{% block title %}
+Workflow Automation
+{% endblock %}
+
+{% block page_title %}
+Workflow Automation
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =====  AUTOMATION PAGE =====*/
+
+.automation-page{
+    animation:fadeIn .25s ease;
+}
+
+@keyframes fadeIn{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:none; }
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+    gap:16px;
+}
+
+.page-title{
+    font-size:24px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:2px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.page-title i{
+    color:#2563eb;
+}
+
+.page-subtitle{
+    color:#64748b;
+    font-size:13px;
+    margin:0;
+}
+
+.new-rule-btn{
+    height:38px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* Summary Cards */
+
+.summary-card{
+    background:#fff;
+    border-radius:16px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    border:1px solid #edf2f7;
+}
+
+.summary-icon{
+    width:48px;
+    height:48px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    background:#f1f5f9;
+    color:#475569;
+}
+
+.summary-card.green .summary-icon{ background:#dcfce7; color:#16a34a; }
+.summary-card.blue .summary-icon{ background:#dbeafe; color:#2563eb; }
+
+.summary-card h3{
+    margin:0;
+    font-size:26px;
+    font-weight:700;
+    color:#111827;
+}
+
+.summary-card span{
+    font-size:13px;
+    color:#64748b;
+}
+
+/* Filter Pills */
+
+.filter-pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:22px 0 18px;
+}
+
+.pill{
+    text-decoration:none;
+    padding:7px 14px;
+    border-radius:20px;
+    background:#f1f5f9;
+    color:#475569;
+    font-size:13px;
+    font-weight:600;
+    transition:.2s;
+}
+
+.pill:hover{
+    background:#e2e8f0;
+    color:#334155;
+}
+
+.pill.active{
+    background:#2563eb;
+    color:#fff;
+}
+
+/* Rule Card */
+
+.rule-card{
+    background:#fff;
+    border:1px solid #edf2f7;
+    border-radius:16px;
+    padding:18px 20px;
+    margin-bottom:14px;
+}
+
+.rule-card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.rule-icon-name{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.rule-icon{
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    background:#dbeafe;
+    color:#2563eb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    flex-shrink:0;
+}
+
+.rule-name-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.rule-name{
+    font-size:15px;
+    font-weight:700;
+    color:#111827;
+    margin:0;
+}
+
+.rule-badge{
+    font-size:11px;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:20px;
+}
+
+.rule-badge.active{ background:#dbeafe; color:#2563eb; }
+.rule-badge.inactive{ background:#f1f5f9; color:#94a3b8; }
+
+.rule-meta{
+    font-size:12px;
+    color:#94a3b8;
+    margin-top:2px;
+}
+
+.rule-controls{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+/* Toggle Switch */
+
+.rule-toggle{
+    position:relative;
+    display:inline-block;
+    width:40px;
+    height:22px;
+}
+
+.rule-toggle input{
+    opacity:0;
+    width:0;
+    height:0;
+}
+
+.toggle-slider{
+    position:absolute;
+    cursor:pointer;
+    inset:0;
+    background:#e2e8f0;
+    border-radius:22px;
+    transition:.2s;
+}
+
+.toggle-slider::before{
+    content:"";
+    position:absolute;
+    width:16px;
+    height:16px;
+    left:3px;
+    top:3px;
+    background:#fff;
+    border-radius:50%;
+    transition:.2s;
+}
+
+.rule-toggle input:checked + .toggle-slider{
+    background:#2563eb;
+}
+
+.rule-toggle input:checked + .toggle-slider::before{
+    transform:translateX(18px);
+}
+
+.rule-icon-btn{
+    width:32px;
+    height:32px;
+    border-radius:8px;
+    border:1px solid #e2e8f0;
+    background:#fff;
+    color:#64748b;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+}
+
+.rule-icon-btn:hover{
+    background:#f1f5f9;
+}
+
+.rule-icon-btn.chevron-btn{
+    border:none;
+    background:transparent;
+}
+
+/* Expanded Flow */
+
+.rule-details{
+    display:none;
+    margin-top:16px;
+    padding-top:16px;
+    border-top:1px solid #f1f5f9;
+}
+
+.rule-flow{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.flow-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    font-weight:600;
+    padding:6px 12px;
+    border-radius:8px;
+    border:1px solid transparent;
+}
+
+.flow-badge.trigger{
+    background:#f0fdf4;
+    color:#16a34a;
+    border-color:#bbf7d0;
+}
+
+.flow-badge.condition{
+    background:#fffbeb;
+    color:#b45309;
+    border-color:#fde68a;
+}
+
+.flow-badge.action{
+    background:#eff6ff;
+    color:#2563eb;
+    border-color:#bfdbfe;
+}
+
+.flow-arrow{
+    color:#cbd5e1;
+    font-size:14px;
+}
+
+.rule-executions{
+    font-size:12px;
+    color:#94a3b8;
+    margin-top:12px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+/* Empty */
+
+.empty-state{
+    text-align:center;
+    padding:60px 20px;
+}
+
+.empty-state i{
+    font-size:54px;
+    color:#cbd5e1;
+    margin-bottom:16px;
+    display:block;
+}
+
+.empty-state h5{
+    color:#334155;
+    margin-bottom:8px;
+}
+
+.empty-state p{
+    color:#94a3b8;
+    margin:0;
+}
+
+/* ===========================
+Modal
+===========================*/
+
+.automation-modal-content{
+    border:none;
+    border-radius:18px;
+}
+
+.automation-modal-header{
+    border-bottom:1px solid #edf2f7;
+    padding:20px 24px 16px;
+}
+
+.automation-modal-header .modal-title{
+    font-size:18px;
+    font-weight:700;
+    color:#111827;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.automation-modal-header .modal-title i{
+    color:#2563eb;
+}
+
+.automation-modal-body{
+    padding:20px 24px 6px;
+    max-height:65vh;
+    overflow-y:auto;
+}
+
+.automation-modal-body .form-label{
+    font-size:13px;
+    font-weight:600;
+    color:#334155;
+    margin-bottom:6px;
+}
+
+.automation-modal-body .form-control,
+.automation-modal-body .form-select{
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+    font-size:14px;
+}
+
+.automation-modal-body .form-control:focus,
+.automation-modal-body .form-select:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.12);
+}
+
+.section-label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px;
+    font-weight:700;
+    color:#111827;
+    margin:20px 0 4px;
+}
+
+.section-label i{
+    color:#16a34a;
+}
+
+.section-label.conditions i{ color:#d97706; }
+.section-label.actions i{ color:#2563eb; }
+
+.section-hint{
+    font-size:12px;
+    color:#94a3b8;
+    margin-bottom:12px;
+}
+
+.and-logic-tag{
+    background:#f1f5f9;
+    color:#64748b;
+    font-size:11px;
+    font-weight:700;
+    padding:2px 8px;
+    border-radius:10px;
+    margin-left:6px;
+}
+
+.section-add-link{
+    background:none;
+    border:none;
+    color:#2563eb;
+    font-size:13px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:4px;
+}
+
+.section-row-flex{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* Trigger cards */
+
+.trigger-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:6px;
+}
+
+.trigger-card{
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    padding:10px 12px;
+    cursor:pointer;
+    transition:.15s;
+}
+
+.trigger-card:hover{
+    border-color:#93c5fd;
+}
+
+.trigger-card.selected{
+    border-color:#2563eb;
+    background:#eff6ff;
+}
+
+.trigger-card-title{
+    font-size:13px;
+    font-weight:700;
+    color:#111827;
+}
+
+.trigger-card-desc{
+    font-size:11px;
+    color:#94a3b8;
+}
+
+/* Dynamic rows */
+
+.dyn-row{
+    display:flex;
+    gap:8px;
+    margin-bottom:8px;
+    align-items:center;
+}
+
+.dyn-row select,
+.dyn-row input{
+    font-size:13px;
+}
+
+.dyn-remove-btn{
+    width:34px;
+    height:34px;
+    min-width:34px;
+    border-radius:8px;
+    border:1px solid #fecaca;
+    background:#fff;
+    color:#dc2626;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.dyn-remove-btn:hover{
+    background:#fef2f2;
+}
+
+.no-conditions-msg{
+    font-size:12px;
+    color:#94a3b8;
+    font-style:italic;
+}
+
+.enable-toggle-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#f8fafc;
+    border-radius:10px;
+    padding:12px 14px;
+    margin:18px 0 6px;
+}
+
+.enable-toggle-row label{
+    font-size:13px;
+    font-weight:600;
+    color:#334155;
+    margin:0;
+}
+
+.automation-modal-footer{
+    border-top:1px solid #edf2f7;
+    padding:16px 24px 20px;
+}
+
+.automation-modal-footer .btn{
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    padding:8px 18px;
+}
+
+@media(max-width:576px){
+    .trigger-grid{ grid-template-columns:1fr; }
+}
+
+/* ===================================================
+                DARK MODE
+===================================================*/
+
+body.dark-mode .page-title{ color:#f8fafc; }
+body.dark-mode .page-subtitle{ color:#94a3b8; }
+
+body.dark-mode .summary-card{ background:#1e293b; border-color:#334155; }
+body.dark-mode .summary-card h3{ color:#f8fafc; }
+
+body.dark-mode .pill{ background:#1e293b; color:#94a3b8; }
+body.dark-mode .pill.active{ background:#2563eb; color:#fff; }
+
+body.dark-mode .rule-card{ background:#1e293b; border-color:#334155; }
+body.dark-mode .rule-name{ color:#f8fafc; }
+body.dark-mode .rule-details{ border-top-color:#334155; }
+body.dark-mode .rule-icon-btn{ background:#0f172a; border-color:#334155; color:#94a3b8; }
+
+body.dark-mode .automation-modal-content{ background:#1e293b; }
+body.dark-mode .automation-modal-header{ border-bottom-color:#334155; }
+body.dark-mode .automation-modal-header .modal-title{ color:#f8fafc; }
+body.dark-mode .automation-modal-footer{ border-top-color:#334155; }
+body.dark-mode .automation-modal-body .form-label{ color:#e2e8f0; }
+body.dark-mode .section-label{ color:#f8fafc; }
+
+body.dark-mode .automation-modal-body .form-control,
+body.dark-mode .automation-modal-body .form-select{
+    background:#0f172a;
+    border-color:#334155;
+    color:#f8fafc;
+}
+
+body.dark-mode .trigger-card{ border-color:#334155; }
+body.dark-mode .trigger-card.selected{ background:rgba(37,99,235,.15); border-color:#2563eb; }
+body.dark-mode .trigger-card-title{ color:#f8fafc; }
+
+body.dark-mode .enable-toggle-row{ background:#0f172a; }
+body.dark-mode .enable-toggle-row label{ color:#e2e8f0; }
+
+body.dark-mode .empty-state h5{ color:#fff; }
+body.dark-mode .empty-state i{ color:#475569; }
+
+body.dark-mode .btn-close{
+    filter:invert(1) grayscale(100%) brightness(200%);
+}
+
+</style>
+
+<div class="automation-page">
+
+    <!-- Header -->
+
+    <div class="page-header">
+
+        <div>
+            <h2 class="page-title">
+                <i class="bi bi-lightning-charge-fill"></i>
+                Workflow Automation
+            </h2>
+            <p class="page-subtitle">Create rules to automatically respond to ticket events</p>
+        </div>
+
+        <div>
+            <button type="button" class="btn btn-primary new-rule-btn"
+                    onclick="openAddModal()">
+                <i class="bi bi-plus-lg me-2"></i>
+                New Rule
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Alerts -->
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Summary Cards -->
+
+    <div class="row g-3">
+
+        <div class="col-md-4">
+            <div class="summary-card">
+                <div class="summary-icon"><i class="bi bi-gear-fill"></i></div>
+                <div>
+                    <h3>{{ total_rules }}</h3>
+                    <span>Total Rules</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="summary-card green">
+                <div class="summary-icon"><i class="bi bi-check-circle-fill"></i></div>
+                <div>
+                    <h3>{{ active_rules }}</h3>
+                    <span>Active Rules</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="summary-card blue">
+                <div class="summary-icon"><i class="bi bi-activity"></i></div>
+                <div>
+                    <h3>{{ total_executions }}</h3>
+                    <span>Total Executions</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Filter Pills -->
+
+    <div class="filter-pills">
+
+        <a href="{% url 'automation_list' %}" class="pill {% if not selected_trigger %}active{% endif %}">All</a>
+
+        {% for value, label in trigger_choices %}
+            <a href="?trigger={{ value }}" class="pill {% if selected_trigger == value %}active{% endif %}">{{ label }}</a>
+        {% endfor %}
+
+    </div>
+
+    <!-- Rule Cards -->
+
+    {% for rule in rules %}
+
+        <div class="rule-card">
+
+            <div class="rule-card-header">
+
+                <div class="rule-icon-name">
+
+                    <div class="rule-icon"><i class="bi bi-lightning-charge-fill"></i></div>
+
+                    <div>
+
+                        <div class="rule-name-row">
+                            <h5 class="rule-name">{{ rule.name }}</h5>
+                            {% if rule.is_active %}
+                                <span class="rule-badge active">Active</span>
+                            {% else %}
+                                <span class="rule-badge inactive">Inactive</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="rule-meta">
+                            {{ rule.get_trigger_display }}
+                            &middot; {{ rule.actions.count }} action{{ rule.actions.count|pluralize }}
+                            {% if rule.execution_count %}
+                                &middot; ran {{ rule.execution_count }}x
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="rule-controls">
+
+                    <form method="post" action="{% url 'toggle_automation_rule' rule.id %}">
+                        {% csrf_token %}
+                        <label class="rule-toggle">
+                            <input type="checkbox" onchange="this.form.submit()" {% if rule.is_active %}checked{% endif %}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </form>
+
+                    <button type="button" class="rule-icon-btn" title="Edit"
+                            onclick="openEditModal({{ rule.id }})">
+                        <i class="bi bi-pencil-fill"></i>
+                    </button>
+
+                    <form method="post" action="{% url 'delete_automation_rule' rule.id %}"
+                          onsubmit="return confirm('Delete this automation rule?');">
+                        {% csrf_token %}
+                        <button type="submit" class="rule-icon-btn" title="Delete">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+
+                    <button type="button" class="rule-icon-btn chevron-btn" title="Details"
+                            onclick="toggleRuleDetails({{ rule.id }})">
+                        <i class="bi bi-chevron-down" id="ruleChevron{{ rule.id }}"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="rule-details" id="ruleDetails{{ rule.id }}">
+
+                <div class="rule-flow">
+
+                    <span class="flow-badge trigger">
+                        <i class="bi bi-play-fill"></i>
+                        {{ rule.get_trigger_display }}
+                    </span>
+
+                    {% for condition in rule.conditions.all %}
+                        <i class="bi bi-arrow-right flow-arrow"></i>
+                        <span class="flow-badge condition">
+                            <i class="bi bi-exclamation-circle"></i>
+                            {{ condition.get_field_display|lower }} {{ condition.get_operator_display }}
+                            {% if condition.value %}({{ condition.value }}){% else %}(empty){% endif %}
+                        </span>
+                    {% endfor %}
+
+                    {% for action in rule.actions.all %}
+                        <i class="bi bi-arrow-right flow-arrow"></i>
+                        <span class="flow-badge action">
+                            <i class="bi bi-lightning-fill"></i>
+                            {{ action.get_action_type_display }}{% if action.value %}: {{ action.value }}{% endif %}
+                        </span>
+                    {% endfor %}
+
+                </div>
+
+                <div class="rule-executions">
+                    <i class="bi bi-activity"></i>
+                    {{ rule.execution_count }} total execution{{ rule.execution_count|pluralize }}
+                </div>
+
+            </div>
+
+        </div>
+
+    {% empty %}
+
+        <div class="empty-state">
+            <i class="bi bi-lightning-charge"></i>
+            <h5>No Automation Rules Found</h5>
+            <p>Click "New Rule" to create your first workflow automation.</p>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+<!-- ===================================================
+        ADD / EDIT AUTOMATION RULE MODAL (shared)
+=================================================== -->
+
+<div class="modal fade" id="ruleModal" tabindex="-1" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+
+        <div class="modal-content automation-modal-content">
+
+            <div class="automation-modal-header d-flex justify-content-between align-items-start">
+
+                <h5 class="modal-title" id="ruleModalTitle">
+                    <i class="bi bi-lightning-charge-fill"></i>
+                    New Automation Rule
+                </h5>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+            </div>
+
+            <form id="ruleForm" method="post" action="{% url 'add_automation_rule' %}">
+                {% csrf_token %}
+                <input type="hidden" name="trigger" id="ruleTriggerInput">
+
+                <div class="automation-modal-body">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">Rule Name <span class="text-danger">*</span></label>
+                            <input type="text" name="name" id="ruleName" class="form-control"
+                                   placeholder="e.g. Auto-assign critical tickets" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Description</label>
+                            <input type="text" name="description" id="ruleDescription" class="form-control"
+                                   placeholder="What does this rule do?">
+                        </div>
+
+                    </div>
+
+                    <div class="section-label">
+                        <i class="bi bi-play-fill"></i>
+                        Trigger
+                    </div>
+                    <div class="section-hint">When should this rule fire?</div>
+
+                    <div class="trigger-grid">
+
+                        {% for value, label in trigger_choices %}
+                            <div class="trigger-card" data-trigger="{{ value }}"
+                                 onclick="selectTrigger('{{ value }}')">
+                                <div class="trigger-card-title">{{ label }}</div>
+                                <div class="trigger-card-desc">{{ trigger_descriptions|get_item:value }}</div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="section-row-flex">
+                        <div class="section-label conditions mb-0">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            Conditions
+                            <span class="and-logic-tag">AND logic</span>
+                        </div>
+
+                        <button type="button" class="section-add-link" onclick="addConditionRow()">
+                            <i class="bi bi-plus-lg"></i> Add Condition
+                        </button>
+                    </div>
+
+                    <p class="no-conditions-msg" id="noConditionsMsg">
+                        No conditions — rule fires on every trigger event
+                    </p>
+
+                    <div id="conditionsContainer"></div>
+
+                    <div class="section-row-flex">
+                        <div class="section-label actions mb-0">
+                            <i class="bi bi-lightning-fill"></i>
+                            Actions
+                        </div>
+
+                        <button type="button" class="section-add-link" onclick="addActionRow()">
+                            <i class="bi bi-plus-lg"></i> Add Action
+                        </button>
+                    </div>
+
+                    <div id="actionsContainer"></div>
+
+                    <div class="enable-toggle-row">
+                        <label class="rule-toggle">
+                            <input type="checkbox" name="is_active" id="ruleActiveToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <label for="ruleActiveToggle">Enable this rule immediately</label>
+                    </div>
+
+                </div>
+
+                <div class="automation-modal-footer d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="ruleSubmitBtn">Create Rule</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{{ rules_json|json_script:"rules-data" }}
+
+<script>
+
+const RULES_DATA = JSON.parse(document.getElementById("rules-data").textContent);
+
+const ADD_RULE_URL = "{% url 'add_automation_rule' %}";
+const EDIT_RULE_URL_TEMPLATE = "{% url 'edit_automation_rule' 0 %}";
+
+const FIELD_OPTIONS = [
+    ["priority", "Priority"],
+    ["status", "Status"],
+    ["department_id", "Department ID"],
+    ["assignee", "Assignee"],
+];
+
+const OPERATOR_OPTIONS = [
+    ["equals", "equals"],
+    ["not_equals", "does not equal"],
+    ["contains", "contains"],
+    ["not_contains", "does not contain"],
+    ["is_empty", "is empty"],
+    ["is_not_empty", "is not empty"],
+];
+
+const ACTION_OPTIONS = [
+    ["assign_agent", "Assign to Agent"],
+    ["change_priority", "Change Priority"],
+    ["change_status", "Change Status"],
+    ["add_tag", "Add Tag"],
+    ["send_notification", "Send Notification"],
+    ["send_email_notification", "Send Email Notification"],
+];
+
+function buildOptions(options, selected){
+    return options.map(function(opt){
+        var sel = (opt[0] === selected) ? "selected" : "";
+        return '<option value="' + opt[0] + '" ' + sel + '>' + opt[1] + '</option>';
+    }).join("");
+}
+
+function conditionRowHTML(field, operator, value){
+    field = field || "priority";
+    operator = operator || "equals";
+    value = value || "";
+
+    return (
+        '<div class="dyn-row">' +
+            '<select name="cond_field[]" class="form-select form-select-sm">' + buildOptions(FIELD_OPTIONS, field) + '</select>' +
+            '<select name="cond_operator[]" class="form-select form-select-sm">' + buildOptions(OPERATOR_OPTIONS, operator) + '</select>' +
+            '<input type="text" name="cond_value[]" class="form-control form-control-sm" placeholder="value" value="' + value.replace(/"/g, '&quot;') + '">' +
+            '<button type="button" class="dyn-remove-btn" onclick="removeRow(this)"><i class="bi bi-trash"></i></button>' +
+        '</div>'
+    );
+}
+
+function actionRowHTML(actionType, value){
+    actionType = actionType || "send_notification";
+    value = value || "";
+
+    return (
+        '<div class="dyn-row">' +
+            '<select name="action_type[]" class="form-select form-select-sm">' + buildOptions(ACTION_OPTIONS, actionType) + '</select>' +
+            '<input type="text" name="action_value[]" class="form-control form-control-sm" placeholder="Value / message" value="' + value.replace(/"/g, '&quot;') + '">' +
+            '<button type="button" class="dyn-remove-btn" onclick="removeRow(this)"><i class="bi bi-trash"></i></button>' +
+        '</div>'
+    );
+}
+
+function addConditionRow(field, operator, value){
+    document.getElementById("noConditionsMsg").style.display = "none";
+    document.getElementById("conditionsContainer").insertAdjacentHTML("beforeend", conditionRowHTML(field, operator, value));
+}
+
+function addActionRow(actionType, value){
+    document.getElementById("actionsContainer").insertAdjacentHTML("beforeend", actionRowHTML(actionType, value));
+}
+
+function removeRow(button){
+    var row = button.closest(".dyn-row");
+    row.parentNode.removeChild(row);
+
+    if(document.getElementById("conditionsContainer").children.length === 0){
+        document.getElementById("noConditionsMsg").style.display = "block";
+    }
+}
+
+function clearTriggerSelection(){
+    document.querySelectorAll(".trigger-card").forEach(function(el){
+        el.classList.remove("selected");
+    });
+}
+
+function selectTrigger(value){
+    clearTriggerSelection();
+    document.querySelectorAll(".trigger-card").forEach(function(el){
+        if(el.dataset.trigger === value){
+            el.classList.add("selected");
+        }
+    });
+    document.getElementById("ruleTriggerInput").value = value;
+}
+
+function resetRuleForm(){
+    document.getElementById("ruleForm").reset();
+    document.getElementById("conditionsContainer").innerHTML = "";
+    document.getElementById("actionsContainer").innerHTML = "";
+    document.getElementById("noConditionsMsg").style.display = "block";
+    clearTriggerSelection();
+    document.getElementById("ruleTriggerInput").value = "";
+    document.getElementById("ruleActiveToggle").checked = true;
+}
+
+function openAddModal(){
+    resetRuleForm();
+    document.getElementById("ruleModalTitle").innerHTML = '<i class="bi bi-lightning-charge-fill"></i> New Automation Rule';
+    document.getElementById("ruleSubmitBtn").innerText = "Create Rule";
+    document.getElementById("ruleForm").action = ADD_RULE_URL;
+    new bootstrap.Modal(document.getElementById("ruleModal")).show();
+}
+
+function openEditModal(ruleId){
+    var rule = RULES_DATA[ruleId];
+    if(!rule){ return; }
+
+    resetRuleForm();
+
+    document.getElementById("ruleModalTitle").innerHTML = '<i class="bi bi-lightning-charge-fill"></i> Edit Automation Rule';
+    document.getElementById("ruleSubmitBtn").innerText = "Update Rule";
+    document.getElementById("ruleForm").action = EDIT_RULE_URL_TEMPLATE.replace("/0/", "/" + ruleId + "/");
+
+    document.getElementById("ruleName").value = rule.name;
+    document.getElementById("ruleDescription").value = rule.description;
+    document.getElementById("ruleActiveToggle").checked = rule.is_active;
+
+    selectTrigger(rule.trigger);
+
+    rule.conditions.forEach(function(c){
+        addConditionRow(c.field, c.operator, c.value);
+    });
+
+    rule.actions.forEach(function(a){
+        addActionRow(a.action_type, a.value);
+    });
+
+    new bootstrap.Modal(document.getElementById("ruleModal")).show();
+}
+
+function toggleRuleDetails(ruleId){
+    var panel = document.getElementById("ruleDetails" + ruleId);
+    var chevron = document.getElementById("ruleChevron" + ruleId);
+
+    if(panel.style.display === "block"){
+        panel.style.display = "none";
+        chevron.classList.remove("bi-chevron-up");
+        chevron.classList.add("bi-chevron-down");
+    } else {
+        panel.style.display = "block";
+        chevron.classList.remove("bi-chevron-down");
+        chevron.classList.add("bi-chevron-up");
+    }
+}
+
+</script>
+
+{% endblock %}

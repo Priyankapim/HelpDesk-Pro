@@ -6,80 +6,670 @@ Edit User
 
 {% block content %}
 
-<div class="card shadow-sm">
+<div class="manage-user-page">
+    <div class="manage-user-modal">
+        <!-- Header -->
 
-    <div class="card-header">
+        <div class="manage-header">
+            <div class="manage-profile">
+                <div class="manage-avatar">
 
-        <h4>Edit User Role</h4>
+                    {{ user_obj.first_name|default:user_obj.email|first|upper }}
 
-    </div>
+                </div>
 
-    <div class="card-body">
+                <div>
 
-        <h5>{{ user_obj.email }}</h5>
+                    <div class="manage-email">
+                        {{ user_obj.email }}
+                    </div>
 
-        <br>
+                    <span class="role-badge role-{{ user_obj.role|lower }}">
+                        {{ user_obj.get_role_display }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            <a href="{% url 'users_list' %}" class="close-btn">
+
+                <i class="bi bi-x-lg"></i>
+
+            </a>
+
+        </div>
 
         <form method="POST">
 
             {% csrf_token %}
 
-            <div class="mb-3">
+            <div class="manage-body">
 
-                <label>Role</label>
+                <!-- ========================= -->
+                <!-- Personal Information -->
+                <!-- ========================= -->
 
-                <select
-                    name="role"
-                    class="form-select">
+                <div class="section-heading">
 
-                    <option
-                        value="EMPLOYEE"
-                        {% if user_obj.role == 'EMPLOYEE' %}selected{% endif %}>
+                    PERSONAL INFORMATION
 
-                        Employee
+                </div>
 
-                    </option>
+                <div class="row g-3">
 
-                    <option
-                        value="AGENT"
-                        {% if user_obj.role == 'AGENT' %}selected{% endif %}>
+                    <div class="col-md-6">
 
-                        Agent
+                        <label class="form-label">
 
-                    </option>
+                            First Name
 
-                    <option
-                        value="ADMIN"
-                        {% if user_obj.role == 'ADMIN' %}selected{% endif %}>
+                        </label>
 
-                        Admin
+                        <input
+                            type="text"
+                            class="form-control"
+                            value="{{ user_obj.first_name }}"
+                            readonly>
 
-                    </option>
+                    </div>
 
-                    <option
-                        value="SUPER_ADMIN"
-                        {% if user_obj.role == 'SUPER_ADMIN' %}selected{% endif %}>
+                    <div class="col-md-6">
 
-                        Super Admin
+                        <label class="form-label">
 
-                    </option>
+                            Last Name
 
-                </select>
+                        </label>
 
+                        <input
+                            type="text"
+                            class="form-control"
+                            value="{{ user_obj.last_name }}"
+                            readonly>
+
+                    </div>
+
+                </div>
+
+                <div class="row g-3 mt-1">
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Email
+
+                        </label>
+
+                        <input
+                            type="email"
+                            class="form-control"
+                            value="{{ user_obj.email }}"
+                            readonly>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Mobile Number
+
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            value="{{ user_obj.phone }}"
+                            readonly>
+
+                    </div>
+
+                </div>
+
+                                <!-- ========================= -->
+                <!-- Role & Access -->
+                <!-- ========================= -->
+
+                <div class="section-heading mt-4">
+
+                    ROLE & ACCESS
+
+                </div>
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            System Role
+
+                        </label>
+
+                        <select
+                            name="role"
+                            class="form-select">
+
+                            <option value="EMPLOYEE"
+                                {% if user_obj.role == "EMPLOYEE" %}selected{% endif %}>
+                                Employee
+                            </option>
+
+                            <option value="AGENT"
+                                {% if user_obj.role == "AGENT" %}selected{% endif %}>
+                                Agent
+                            </option>
+
+                            <option value="ADMIN"
+                                {% if user_obj.role == "ADMIN" %}selected{% endif %}>
+                                Admin
+                            </option>
+
+                            <option value="SUPER_ADMIN"
+                                {% if user_obj.role == "SUPER_ADMIN" %}selected{% endif %}>
+                                Super Admin
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Department
+
+                        </label>
+
+                        <select
+                            name="department"
+                            class="form-select">
+
+                            <option value="">
+                                No Department
+                            </option>
+
+                            {% for dept in departments %}
+
+                            <option
+                                value="{{ dept.id }}"
+                                {% if user_obj.department and user_obj.department.id == dept.id %}selected{% endif %}>
+
+                                {{ dept.name }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <!-- ========================= -->
+                <!-- Account Controls -->
+                <!-- ========================= -->
+
+                <div class="section-heading mt-4">
+
+                    ACCOUNT CONTROLS
+
+                </div>
+
+                <div class="control-card">
+
+                    <div class="control-left">
+
+                        <div class="control-icon success">
+
+                            <i class="bi bi-person-check"></i>
+
+                        </div>
+
+                        <div>
+
+                            <div class="control-title">
+
+                                Account Active
+
+                            </div>
+
+                            <div class="control-text">
+
+                                User can sign in and access the HelpDesk portal.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-check form-switch">
+
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="is_active"
+                            {% if user_obj.is_active %}checked{% endif %}>
+
+                    </div>
+
+                </div>
+
+
+                <div class="control-card mt-3">
+
+                    <div class="control-left">
+
+                        <div class="control-icon warning">
+
+                            <i class="bi bi-lock"></i>
+
+                        </div>
+
+                        <div>
+
+                            <div class="control-title">
+
+                                Account Locked
+
+                            </div>
+
+                            <div class="control-text">
+
+                                Prevent this user from accessing the system.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-check form-switch">
+
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="is_locked"
+                            {% if user_obj.is_locked %}checked{% endif %}>
+
+                    </div>
+
+                </div>
+                                <!-- Footer -->
+
+                <div class="manage-footer">
+
+                    <a href="{% url 'users_list' %}"
+                       class="btn btn-light cancel-btn">
+
+                        Cancel
+
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary save-btn">
+
+                        <i class="bi bi-check2-circle"></i>
+
+                        Save Changes
+
+                    </button>
+
+                </div>
             </div>
-
-            <button
-                type="submit"
-                class="btn btn-success">
-
-                Save Changes
-
-            </button>
-
         </form>
-
     </div>
-
 </div>
 
+
+
+<style>
+
+/*==================================================
+Manage User
+==================================================*/
+
+.manage-user-page{
+
+    max-width:680px;
+    margin:30px auto;
+
+}
+
+.manage-user-modal{
+    background:#ffffff;
+    border-radius:16px;
+    overflow:hidden;
+    border:1px solid #e5e7eb;
+    box-shadow:0 20px 45px rgba(15,23,42,.12);
+}
+
+.manage-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    padding:22px 24px;
+    border-bottom:1px solid #edf2f7;
+}
+
+.manage-profile{
+
+    display:flex;
+    gap:16px;
+    align-items:center;
+
+}
+
+.manage-avatar{
+
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:#2563eb;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    font-weight:700;
+
+}
+
+.manage-email{
+
+    font-size:16px;
+    font-weight:600;
+    color:#111827;
+    margin-bottom:5px;
+
+}
+
+.role-badge{
+
+    display:inline-flex;
+    align-items:center;
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:600;
+
+}
+
+.role-super_admin{
+
+    background:#fee2e2;
+    color:#dc2626;
+
+}
+
+.role-admin{
+
+    background:#dbeafe;
+    color:#2563eb;
+
+}
+
+.role-agent{
+
+    background:#dcfce7;
+    color:#15803d;
+
+}
+
+.role-employee{
+
+    background:#f1f5f9;
+    color:#475569;
+
+}
+
+.close-btn{
+
+    color:#64748b;
+    font-size:18px;
+    text-decoration:none;
+
+}
+
+.close-btn:hover{
+
+    color:#111827;
+
+}
+
+.manage-body{
+
+    padding:24px;
+
+}
+
+.section-heading{
+
+    font-size:13px;
+    font-weight:700;
+    color:#64748b;
+    letter-spacing:.6px;
+    margin-bottom:14px;
+
+}
+
+.manage-user-page .form-label{
+
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:6px;
+
+}
+
+.manage-user-page .form-control,
+.manage-user-page .form-select{
+
+    height:42px;
+    font-size:13px;
+    border-radius:10px;
+    border:1px solid #dbe2ea;
+
+}
+
+.manage-user-page textarea.form-control{
+
+    height:90px;
+
+}
+
+.control-card{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:16px;
+
+}
+
+.control-left{
+
+    display:flex;
+    gap:14px;
+    align-items:center;
+
+}
+
+.control-icon{
+
+    width:42px;
+    height:42px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:17px;
+
+}
+
+.control-icon.success{
+
+    background:#dcfce7;
+    color:#16a34a;
+
+}
+
+.control-icon.warning{
+
+    background:#fff7ed;
+    color:#ea580c;
+
+}
+
+.control-title{
+
+    font-size:14px;
+    font-weight:600;
+    color:#111827;
+
+}
+
+.control-text{
+
+    font-size:12px;
+    color:#64748b;
+
+}
+
+.manage-user-page .form-check-input{
+
+    width:46px;
+    height:24px;
+    cursor:pointer;
+
+}
+
+.manage-footer{
+
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+    margin-top:28px;
+
+}
+
+.cancel-btn{
+
+    padding:10px 22px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:600;
+
+}
+
+.save-btn{
+
+    padding:10px 22px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+}
+
+/*==================================================
+Dark Theme
+==================================================*/
+
+body.dark-mode .manage-user-modal{
+
+    background:#1e293b;
+    border-color:#334155;
+
+}
+
+body.dark-mode .manage-header{
+
+    border-color:#334155;
+
+}
+
+body.dark-mode .manage-email{
+
+    color:#f8fafc;
+
+}
+
+body.dark-mode .section-heading{
+
+    color:#94a3b8;
+
+}
+
+body.dark-mode .manage-user-page .form-label{
+
+    color:#e2e8f0;
+
+}
+
+body.dark-mode .manage-user-page .form-control,
+body.dark-mode .manage-user-page .form-select{
+
+    background:#0f172a;
+    color:#fff;
+    border-color:#334155;
+
+}
+
+body.dark-mode .manage-user-page .form-control:disabled{
+
+    background:#1e293b;
+    color:#cbd5e1;
+
+}
+
+body.dark-mode .control-card{
+
+    background:#243244;
+    border-color:#334155;
+
+}
+
+body.dark-mode .control-title{
+
+    color:#fff;
+
+}
+
+body.dark-mode .control-text{
+
+    color:#94a3b8;
+
+}
+
+body.dark-mode .close-btn{
+
+    color:#cbd5e1;
+
+}
+
+body.dark-mode .cancel-btn{
+
+    background:#334155;
+    color:#fff;
+    border:none;
+
+}
+
+body.dark-mode .cancel-btn:hover{
+
+    background:#475569;
+
+}
+
+</style>
 {% endblock %}

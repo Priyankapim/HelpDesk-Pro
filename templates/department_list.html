@@ -13,352 +13,605 @@ Departments
 <style>
 
 /* ===================================================
-                DEPARTMENT PAGE
+                DEPARTMENTS PAGE
 ===================================================*/
 
-.department-card{
-    border:none;
-    border-radius:14px;
-    overflow:hidden;
-    box-shadow:0 8px 24px rgba(15,23,42,.08);
+.dept-page{
+    animation:fadeIn .25s ease;
 }
 
-.department-header{
-    padding:14px 18px;
-    background:#fff;
-    border-bottom:1px solid #eef2f7;
+@keyframes fadeIn{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:none; }
+}
+
+.page-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+    gap:16px;
 }
 
-.department-title{
+.page-title{
+    font-size:24px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:2px;
+}
+
+.page-subtitle{
+    color:#64748b;
+    font-size:13px;
     margin:0;
+}
+
+.add-btn{
+    height:38px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* Card */
+
+.dept-card{
+    background:#fff;
+    border:1px solid #edf2f7;
+    border-radius:16px;
+    padding:20px;
+    height:100%;
+    transition:.2s;
+}
+
+.dept-card:hover{
+    box-shadow:0 10px 26px rgba(15,23,42,.08);
+    transform:translateY(-2px);
+}
+
+.dept-card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:10px;
+}
+
+.dept-icon-name{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.dept-icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    flex-shrink:0;
+    background:#dbeafe;
+    color:#2563eb;
+}
+
+.dept-name{
     font-size:16px;
+    font-weight:700;
+    color:#111827;
+    margin:0;
+}
+
+.dept-actions{
+    display:flex;
+    gap:6px;
+}
+
+.dept-actions button{
+    width:30px;
+    height:30px;
+    border-radius:8px;
+    border:1px solid #e2e8f0;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#64748b;
+    font-size:13px;
+}
+
+.dept-actions button:hover{
+    background:#f1f5f9;
+}
+
+.dept-actions .power-on{
+    color:#16a34a;
+    border-color:#bbf7d0;
+}
+
+.dept-actions .power-off{
+    color:#dc2626;
+    border-color:#fecaca;
+}
+
+.dept-description{
+    font-size:13px;
+    color:#64748b;
+    margin-bottom:16px;
+    min-height:36px;
+}
+
+.dept-sla-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.dept-sla{
+    flex:1;
+    min-width:60px;
+    background:#f8fafc;
+    border:1px solid #eef2f7;
+    border-radius:10px;
+    text-align:center;
+    padding:6px 4px;
+}
+
+.dept-sla-label{
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.03em;
+    color:#94a3b8;
+    display:block;
+}
+
+.dept-sla-value{
+    font-size:13px;
+    font-weight:700;
+    color:#334155;
+}
+
+.dept-inactive-badge{
+    display:inline-block;
+    background:#fee2e2;
+    color:#dc2626;
+    font-size:11px;
+    font-weight:600;
+    padding:3px 10px;
+    border-radius:20px;
+    margin-bottom:10px;
+}
+
+/* Icon color cycle - no color field, purely visual via position */
+
+.dept-col:nth-child(6n+1) .dept-icon{ background:#dbeafe; color:#2563eb; }
+.dept-col:nth-child(6n+2) .dept-icon{ background:#ede9fe; color:#7c3aed; }
+.dept-col:nth-child(6n+3) .dept-icon{ background:#fce7f3; color:#db2777; }
+.dept-col:nth-child(6n+4) .dept-icon{ background:#dcfce7; color:#16a34a; }
+.dept-col:nth-child(6n+5) .dept-icon{ background:#ffedd5; color:#ea580c; }
+.dept-col:nth-child(6n+6) .dept-icon{ background:#f1f5f9; color:#475569; }
+
+/* Empty */
+
+.empty-state{
+    text-align:center;
+    padding:60px 20px;
+}
+
+.empty-state i{
+    font-size:54px;
+    color:#cbd5e1;
+    margin-bottom:16px;
+    display:block;
+}
+
+.empty-state h5{
+    color:#334155;
+    margin-bottom:8px;
+}
+
+.empty-state p{
+    color:#94a3b8;
+    margin:0;
+}
+
+/* Modal */
+
+.dept-modal-content{
+    border:none;
+    border-radius:18px;
+}
+
+.dept-modal-header{
+    border-bottom:1px solid #edf2f7;
+    padding:20px 24px 16px;
+}
+
+.dept-modal-header .modal-title{
+    font-size:18px;
     font-weight:700;
     color:#111827;
 }
 
-.department-count{
-    background:#2563eb;
-    color:#fff;
-    padding:5px 12px;
-    border-radius:18px;
-    font-size:11px;
+.dept-modal-body{
+    padding:20px 24px 6px;
+}
+
+.dept-modal-body .form-label{
+    font-size:13px;
     font-weight:600;
+    color:#334155;
+    margin-bottom:6px;
 }
 
-.add-btn{
-    height:30px;
-    border-radius:7px;
-    font-size:11px;
-    font-weight:600;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+.dept-modal-body .form-control{
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+    font-size:14px;
 }
 
-.table{
-    margin-bottom:0;
-    font-size:11px;
+.dept-modal-body .form-control:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.12);
 }
 
-.table thead th{
-    background:#f8fafc;
-    color:#64748b;
-    border-bottom:2px solid #e5e7eb;
-    font-size:11px;
+.dept-sla-section-label{
+    font-size:12px;
     font-weight:700;
-    padding:10px 12px;
-}
-
-.table tbody td{
-    padding:10px 12px;
-    vertical-align:middle;
-}
-
-.table tbody tr:hover{
-    background:#f8fbff;
-}
-
-.action-btn{
-    height:28px;
-    min-width:60px;
-    border-radius:7px;
-    font-size:10px;
-    font-weight:600;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    margin-right:4px;
-}
-
-.empty-row{
-    text-align:center;
+    letter-spacing:.04em;
+    text-transform:uppercase;
     color:#94a3b8;
-    padding:40px;
+    margin:18px 0 4px;
 }
 
+.dept-sla-hint{
+    font-size:11px;
+    color:#94a3b8;
+    margin-bottom:14px;
+}
 
-    /* ===================================================
-            DEPARTMENT PAGE DARK MODE
+.dept-modal-footer{
+    border-top:1px solid #edf2f7;
+    padding:16px 24px 20px;
+}
+
+.dept-modal-footer .btn{
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    padding:8px 18px;
+}
+
+/* Responsive */
+
+@media(max-width:992px){
+    .page-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+
+/* ===================================================
+                DARK MODE
 ===================================================*/
 
-body.dark-mode .department-card{
+body.dark-mode .page-title{ color:#f8fafc; }
+body.dark-mode .page-subtitle{ color:#94a3b8; }
 
-    background:#1e293b !important;
-    border:1px solid #334155 !important;
-    box-shadow:none;
-
+body.dark-mode .dept-card{
+    background:#1e293b;
+    border-color:#334155;
 }
 
-body.dark-mode .department-header{
+body.dark-mode .dept-name{ color:#f8fafc; }
+body.dark-mode .dept-description{ color:#94a3b8; }
 
-    background:#111827 !important;
-    border-bottom:1px solid #334155 !important;
-
+body.dark-mode .dept-actions button{
+    background:#0f172a;
+    border-color:#334155;
+    color:#94a3b8;
 }
 
-body.dark-mode .department-title{
-
-    color:#f8fafc !important;
-
+body.dark-mode .dept-sla{
+    background:#0f172a;
+    border-color:#334155;
 }
 
-body.dark-mode .department-count{
+body.dark-mode .dept-sla-value{ color:#e2e8f0; }
 
-    background:#2563eb !important;
-    color:#fff !important;
+body.dark-mode .dept-modal-content{ background:#1e293b; }
+body.dark-mode .dept-modal-header{ border-bottom-color:#334155; }
+body.dark-mode .dept-modal-header .modal-title{ color:#f8fafc; }
+body.dark-mode .dept-modal-footer{ border-top-color:#334155; }
 
+body.dark-mode .dept-modal-body .form-label{ color:#e2e8f0; }
+
+body.dark-mode .dept-modal-body .form-control{
+    background:#0f172a;
+    border-color:#334155;
+    color:#f8fafc;
 }
 
-/* ================= TABLE ================= */
+body.dark-mode .empty-state h5{ color:#fff; }
+body.dark-mode .empty-state p{ color:#94a3b8; }
+body.dark-mode .empty-state i{ color:#475569; }
 
-body.dark-mode .table{
-
-    color:#e5e7eb !important;
-
-}
-
-body.dark-mode .table thead th{
-
-    background:#111827 !important;
-    color:#f8fafc !important;
-    border-color:#334155 !important;
-
-}
-
-body.dark-mode .table > :not(caption) > * > *{
-
-    background:#1e293b !important;
-    color:#e5e7eb !important;
-    border-color:#334155 !important;
-
-}
-
-body.dark-mode .table tbody tr:hover td{
-
-    background:#273449 !important;
-
-}
-
-/* ================= TEXT ================= */
-
-body.dark-mode .table strong{
-
-    color:#f8fafc !important;
-
-}
-
-body.dark-mode .table td{
-
-    color:#e5e7eb !important;
-
-}
-
-/* ================= BUTTONS ================= */
-
-body.dark-mode .add-btn{
-
-    background:#16a34a !important;
-    border-color:#16a34a !important;
-    color:#fff !important;
-
-}
-
-body.dark-mode .add-btn:hover{
-
-    background:#15803d !important;
-    border-color:#15803d !important;
-
-}
-
-body.dark-mode .action-btn.btn-primary{
-
-    background:#2563eb !important;
-    border-color:#2563eb !important;
-    color:#fff !important;
-
-}
-
-body.dark-mode .action-btn.btn-primary:hover{
-
-    background:#1d4ed8 !important;
-    border-color:#1d4ed8 !important;
-
-}
-
-body.dark-mode .action-btn.btn-danger{
-
-    background:#dc2626 !important;
-    border-color:#dc2626 !important;
-    color:#fff !important;
-
-}
-
-body.dark-mode .action-btn.btn-danger:hover{
-
-    background:#b91c1c !important;
-    border-color:#b91c1c !important;
-
-}
-
-/* ================= EMPTY ================= */
-
-body.dark-mode .empty-row{
-
-    color:#94a3b8 !important;
-
-}
-
-body.dark-mode .empty-row i{
-
-    color:#64748b !important;
-
+body.dark-mode .btn-close{
+    filter:invert(1) grayscale(100%) brightness(200%);
 }
 
 </style>
 
-<div class="department-card">
+<div class="dept-page">
 
-    <div class="department-header">
+    <!-- Header -->
 
-        <h5 class="department-title">
+    <div class="page-header">
 
-            Departments
+        <div>
+            <h2 class="page-title">Departments</h2>
+            <p class="page-subtitle">Manage support departments and SLA rules</p>
+        </div>
 
-        </h5>
-
-        <div class="d-flex align-items-center gap-2">
-
-            <span class="department-count">
-
-                {{ departments.count }} Department{{ departments.count|pluralize }}
-
-            </span>
-
-            <a href="{% url 'add_department' %}"
-               class="btn btn-success add-btn">
-
-                <i class="bi bi-plus-lg me-1"></i>
-
+        <div>
+            <button type="button" class="btn btn-primary add-btn"
+                    data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
+                <i class="bi bi-plus-lg me-2"></i>
                 Add Department
-
-            </a>
-
+            </button>
         </div>
 
     </div>
 
-    <div class="table-responsive">
+    <!-- Alerts -->
 
-        <table class="table table-sm align-middle">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
 
-            <thead>
+    <!-- Grid -->
 
-                <tr>
+    <div class="row g-3">
 
-                    <th width="25%">Department</th>
+        {% for department in departments %}
 
-                    <th>Description</th>
+            <div class="col-xl-4 col-md-6 dept-col">
 
-                    <th class="text-center" width="170">Action</th>
+                <div class="dept-card">
 
-                </tr>
+                    <div class="dept-card-top">
 
-            </thead>
+                        <div class="dept-icon-name">
+                            <div class="dept-icon">
+                                <i class="bi bi-building"></i>
+                            </div>
+                            <h5 class="dept-name">{{ department.name }}</h5>
+                        </div>
 
-            <tbody>
+                        <div class="dept-actions">
 
-            {% for department in departments %}
+                            <button type="button" title="Edit"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editDepartmentModal{{ department.id }}">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
 
-                <tr>
-
-                    <td>
-
-                        <strong>
-
-                            {{ department.name }}
-
-                        </strong>
-
-                    </td>
-
-                    <td>
-
-                        {{ department.description|default:"-" }}
-
-                    </td>
-
-                    <td class="text-center">
-
-                        <a href="{% url 'edit_department' department.id %}"
-                           class="btn btn-primary action-btn">
-
-                            <i class="bi bi-pencil-square"></i>
-
-                            Edit
-
-                        </a>
-
-                        <a href="{% url 'delete_department' department.id %}"
-                           class="btn btn-danger action-btn">
-
-                            <i class="bi bi-trash"></i>
-
-                            Delete
-
-                        </a>
-
-                    </td>
-
-                </tr>
-
-            {% empty %}
-
-                <tr>
-
-                    <td colspan="3">
-
-                        <div class="empty-row">
-
-                            <i class="bi bi-building fs-2"></i>
-
-                            <br><br>
-
-                            No Departments Found
+                            <form method="post" action="{% url 'toggle_department' department.id %}">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        title="{% if department.is_active %}Deactivate{% else %}Activate{% endif %}"
+                                        class="{% if department.is_active %}power-on{% else %}power-off{% endif %}">
+                                    <i class="bi bi-power"></i>
+                                </button>
+                            </form>
 
                         </div>
 
-                    </td>
+                    </div>
 
-                </tr>
+                    {% if not department.is_active %}
+                        <span class="dept-inactive-badge">Inactive</span>
+                    {% endif %}
 
-            {% endfor %}
+                    <p class="dept-description">
+                        {{ department.description|default:"No description added." }}
+                    </p>
 
-            </tbody>
+                    <div class="dept-sla-row">
 
-        </table>
+                        <div class="dept-sla">
+                            <span class="dept-sla-label">CRIT</span>
+                            <span class="dept-sla-value">{{ department.sla_critical }}h</span>
+                        </div>
+
+                        <div class="dept-sla">
+                            <span class="dept-sla-label">HIGH</span>
+                            <span class="dept-sla-value">{{ department.sla_high }}h</span>
+                        </div>
+
+                        <div class="dept-sla">
+                            <span class="dept-sla-label">MEDI</span>
+                            <span class="dept-sla-value">{{ department.sla_medium }}h</span>
+                        </div>
+
+                        <div class="dept-sla">
+                            <span class="dept-sla-label">LOW</span>
+                            <span class="dept-sla-value">{{ department.sla_low }}h</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Edit Department Modal (one per card) -->
+
+            <div class="modal fade" id="editDepartmentModal{{ department.id }}" tabindex="-1" aria-hidden="true">
+
+                <div class="modal-dialog modal-dialog-centered">
+
+                    <div class="modal-content dept-modal-content">
+
+                        <div class="modal-header dept-modal-header">
+                            <h5 class="modal-title">Edit Department</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <form method="post" action="{% url 'edit_department' department.id %}">
+                            {% csrf_token %}
+
+                            <div class="modal-body dept-modal-body">
+
+                                <div class="mb-3">
+                                    <label class="form-label">Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="name" class="form-control"
+                                           value="{{ department.name }}" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Description</label>
+                                    <textarea name="description" class="form-control" rows="3">{{ department.description }}</textarea>
+                                </div>
+
+                                <div class="dept-sla-section-label">SLA Hours by Priority</div>
+                                <div class="dept-sla-hint">Hours until SLA deadline</div>
+
+                                <div class="row g-2">
+
+                                    <div class="col-3">
+                                        <label class="form-label">Critical</label>
+                                        <input type="number" min="1" name="sla_critical" class="form-control"
+                                               value="{{ department.sla_critical }}">
+                                    </div>
+
+                                    <div class="col-3">
+                                        <label class="form-label">High</label>
+                                        <input type="number" min="1" name="sla_high" class="form-control"
+                                               value="{{ department.sla_high }}">
+                                    </div>
+
+                                    <div class="col-3">
+                                        <label class="form-label">Medium</label>
+                                        <input type="number" min="1" name="sla_medium" class="form-control"
+                                               value="{{ department.sla_medium }}">
+                                    </div>
+
+                                    <div class="col-3">
+                                        <label class="form-label">Low</label>
+                                        <input type="number" min="1" name="sla_low" class="form-control"
+                                               value="{{ department.sla_low }}">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer dept-modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <div class="col-12">
+                <div class="empty-state">
+                    <i class="bi bi-building"></i>
+                    <h5>No Departments Found</h5>
+                    <p>Click "Add Department" to create your first department.</p>
+                </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<!-- Add Department Modal -->
+
+<div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content dept-modal-content">
+
+            <div class="modal-header dept-modal-header">
+                <h5 class="modal-title">New Department</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form method="post" action="{% url 'add_department' %}">
+                {% csrf_token %}
+
+                <div class="modal-body dept-modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label">Name <span class="text-danger">*</span></label>
+                        <input type="text" name="name" class="form-control"
+                               placeholder="e.g. IT Support" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" rows="3"
+                                  placeholder="Brief description..."></textarea>
+                    </div>
+
+                    <div class="dept-sla-section-label">SLA Hours by Priority</div>
+                    <div class="dept-sla-hint">Hours until SLA deadline</div>
+
+                    <div class="row g-2">
+
+                        <div class="col-3">
+                            <label class="form-label">Critical</label>
+                            <input type="number" min="1" name="sla_critical" class="form-control" value="2">
+                        </div>
+
+                        <div class="col-3">
+                            <label class="form-label">High</label>
+                            <input type="number" min="1" name="sla_high" class="form-control" value="8">
+                        </div>
+
+                        <div class="col-3">
+                            <label class="form-label">Medium</label>
+                            <input type="number" min="1" name="sla_medium" class="form-control" value="24">
+                        </div>
+
+                        <div class="col-3">
+                            <label class="form-label">Low</label>
+                            <input type="number" min="1" name="sla_low" class="form-control" value="72">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer dept-modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+
+            </form>
+
+        </div>
 
     </div>
 

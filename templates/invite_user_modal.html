@@ -1,0 +1,427 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Invite User
+{% endblock %}
+
+{% block content %}
+<style>
+  /* ===========================
+INVITE USER MODAL
+===========================*/
+
+.invite-modal{
+
+    border:none;
+    border-radius:18px;
+    overflow:hidden;
+}
+
+.modal-header{
+
+    padding:28px 30px 10px;
+}
+
+.modal-title{
+
+    font-size:28px;
+    font-weight:700;
+    margin:0;
+}
+
+.modal-subtitle{
+
+    margin-top:6px;
+    color:#64748b;
+    font-size:15px;
+}
+
+.modal-body{
+
+    padding:0 30px 25px;
+}
+
+.section-title{
+
+    font-size:13px;
+    letter-spacing:1px;
+    color:#64748b;
+    margin:25px 0 14px;
+    font-weight:700;
+}
+
+label{
+
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:7px;
+    color:#334155;
+}
+
+label span{
+
+    color:#ef4444;
+}
+
+.form-control,
+.form-select{
+
+    height:50px;
+    border-radius:12px;
+    border:1px solid #dbe2ea;
+    font-size:15px;
+    padding:12px 15px;
+    box-shadow:none;
+}
+
+textarea.form-control{
+
+    min-height:95px;
+    resize:none;
+}
+
+.form-control:focus,
+.form-select:focus{
+
+    border-color:#2563eb;
+    box-shadow:0 0 0 .15rem rgba(37,99,235,.15);
+}
+
+.invite-switch{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:14px;
+
+    padding:18px 18px;
+
+    margin-top:10px;
+}
+
+.invite-switch i{
+
+    font-size:24px;
+    color:#2563eb;
+}
+
+.switch-title{
+
+    font-weight:600;
+    color:#111827;
+}
+
+.invite-switch small{
+
+    color:#64748b;
+}
+
+.form-check-input{
+
+    width:46px;
+    height:24px;
+}
+
+.modal-footer{
+
+    padding:18px 30px 28px;
+}
+
+.modal-footer .btn{
+
+    height:46px;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:600;
+}
+
+.btn-primary{
+
+    background:#2563eb;
+    border:none;
+}
+
+.btn-primary:hover{
+
+    background:#1d4ed8;
+}
+
+/* ===========================
+Dark Mode
+===========================*/
+
+body.dark-mode .invite-modal{
+
+    background:#1e293b;
+    color:#fff;
+}
+
+body.dark-mode .modal-subtitle{
+
+    color:#94a3b8;
+}
+
+body.dark-mode label{
+
+    color:#e2e8f0;
+}
+
+body.dark-mode .section-title{
+
+    color:#94a3b8;
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select{
+
+    background:#0f172a;
+    border:1px solid #334155;
+    color:#fff;
+}
+
+body.dark-mode .form-control::placeholder{
+
+    color:#64748b;
+}
+
+body.dark-mode .invite-switch{
+
+    background:#0f172a;
+    border-color:#334155;
+}
+
+body.dark-mode .switch-title{
+
+    color:#fff;
+}
+
+body.dark-mode .invite-switch small{
+
+    color:#94a3b8;
+}
+
+body.dark-mode .btn-light{
+
+    background:#334155;
+    color:#fff;
+    border:none;
+}
+
+body.dark-mode .btn-light:hover{
+
+    background:#475569;
+}
+</style>
+
+
+<div class="modal fade" id="inviteUserModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content invite-modal">
+
+            <!-- Header -->
+            <div class="modal-header border-0 pb-2">
+
+                <div>
+
+                    <h4 class="modal-title">
+                        <i class="bi bi-person-plus me-2 text-primary"></i>
+                        Invite User
+                    </h4>
+
+                    <p class="modal-subtitle">
+                        Send an email invitation or pre-provision access for a new team member.
+                    </p>
+
+                </div>
+
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+
+            </div>
+
+            <!-- Body -->
+
+            <div class="modal-body">
+
+                <h6 class="section-title">
+                    CONTACT DETAILS
+                </h6>
+
+                <div class="mb-3">
+
+                    <label>Email Address <span>*</span></label>
+
+                    <input
+                        type="email"
+                        class="form-control"
+                        placeholder="user@company.com">
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Full Name</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Jane Smith">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Phone</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="+91 9876543210">
+
+                    </div>
+
+                </div>
+
+                <h6 class="section-title mt-2">
+
+                    ROLE & ACCESS
+
+                </h6>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>System Role</label>
+
+                        <select class="form-select">
+
+                            <option>Admin</option>
+                            <option>Agent</option>
+                            <option>Employee</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Department</label>
+
+                        <select class="form-select">
+
+                            <option>No Department</option>
+                            <option>IT</option>
+                            <option>HR</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Designation</label>
+
+                        <input
+                            class="form-control"
+                            placeholder="IT Analyst">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Employee ID</label>
+
+                        <input
+                            class="form-control"
+                            placeholder="EMP-001">
+
+                    </div>
+
+                </div>
+
+                <div class="mb-4">
+
+                    <label>Personal Message (Optional)</label>
+
+                    <textarea
+                        rows="4"
+                        class="form-control"
+                        placeholder="Add a personal note to include in the invite email..."></textarea>
+
+                </div>
+
+                <!-- Switch -->
+
+                <div class="invite-switch">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <i class="bi bi-envelope"></i>
+
+                        <div>
+
+                            <div class="switch-title">
+
+                                Send Invite Email
+
+                            </div>
+
+                            <small>
+
+                                User receives an email with sign-in link
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-check form-switch">
+
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            checked>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+
+            <div class="modal-footer border-0">
+
+                <button
+                    class="btn btn-light"
+                    data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+                <button class="btn btn-primary px-4">
+
+                    <i class="bi bi-send me-2"></i>
+
+                    Send Invite
+
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

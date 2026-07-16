@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Users
+User Management
 {% endblock %}
 
 {% block page_title %}
-Users
+User Management
 {% endblock %}
 
 {% block content %}
@@ -13,39 +13,223 @@ Users
 <style>
 
 /* ===================================================
-                    USERS PAGE
+                USER MANAGEMENT PAGE
 ===================================================*/
 
-.users-card{
-    border:none;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 2px 10px rgba(15,23,42,.06);
+.user-management{
+    animation:fadeIn .25s ease;
 }
 
-.users-header{
-    padding:14px 18px;
-    background:#fff;
-    border-bottom:1px solid #eef2f7;
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+/* Header */
+
+.page-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    margin-bottom:15px;
+    flex-wrap:wrap;
+    gap:16px;
 }
 
-.users-title{
+.page-title{
+    font-size:24px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:2px;
+}
+
+.page-subtitle{
+    color:#64748b;
+    font-size:12px;
     margin:0;
-    font-size:16px;
-    font-weight:600;
-    color:#1e293b;
 }
 
-.user-count{
+.invite-btn{
+    height:34px;
+    border-radius:12px;
+    font-size:14px;
+    font-weight:600;
+    align-items:center;
+    justify-content:center;
+}
+
+/* ===========================
+Summary Cards
+===========================*/
+
+.summary-card{
+    background:#fff;
+    border-radius:16px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    border:1px solid #edf2f7;
+    transition:.25s;
+    height:80%;
+}
+
+.summary-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 30px rgba(15,23,42,.08);
+}
+
+.summary-icon{
+    width:54px;
+    height:54px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+}
+
+.summary-card h3{
+    margin:0;
+    font-size:30px;
+    font-weight:700;
+}
+
+.summary-card span{
+    font-size:14px;
+    color:#64748b;
+}
+
+.summary-blue .summary-icon{
+    background:#dbeafe;
+    color:#2563eb;
+}
+
+.summary-green .summary-icon{
+    background:#dcfce7;
+    color:#16a34a;
+}
+
+.summary-gray .summary-icon{
+    background:#f1f5f9;
+    color:#64748b;
+}
+
+.summary-orange .summary-icon{
+    background:#fff7ed;
+    color:#ea580c;
+}
+
+/* ===========================
+Tabs
+===========================*/
+
+.tabs-wrapper{
+    display:flex;
+    gap:12px;
+    margin-bottom:22px;
+}
+
+.tab{
+    text-decoration:none;
+    padding:04px 10px;
+    border-radius:10px;
+    color:#475569;
+    background:#fff;
+    border:1px solid #e2e8f0;
+    font-weight:400;
+    transition:.2s;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:15px;
+}
+
+.tab span{
+    background:#eff6ff;
+    color:#2563eb;
+    border-radius:30px;
+    padding:2px 06px;
+    font-size:11px;
+}
+
+.tab:hover{
+    color:#2563eb;
+}
+
+.tab.active{
     background:#2563eb;
     color:#fff;
-    padding:4px 12px;
-    border-radius:18px;
-    font-size:11px;
-    font-weight:600;
+    border-color:#2563eb;
+}
+
+.tab.active span{
+    background:#fff;
+    color:#2563eb;
+}
+
+/* ===========================
+Search
+===========================*/
+
+.filter-card{
+    background:#fff;
+    border-radius:16px;
+    padding:08px;
+    margin-bottom:24px;
+    border:1px solid #edf2f7;
+}
+
+filter-search-box{
+    position:relative;
+    padding-left:18px;
+    width:100%;
+
+}
+
+filter-search-box i{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#94a3b8;
+    z-index:5;
+    padding-left:18px;
+
+}
+
+filter-search-box input{
+    height:32px;
+    padding-left:42px;
+    border-radius:10px;
+    width:100%;
+    min-width:100%;
+}
+
+.filter-card .form-select{
+    height:42px;
+    border-radius:10px;
+    font-size:14px;
+    text-align:center;
+    text-align-last:center;     /* All Roles center */
+    cursor:pointer;
+}
+
+/* ===========================
+Table
+===========================*/
+
+.table-card{
+    background:#fff;
+    border-radius:16px;
+    overflow:hidden;
+    border:1px solid #edf2f7;
 }
 
 .table{
@@ -53,108 +237,82 @@ Users
 }
 
 .table thead th{
-
     background:#f8fafc;
+    border-bottom:2px solid #e5e7eb;
     color:#64748b;
-    border-bottom:1px solid #e5e7eb;
-    font-size:12px;
-    font-weight:600;
-    padding:11px 14px;
-    white-space:nowrap;
-
+    font-size:13px;
+    font-weight:700;
+    padding:16px;
 }
 
 .table tbody td{
-
-    padding:11px 14px;
+    padding:16px;
     vertical-align:middle;
-    font-size:12px;
-    color:#475569;
-
+    font-size:14px;
 }
 
 .table tbody tr{
-
     transition:.2s;
-
 }
 
 .table tbody tr:hover{
-
     background:#f8fbff;
-
 }
 
-/* User */
+/* Avatar */
 
 .user-info{
-
     display:flex;
     align-items:center;
-
+    gap:12px;
 }
 
-.user-avatar{
-
-    width:34px;
-    height:34px;
+.avatar{
+    width:42px;
+    height:42px;
     border-radius:50%;
     background:#2563eb;
     color:#fff;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:13px;
-    font-weight:600;
-    margin-right:10px;
-
+    font-weight:700;
+    font-size:15px;
+    flex-shrink:0;
 }
 
 .user-name{
-
-    font-size:12px;
+    font-size:14px;
     font-weight:600;
-    color:#334155;
-
+    color:#111827;
 }
 
 .user-id{
-
-    font-size:10px;
-    color:#94a3b8;
-    margin-top:2px;
-
-}
-
-.table tbody td:nth-child(2){
-
-    color:#64748b;
     font-size:12px;
-
+    color:#94a3b8;
 }
 
-/* Role */
+/* ===========================
+Badges
+===========================*/
 
-.role-badge{
-
-    padding:4px 10px;
+.role{
+    display:inline-block;
+    padding:6px 12px;
     border-radius:20px;
-    font-size:10px;
+    font-size:12px;
     font-weight:600;
+}
 
+.role-super_admin{
+    background:#fee2e2;
+    color:#dc2626;
 }
 
 .role-admin{
 
     background:#dbeafe;
     color:#2563eb;
-
-}
-
-.role-super{
-
-    background:#fee2e2;
-    color:#dc2626;
 
 }
 
@@ -172,47 +330,88 @@ Users
 
 }
 
-/* Button */
+/* Status */
 
-.edit-btn{
+.status{
 
-    height:30px;
-    min-width:70px;
-    border-radius:7px;
-    font-size:11px;
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
     font-weight:600;
-    padding:0 12px;
-
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:5px;
 
 }
 
-.empty-users{
+.status.active{
 
-    padding:55px;
+    background:#dcfce7;
+    color:#15803d;
+
+}
+
+.status.inactive{
+
+    background:#f3f4f6;
+    color:#64748b;
+
+}
+
+/* Buttons */
+
+.btn-outline-primary{
+
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+
+}
+
+/* Empty */
+
+.empty-state{
+
     text-align:center;
-    color:#94a3b8;
+    padding:60px 20px;
 
 }
 
-.empty-users i{
+.empty-state i{
 
-    font-size:40px;
+    font-size:54px;
+    color:#cbd5e1;
+    margin-bottom:16px;
     display:block;
-    margin-bottom:10px;
 
 }
 
-@media(max-width:768px){
+.empty-state h5{
 
-.users-header{
+    color:#334155;
+    margin-bottom:8px;
+
+}
+
+.empty-state p{
+
+    color:#94a3b8;
+    margin:0;
+
+}
+
+/* Responsive */
+
+@media(max-width:992px){
+
+.page-header{
 
 flex-direction:column;
 align-items:flex-start;
-gap:10px;
+
+}
+
+.tabs-wrapper{
+
+flex-wrap:wrap;
 
 }
 
@@ -221,307 +420,634 @@ gap:10px;
 
 
 /* ===================================================
-                USERS PAGE DARK MODE
+                USER MANAGEMENT DARK THEME
 ===================================================*/
 
-body.dark-mode .users-card{
+/* ===================================================
+                USER MANAGEMENT DARK THEME
+===================================================*/
 
-    background:#1e293b !important;
-    border:1px solid #334155 !important;
-    box-shadow:none;
-
+body.dark-mode .page-title{
+    color:#f8fafc;
 }
 
-body.dark-mode .users-header{
-
-    background:#111827 !important;
-    border-bottom:1px solid #334155 !important;
-
+body.dark-mode .page-subtitle{
+    color:#94a3b8;
 }
 
-body.dark-mode .users-title{
+/* =======================
+Summary Cards
+=======================*/
 
-    color:#f8fafc !important;
-
+body.dark-mode .summary-card{
+    background:#1e293b;
+    border:1px solid #334155;
 }
 
-body.dark-mode .user-count{
-
-    background:#2563eb !important;
-    color:#fff !important;
-
+body.dark-mode .summary-card h3{
+    color:#fff;
 }
 
-/* ================= TABLE ================= */
+body.dark-mode .summary-card span{
+    color:#94a3b8;
+}
+
+/* =======================
+Tabs
+=======================*/
+
+body.dark-mode .tab{
+    background:#1e293b;
+    border:1px solid #334155;
+    color:#e2e8f0;
+}
+
+body.dark-mode .tab.active{
+    background:#2563eb;
+    color:#fff;
+    border-color:#2563eb;
+}
+
+body.dark-mode .tab span{
+    background:#334155;
+    color:#fff;
+}
+
+/* =======================
+Filter Card
+=======================*/
+
+body.dark-mode .filter-card{
+    background:#1e293b;
+    border:1px solid #334155;
+}
+
+body.dark-mode .search-box input{
+    background:#0f172a;
+    color:#fff;
+    border:1px solid #334155;
+}
+
+body.dark-mode .search-box input::placeholder{
+    color:#94a3b8;
+}
+
+body.dark-mode .search-box i{
+    color:#94a3b8;
+}
+
+body.dark-mode .form-select{
+    background:#0f172a;
+    color:#fff;
+    border:1px solid #334155;
+}
+
+body.dark-mode .btn-primary{
+    background:#2563eb;
+    border:none;
+}
+
+/* =======================
+Table Card
+=======================*/
+
+body.dark-mode .table-card{
+    background:#1e293b;
+    border:1px solid #334155;
+}
+
+/* Bootstrap table override */
 
 body.dark-mode .table{
+    color:#fff;
+    margin-bottom:0;
+}
 
-    color:#e5e7eb !important;
-
+body.dark-mode .table>:not(caption)>*>*{
+    background:#1e293b !important;
+    color:#fff !important;
+    border-color:#334155 !important;
 }
 
 body.dark-mode .table thead th{
-
-    background:#111827 !important;
-    color:#f8fafc !important;
-    border-color:#334155 !important;
-
+    background:#273549 !important;
+    color:#cbd5e1 !important;
 }
 
-body.dark-mode .table > :not(caption) > * > *{
-
+body.dark-mode .table tbody tr{
     background:#1e293b !important;
-    color:#e5e7eb !important;
-    border-color:#334155 !important;
-
 }
 
-body.dark-mode .table tbody tr:hover td{
-
-    background:#273449 !important;
-
+body.dark-mode .table tbody tr:hover{
+    background:#273549 !important;
 }
 
-/* ================= USER ================= */
+body.dark-mode .table tbody td{
+    color:#fff !important;
+}
+
+/* =======================
+User Info
+=======================*/
+
+body.dark-mode .avatar{
+    background:#2563eb;
+    color:#fff;
+}
 
 body.dark-mode .user-name{
-
-    color:#f8fafc !important;
-
+    color:#fff;
 }
 
 body.dark-mode .user-id{
-
-    color:#94a3b8 !important;
-
+    color:#94a3b8;
 }
 
-body.dark-mode .user-avatar{
+/* =======================
+Badges
+=======================*/
 
-    background:#2563eb !important;
-    color:#fff !important;
-
-}
-
-/* ================= ROLE BADGES ================= */
-
-body.dark-mode .role-super{
-
-    background:#7f1d1d !important;
-    color:#fecaca !important;
-
+body.dark-mode .role-super_admin{
+    background:#7f1d1d;
+    color:#fecaca;
 }
 
 body.dark-mode .role-admin{
-
-    background:#1e3a8a !important;
-    color:#bfdbfe !important;
-
+    background:#1e40af;
+    color:#dbeafe;
 }
 
 body.dark-mode .role-agent{
-
-    background:#14532d !important;
-    color:#bbf7d0 !important;
-
+    background:#14532d;
+    color:#bbf7d0;
 }
 
 body.dark-mode .role-employee{
-
-    background:#374151 !important;
-    color:#e5e7eb !important;
-
+    background:#334155;
+    color:#e2e8f0;
 }
 
-/* ================= BUTTON ================= */
-
-body.dark-mode .edit-btn{
-
-    background:#2563eb !important;
-    border-color:#2563eb !important;
-    color:#fff !important;
-
+body.dark-mode .status.active{
+    background:#14532d;
+    color:#bbf7d0;
 }
 
-body.dark-mode .edit-btn:hover{
-
-    background:#1d4ed8 !important;
-    border-color:#1d4ed8 !important;
-
+body.dark-mode .status.inactive{
+    background:#334155;
+    color:#e2e8f0;
 }
 
-/* ================= EMPTY ================= */
+/* =======================
+Manage Button
+=======================*/
 
-body.dark-mode .empty-users{
-
-    color:#94a3b8 !important;
-
+body.dark-mode .btn-outline-primary{
+    color:#60a5fa;
+    border-color:#3b82f6;
 }
 
-body.dark-mode .empty-users h5{
-
-    color:#f8fafc !important;
-
+body.dark-mode .btn-outline-primary:hover{
+    background:#2563eb;
+    color:#fff;
 }
 
+/* =======================
+Empty State
+=======================*/
+
+body.dark-mode .empty-state h5{
+    color:#fff;
+}
+
+body.dark-mode .empty-state p{
+    color:#94a3b8;
+}
+
+body.dark-mode .empty-state i{
+    color:#64748b;
+}
 </style>
 
-<div class="card users-card">
+<div class="user-management">
 
-    <div class="users-header">
+    <!-- Header -->
 
-        <h5 class="users-title">
-            Users
-        </h5>
+    <div class="page-header">
 
-        <span class="user-count">
-            {{ users.count }} User{{ users.count|pluralize }}
-        </span>
+        <div>
+
+            <h2 class="page-title">
+
+                User Management
+
+            </h2>
+
+            <p class="page-subtitle">
+
+                Manage users, roles, permissions and invitations.
+
+            </p>
+
+        </div>
+
+        <div>
+
+            <a href="{% url 'invite_user' %}" class="btn btn-primary invite-btn">
+
+                <i class="bi bi-person-plus me-2"></i>
+
+                Invite User
+
+            </a>
+
+        </div>
 
     </div>
 
-    <div class="table-responsive">
+    <!-- Summary Cards -->
 
-        <table class="table table-sm align-middle">
+    <div class="row g-3 mb-4">
 
-            <thead>
+        <div class="col-xl-3 col-md-6">
 
-                <tr>
+            <div class="summary-card summary-blue">
 
-                    <th>User</th>
+                <div class="summary-icon">
 
-                    <th>Email</th>
+                    <i class="bi bi-people"></i>
 
-                    <th>Role</th>
+                </div>
 
-                    <th width="110">
-                        Action
-                    </th>
+                <div>
 
-                </tr>
+                    <h3>
 
-            </thead>
+                        {{ users.count }}
 
-            <tbody>
+                    </h3>
 
-            {% for user in users %}
+                    <span>Total Users</span>
 
-                <tr>
+                </div>
 
-                    <td>
+            </div>
 
-                        <div class="user-info">
+        </div>
 
-                            <div class="user-avatar">
+        <div class="col-xl-3 col-md-6">
 
-                                {% if user.first_name %}
-                                    {{ user.first_name|slice:":1"|upper }}
-                                {% else %}
-                                    {{ user.email|slice:":1"|upper }}
-                                {% endif %}
+            <div class="summary-card summary-green">
 
-                            </div>
+                <div class="summary-icon">
 
-                            <div>
+                    <i class="bi bi-person-check"></i>
 
-                                <div class="user-name">
+                </div>
+
+                <div>
+
+                    <h3>
+
+                        {{ active_users }}
+
+                    </h3>
+
+                    <span>Active</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="summary-card summary-gray">
+
+                <div class="summary-icon">
+
+                    <i class="bi bi-person-x"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+
+                        {{ inactive_users }}
+
+                    </h3>
+
+                    <span>Inactive</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="summary-card summary-orange">
+
+                <div class="summary-icon">
+
+                    <i class="bi bi-lock"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+
+                        {{ locked_users }}
+
+                    </h3>
+
+                    <span>Locked</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Tabs -->
+
+    <div class="tabs-wrapper">
+
+        <a href="{% url 'users_list' %}" class="tab active">
+
+            <i class="bi bi-people"></i>
+
+            Users
+
+            <span>
+
+                {{ users.count }}
+
+            </span>
+
+        </a>
+
+        <a href="{% url 'invitation_list' %}" class="tab">
+
+            <i class="bi bi-envelope"></i>
+
+            Invitations
+
+        </a>
+
+    </div>
+
+
+    <!-- Search -->
+
+    <div class="filter-card">
+
+        <form method="get">
+
+            <div class="row g-3 align-items-center">
+
+                <!-- Search -->
+
+                <div class="col-lg-6">
+                    <div class="filter-search-box">
+
+
+                        <input type="text" class="form-control" name="search"
+                            placeholder="Search by name, email..." value="{{ request.GET.search }}">
+
+                    </div>
+
+                </div>
+
+                <!-- Status -->
+
+                <div class="col-lg-2">
+
+                    <select class="form-select" name="status">
+
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Role -->
+
+                <div class="col-lg-2">
+
+                    <select class="form-select" name="role">
+
+                        <option value="">All Roles</option>
+                        <option value="ADMIN">Admin</option>
+                        <option value="AGENT">Agent</option>
+                        <option value="EMPLOYEE">Employee</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Button -->
+
+                <div class="col-lg-2">
+
+                    <button class="btn btn-primary w-100">
+
+                        <i class="bi bi-funnel me-1"></i>
+
+                        Apply
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- Table -->
+
+    <div class="table-card">
+
+        <div class="table-responsive">
+
+            <table class="table align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>User</th>
+
+                        <th>Email</th>
+
+                        <th>Role</th>
+
+                        <th>Status</th>
+
+                        <th width="130">
+
+                            Action
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for user in users %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="user-info">
+
+                                <div class="avatar">
 
                                     {% if user.first_name %}
 
-                                        {{ user.first_name }}
-                                        {{ user.last_name }}
+                                        {{ user.first_name|slice:":1"|upper }}
 
                                     {% else %}
 
-                                        -
+                                        {{ user.email|slice:":1"|upper }}
 
                                     {% endif %}
 
                                 </div>
 
-                                <div class="user-id">
+                                <div>
 
-                                    ID : {{ user.id }}
+                                    <div class="user-name">
+
+                                        {% if user.first_name %}
+
+                                            {{ user.first_name }}
+
+                                            {{ user.last_name }}
+
+                                        {% else %}
+
+                                            -
+
+                                        {% endif %}
+
+                                    </div>
+
+                                    <div class="user-id">
+
+                                        {{ user.username }}
+
+                                    </div>
 
                                 </div>
 
                             </div>
 
-                        </div>
+                        </td>
 
-                    </td>
+                        <td>
 
-                    <td>
+                            {{ user.email }}
 
-                        {{ user.email }}
+                        </td>
 
-                    </td>
+                        <td>
 
-                    <td>
+                            <span class="role role-{{ user.role|lower }}">
 
-                        <span class="role-badge
+                                {{ user.get_role_display }}
 
-                        {% if user.role == 'SUPER_ADMIN' %}
-                            role-super
-                        {% elif user.role == 'ADMIN' %}
-                            role-admin
-                        {% elif user.role == 'AGENT' %}
-                            role-agent
-                        {% else %}
-                            role-employee
-                        {% endif %}
+                            </span>
 
-                        ">
-                            {{ user.role }}
-                        </span>
+                        </td>
 
-                    </td>
+                        <td>
 
-                    <td>
+                            {% if user.is_active %}
 
-                        <a href="{% url 'edit_user' user.id %}"
+                                <span class="status active">
 
-                           class="btn btn-primary edit-btn">
+                                    Active
 
-                            <i class="bi bi-pencil-square me-1"></i>
+                                </span>
 
-                            Edit
+                            {% else %}
 
-                        </a>
+                                <span class="status inactive">
 
-                    </td>
+                                    Inactive
 
-                </tr>
+                                </span>
 
-            {% empty %}
+                            {% endif %}
 
-                <tr>
+                        </td>
 
-                    <td colspan="4">
+                        <td>
 
-                        <div class="empty-users">
+                            <a
+                               href="{% url 'edit_user' user.id %}"
+                               class="btn btn-sm btn-outline-primary">
 
-                            <i class="bi bi-people"></i>
+                                <i class="bi bi-three-dots"></i>
 
-                            <h6>No Users Found</h6>
+                                Manage
 
-                            <p class="mb-0">
+                            </a>
 
-                                No users available.
+                        </td>
 
-                            </p>
+                    </tr>
 
-                        </div>
+                {% empty %}
 
-                    </td>
+                    <tr>
 
-                </tr>
+                        <td colspan="5">
 
-            {% endfor %}
+                            <div class="empty-state">
 
-            </tbody>
+                                <i class="bi bi-people"></i>
 
-        </table>
+                                <h5>
+
+                                    No Users Found
+
+                                </h5>
+
+                                <p>
+
+                                    Users will appear here.
+
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
 

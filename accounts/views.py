@@ -2,6 +2,8 @@ from datetime import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from auditlogs.utils import log_activity
 from tickets.models import Ticket
 from .models import User
 from django.shortcuts import get_object_or_404
@@ -15,12 +17,62 @@ from .forms import ChangePasswordForm
 import re
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
+from .models import Invitation
+from .forms import InvitationForm
+from .utils import generate_username
+from .utils import send_invitation_email
+
+from django.db.models import Q
+
+
+
+from .forms import AcceptInvitationForm
+
 
 def login_view(request):
 
     if request.method == "POST":
+
         email = request.POST.get("email")
         password = request.POST.get("password")
+
+        user_obj = User.objects.filter(
+            email=email
+        ).first()
+
+        if not user_obj:
+
+            messages.error(
+                request,
+                "Invalid email or password."
+            )
+
+            return redirect("login")
+
+
+        # Account inactive
+
+        if not user_obj.is_active:
+
+            messages.error(
+                request,
+                "Your account is inactive. Please contact Administrator."
+            )
+
+            return redirect("login")
+
+
+        # Account locked
+
+        if user_obj.is_locked:
+
+            messages.error(
+                request,
+                "Your account has been locked. Please contact Administrator."
+            )
+
+            return redirect("login")
+
 
         user = authenticate(
             request,
@@ -28,11 +80,28 @@ def login_view(request):
             password=password
         )
 
-        if user is not None:
+        if user:
+
             login(request, user)
+
             return redirect("dashboard")
 
-    return render(request, "login.html")
+
+        messages.error(
+            request,
+            "Invalid email or password."
+        )
+
+        return redirect("login")
+
+
+    return render(
+        request,
+        "login.html",
+        {
+            "email": request.GET.get("email", "")
+        }
+    )
 
 
 @login_required
@@ -212,46 +281,179 @@ def logout_view(request):
     return redirect('login')
 
 
+from django.db.models import Q
+
+
 @login_required
 def users_list(request):
 
-    if request.user.role not in [
-        'ADMIN',
-        'SUPER_ADMIN'
-    ]:
-        return redirect('dashboard')
+    users = User.objects.all().order_by("first_name")
 
-    users = User.objects.all().order_by('first_name')
+    # Non-super-admins only ever see users from their own tenant.
+    # SUPER_ADMIN sees every tenant's users.
+    if request.user.role != 'SUPER_ADMIN':
+        users = users.filter(tenant=request.user.tenant)
+
+
+
+    # =======================
+    # Search
+    # =======================
+
+    search = request.GET.get("search")
+
+    if search:
+
+        users = users.filter(
+
+            Q(first_name__icontains=search) |
+
+            Q(last_name__icontains=search) |
+
+            Q(email__icontains=search) |
+
+            Q(username__icontains=search)
+
+        )
+
+    # =======================
+    # Role Filter
+    # =======================
+
+    role = request.GET.get("role")
+
+    if role:
+
+        users = users.filter(
+            role=role
+        )
+
+    # =======================
+    # Status Filter
+    # =======================
+
+    status = request.GET.get("status")
+
+    if status == "active":
+
+        users = users.filter(
+            is_active=True
+        )
+
+    elif status == "inactive":
+
+        users = users.filter(
+            is_active=False
+        )
+
+    # =======================
+    # Summary
+    # =======================
+
+    total_users = User.objects.count()
+
+    active_users = User.objects.filter(
+        is_active=True
+    ).count()
+
+    inactive_users = User.objects.filter(
+        is_active=False
+    ).count()
+
+    # Django me lock concept nahi hai
+    locked_users = 0
+
+    context = {
+
+        "users": users,
+
+        "total_users": total_users,
+
+        "active_users": active_users,
+
+        "inactive_users": inactive_users,
+
+        "locked_users": locked_users,
+
+    }
 
     return render(
-        request,
-        'users_list.html',
-        {
-            'users': users
-        }
-    )
 
+        request,
+
+        "users_list.html",
+
+        context
+
+    )
 
 @login_required
 def edit_user(request, user_id):
 
-    if request.user.role not in ['ADMIN', 'SUPER_ADMIN']:
-        return redirect('dashboard')
+    if request.user.role not in ["ADMIN", "SUPER_ADMIN"]:
+        return redirect("dashboard")
 
-    user = get_object_or_404(User, id=user_id)
+    user_obj = get_object_or_404(
+        User,
+        id=user_id
+    )
 
     if request.method == "POST":
-        role = request.POST.get("role")
-        user.role = role
-        user.save()
+        old_role = user_obj.role
+        # Role
+        user_obj.role = request.POST.get("role")
+
+        # Department
+        department_id = request.POST.get("department")
+
+        if department_id:
+            user_obj.department_id = department_id
+        else:
+            user_obj.department = None
+
+        # Active
+        user_obj.is_active = "is_active" in request.POST
+
+        # Locked
+        user_obj.is_locked = "is_locked" in request.POST
+
+        # Save
+        user_obj.save()
+
+        messages.success(
+            request,
+            "User updated successfully."
+        )
+
+        log_activity(
+            actor=request.user,
+            action="user.role_updated",
+            action_label="User role updated",
+            module="USERS",
+            target=user_obj.email,
+            severity="INFO",
+            before={"role": old_role},
+            after={"role": user_obj.role},
+        )
+
         return redirect("users_list")
 
+    context = {
+
+        "user_obj": user_obj,
+
+        "departments": Department.objects.all(),
+
+    }
+
     return render(
+
         request,
+
         "edit_user.html",
-        {
-            "user_obj": user
-        }
+
+        context,
+
     )
 
 
@@ -363,6 +565,15 @@ def change_password(request):
                     request.user
                 )
 
+                log_activity(
+                    actor=request.user,
+                    action="user.password_changed",
+                    action_label="Password changed",
+                    module="CONFIG",
+                    target=request.user.email,
+                    severity="WARNING",
+                )
+
                 messages.success(
                     request,
                     "Password changed successfully."
@@ -377,3 +588,400 @@ def change_password(request):
             "form": form
         }
     )
+
+
+
+
+
+@login_required
+def invitation_list(request):
+
+    invitations = Invitation.objects.all()
+
+    # Search
+    search = request.GET.get("search")
+
+    if search:
+
+        invitations = invitations.filter(
+
+            Q(first_name__icontains=search) |
+            Q(last_name__icontains=search) |
+            Q(email__icontains=search)
+
+        )
+
+    # Status Filter
+    status = request.GET.get("status")
+
+    if status:
+
+        invitations = invitations.filter(
+            status=status
+        )
+
+    invitations = invitations.order_by("-created_at")
+
+    context = {
+
+        "invitations": invitations,
+
+        "pending_count": Invitation.objects.filter(
+            status="PENDING"
+        ).count(),
+
+        "accepted_count": Invitation.objects.filter(
+            status="ACCEPTED"
+        ).count(),
+
+        "expired_count": Invitation.objects.filter(
+            status="EXPIRED"
+        ).count(),
+
+        "revoked_count": Invitation.objects.filter(
+            status="REVOKED"
+        ).count(),
+
+    }
+
+    return render(
+        request,
+        "invitation_list.html",
+        context
+    )
+
+@login_required
+def invite_user(request):
+
+    if request.method == "POST":
+
+        form = InvitationForm(request.POST)
+
+        if form.is_valid():
+            invitation = form.save(commit=False)
+
+            invitation.invited_by = request.user
+
+            invitation.save()
+
+            send_invitation_email(
+                invitation
+            )
+
+            log_activity(
+                actor=request.user,
+                action="invite.created",
+                action_label="Invite created",
+                module="INVITES",
+                target=invitation.email,
+                severity="INFO",
+                after={"role": invitation.role, "department": str(invitation.department)},
+            )
+
+            messages.success(
+                request,
+                "Invitation created successfully."
+            )
+
+            return redirect("invitation_list")
+
+    else:
+
+        form = InvitationForm()
+
+    return render(
+        request,
+        "invite_user.html",
+        {
+            "form": form
+        }
+    )
+
+
+
+def accept_invitation(request, token):
+
+    try:
+
+        invitation = Invitation.objects.get(
+            token=token
+        )
+
+    except Invitation.DoesNotExist:
+
+        messages.error(
+            request,
+            "Invalid invitation."
+        )
+
+        return redirect("login")
+
+    if invitation.status == "ACCEPTED":
+
+        messages.info(
+            request,
+            "This invitation has already been accepted. Please login."
+        )
+
+        return redirect("login")
+
+    elif invitation.status == "REVOKED":
+
+        messages.error(
+            request,
+            "This invitation has been revoked."
+        )
+
+        return redirect("login")
+
+    elif invitation.status == "EXPIRED":
+
+        messages.error(
+            request,
+            "This invitation has expired."
+        )
+
+        return redirect("login")
+
+
+    if timezone.now() > invitation.expires_at:
+
+        invitation.status = "EXPIRED"
+
+        invitation.save()
+
+        messages.error(
+
+            request,
+
+            "Your invitation has expired. Please contact your administrator."
+
+        )
+
+        return redirect("login")
+
+
+    form = AcceptInvitationForm()
+
+
+    if request.method == "POST":
+
+        form = AcceptInvitationForm(request.POST)
+
+        if form.is_valid():
+
+            password = form.cleaned_data["password"]
+
+            confirm = form.cleaned_data["confirm_password"]
+
+
+            if password != confirm:
+
+                messages.error(
+                    request,
+                    "Passwords do not match."
+                )
+
+
+            else:
+
+                # Check if account already exists
+
+                if User.objects.filter(
+
+                        email=invitation.email
+
+                ).exists():
+                    messages.error(
+
+                        request,
+
+                        "An account already exists with this email."
+
+                    )
+
+                    return redirect("login")
+
+                user = User.objects.create_user(
+
+                    username=generate_username(
+                        invitation.email
+                    ),
+
+                    email=invitation.email,
+
+                    password=password,
+
+                    first_name=invitation.first_name,
+
+                    last_name=invitation.last_name,
+
+                    role=invitation.role,
+
+                    department=invitation.department,
+
+                    is_active=True,
+
+                )
+
+                invitation.status = "ACCEPTED"
+
+                invitation.save()
+
+                log_activity(
+                    actor=None,
+                    action="invite.accepted",
+                    action_label="Invite accepted",
+                    module="INVITES",
+                    target=invitation.email,
+                    severity="INFO",
+                    after={"role": invitation.role},
+                )
+
+                messages.success(
+                    request,
+                    "Your account has been activated successfully. Please sign in."
+                )
+
+                return redirect(
+                    f"{reverse('login')}?email={invitation.email}"
+                )
+
+
+    return render(
+
+        request,
+
+        "accept_invitation.html",
+
+        {
+
+            "form": form,
+
+            "invitation": invitation,
+
+        }
+
+    )
+
+
+
+@login_required
+def revoke_invitation(request, invitation_id):
+
+    if request.user.role not in ["ADMIN", "SUPER_ADMIN"]:
+
+        return redirect("dashboard")
+
+    invitation = get_object_or_404(
+
+        Invitation,
+
+        id=invitation_id
+
+    )
+
+    if invitation.status == "ACCEPTED":
+
+        messages.error(
+
+            request,
+
+            "Accepted invitations cannot be revoked."
+
+        )
+
+        return redirect("invitation_list")
+
+    invitation.status = "REVOKED"
+
+    invitation.save()
+
+    log_activity(
+        actor=request.user,
+        action="invite.revoked",
+        action_label="Invite revoked",
+        module="INVITES",
+        target=invitation.email,
+        severity="WARNING",
+    )
+
+    messages.success(
+
+        request,
+
+        "Invitation revoked successfully."
+
+    )
+
+    return redirect("invitation_list")
+
+
+@login_required
+def delete_invitation(request, invitation_id):
+
+    if request.user.role not in ["ADMIN", "SUPER_ADMIN"]:
+        return redirect("dashboard")
+
+    invitation = get_object_or_404(
+        Invitation,
+        id=invitation_id
+    )
+
+    invitation_email = invitation.email
+
+    invitation.delete()
+
+    log_activity(
+        actor=request.user,
+        action="invite.deleted",
+        action_label="Invite deleted",
+        module="INVITES",
+        target=invitation_email,
+        severity="WARNING",
+    )
+
+    messages.success(
+        request,
+        "Invitation deleted successfully."
+    )
+
+    return redirect("invitation_list")
+
+
+@login_required
+def resend_invitation(request, invitation_id):
+
+    if request.user.role not in ["ADMIN", "SUPER_ADMIN"]:
+        return redirect("dashboard")
+
+    invitation = get_object_or_404(
+        Invitation,
+        id=invitation_id
+    )
+
+    invitation.status = "PENDING"
+
+    invitation.expires_at = timezone.now() + timedelta(days=7)
+
+    invitation.save()
+
+    send_invitation_email(
+        invitation
+    )
+
+    log_activity(
+        actor=request.user,
+        action="invite.resent",
+        action_label="Invite resent",
+        module="INVITES",
+        target=invitation.email,
+        severity="INFO",
+    )
+
+    messages.success(
+        request,
+        "Invitation resent successfully."
+    )
+
+    return redirect("invitation_list")

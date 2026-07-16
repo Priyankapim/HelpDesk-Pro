@@ -1,9 +1,9 @@
 import random
 import string
-from django.core.mail import send_mail
-from django.conf import settings
 from .models import User
+from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
+from django.urls import reverse
 
 
 
@@ -141,3 +141,240 @@ def generate_username(email):
         if not User.objects.filter(username=username).exists():
 
             return username
+
+
+
+
+def send_invitation_email(invitation):
+
+    accept_link = (
+        f"http://127.0.0.1:8000"
+        f"{reverse('accept_invitation', args=[invitation.token])}"
+    )
+
+    subject = "You're Invited to HelpDesk Pro"
+
+    html_content = f"""
+    <html>
+
+    <body style="font-family:Arial,Helvetica,sans-serif;
+                 font-size:15px;
+                 color:#334155;
+                 line-height:1.7;
+                 background:#f8fafc;
+                 padding:30px;">
+
+        <table
+            width="600"
+            align="center"
+            style="
+                background:#ffffff;
+                border-radius:12px;
+                border:1px solid #e2e8f0;
+                padding:40px;
+            ">
+
+            <tr>
+
+                <td>
+
+                    <h2
+                        style="
+                            color:#2563eb;
+                            margin-bottom:8px;
+                        ">
+
+                        HelpDesk Pro
+
+                    </h2>
+
+                    <p>
+
+                        Hello
+                        <strong>
+
+                            {invitation.first_name}
+
+                        </strong>,
+
+                    </p>
+
+                    <p>
+
+                        You have been invited to join
+                        <strong>
+
+                            HelpDesk Pro
+
+                        </strong>.
+
+                    </p>
+
+                    <table
+                        style="
+                            width:100%;
+                            background:#f8fafc;
+                            border-radius:8px;
+                            padding:15px;
+                            margin:20px 0;
+                        ">
+
+                        <tr>
+
+                            <td>
+
+                                <strong>Email</strong>
+
+                            </td>
+
+                            <td>
+
+                                {invitation.email}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+
+                                <strong>Role</strong>
+
+                            </td>
+
+                            <td>
+
+                                {invitation.get_role_display()}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+
+                                <strong>Department</strong>
+
+                            </td>
+
+                            <td>
+
+                                {invitation.department}
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                    <p>
+
+                        Click the button below to activate your account.
+
+                    </p>
+
+                    <p
+                        style="
+                            text-align:center;
+                            margin:35px 0;
+                        ">
+
+                        <a
+                            href="{accept_link}"
+
+                            style="
+                                background:#2563eb;
+                                color:#ffffff;
+                                text-decoration:none;
+                                padding:14px 30px;
+                                border-radius:8px;
+                                font-weight:600;
+                                display:inline-block;
+                            ">
+
+                            Accept Invitation
+
+                        </a>
+
+                    </p>
+
+                    <p>
+
+                        This invitation will expire in
+                        <strong>
+
+                            7 days
+
+                        </strong>.
+
+                    </p>
+
+                    <hr>
+
+                    <p
+                        style="
+                            color:#64748b;
+                            font-size:13px;
+                        ">
+
+                        If the button doesn't work, copy this link into your browser.
+
+                    </p>
+
+                    <p
+                        style="
+                            word-break:break-all;
+                            color:#2563eb;
+                        ">
+
+                        {accept_link}
+
+                    </p>
+
+                    <br>
+
+                    <p>
+
+                        Regards,
+
+                        <br>
+
+                        <strong>
+
+                            HelpDesk Pro Team
+
+                        </strong>
+
+                    </p>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </body>
+
+    </html>
+    """
+
+    email = EmailMultiAlternatives(
+
+        subject,
+
+        "",
+
+        settings.DEFAULT_FROM_EMAIL,
+
+        [invitation.email]
+
+    )
+
+    email.attach_alternative(
+        html_content,
+        "text/html"
+    )
+
+    email.send()

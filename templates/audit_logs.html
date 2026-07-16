@@ -1,0 +1,876 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Audit Logs
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ===================================================
+                AUDIT LOGS PAGE
+===================================================*/
+
+.audit-logs{
+    animation:fadeIn .25s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+/* Header */
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+    gap:16px;
+}
+
+.page-title{
+    font-size:24px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:2px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.page-subtitle{
+    color:#64748b;
+    font-size:13px;
+    margin:0;
+}
+
+.export-btn{
+    height:36px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* Summary Cards */
+
+.summary-card{
+    background:#fff;
+    border-radius:16px;
+    padding:16px 18px;
+    border:1px solid #edf2f7;
+    transition:.25s;
+}
+
+.summary-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 30px rgba(15,23,42,.08);
+}
+
+.summary-card h3{
+    margin:0;
+    font-size:26px;
+    font-weight:700;
+}
+
+.summary-card span{
+    font-size:13px;
+    color:#64748b;
+}
+
+.summary-total h3{ color:#111827; }
+.summary-recent h3{ color:#2563eb; }
+.summary-info h3{ color:#2563eb; }
+.summary-warning h3{ color:#ea580c; }
+.summary-critical h3{ color:#dc2626; }
+
+/* Filter Card */
+
+.filter-card{
+    background:#fff;
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:22px;
+    border:1px solid #edf2f7;
+}
+
+.filter-card .form-control,
+.filter-card .form-select{
+    height:40px;
+    border-radius:10px;
+    font-size:13px;
+}
+
+.filter-search-box{
+    position:relative;
+}
+
+.filter-search-box i{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#94a3b8;
+}
+
+.filter-search-box input{
+    padding-left:36px;
+}
+
+/* Table */
+
+.table-card{
+    background:#fff;
+    border-radius:16px;
+    overflow:hidden;
+    border:1px solid #edf2f7;
+}
+
+.table{
+    margin-bottom:0;
+}
+
+.table thead th{
+    background:#f8fafc;
+    border-bottom:2px solid #e5e7eb;
+    color:#64748b;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    padding:14px 16px;
+    white-space:nowrap;
+}
+
+.table tbody td{
+    padding:14px 16px;
+    vertical-align:middle;
+    font-size:13.5px;
+}
+
+.table tbody tr{
+    transition:.2s;
+    cursor:pointer;
+}
+
+.table tbody tr:hover{
+    background:#f8fbff;
+}
+
+.actor-info{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.actor-avatar{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:#e2e8f0;
+    color:#334155;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:12px;
+    flex-shrink:0;
+}
+
+.actor-avatar.system{
+    background:#e2e8f0;
+    color:transparent;
+}
+
+.time-cell{
+    color:#64748b;
+    font-size:13px;
+    white-space:nowrap;
+}
+
+.target-cell{
+    max-width:180px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color:#334155;
+}
+
+.changes-cell code{
+    background:none;
+    color:#16a34a;
+    font-size:12.5px;
+}
+
+.module-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    color:#475569;
+    font-size:13px;
+}
+
+.severity-badge{
+    display:inline-block;
+    padding:5px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+.severity-info{
+    background:#dbeafe;
+    color:#2563eb;
+}
+
+.severity-warning{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.severity-critical{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.row-arrow{
+    color:#cbd5e1;
+    font-size:16px;
+}
+
+.empty-state{
+    text-align:center;
+    padding:60px 20px;
+}
+
+.empty-state i{
+    font-size:54px;
+    color:#cbd5e1;
+    margin-bottom:16px;
+    display:block;
+}
+
+.empty-state h5{
+    color:#334155;
+    margin-bottom:8px;
+}
+
+.empty-state p{
+    color:#94a3b8;
+    margin:0;
+}
+
+/* ===========================
+Audit Log Detail Modal
+===========================*/
+
+.audit-modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.45);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.audit-modal{
+    width:520px;
+    max-width:92vw;
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 25px 60px rgba(0,0,0,.25);
+    padding:22px 24px;
+}
+
+.audit-modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.audit-modal-title{
+    font-size:16px;
+    font-weight:700;
+    color:#111827;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.audit-modal-close{
+    border:1px solid #e2e8f0;
+    background:#fff;
+    border-radius:8px;
+    width:30px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+.audit-modal-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px 20px;
+    margin-bottom:14px;
+}
+
+.audit-field-label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    color:#94a3b8;
+    margin-bottom:4px;
+}
+
+.audit-field-value{
+    font-size:14px;
+    color:#111827;
+    font-weight:500;
+}
+
+.audit-action-box{
+    background:#f1f5f9;
+    border-radius:8px;
+    padding:8px 12px;
+    font-family:monospace;
+    font-size:13px;
+    color:#334155;
+    display:inline-block;
+}
+
+.audit-changes-box{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    padding:12px 14px;
+    margin-top:6px;
+}
+
+.audit-changes-box .changes-title{
+    font-size:12px;
+    font-weight:700;
+    color:#64748b;
+    text-transform:uppercase;
+    margin-bottom:6px;
+}
+
+.audit-changes-box code{
+    display:block;
+    background:none;
+    color:#16a34a;
+    font-size:13px;
+    margin-bottom:2px;
+}
+
+/* ===========================
+Dark Mode
+===========================*/
+
+body.dark-mode .page-title{ color:#f8fafc; }
+body.dark-mode .page-subtitle{ color:#94a3b8; }
+
+body.dark-mode .summary-card{
+    background:#1e293b;
+    border:1px solid #334155;
+}
+
+body.dark-mode .summary-total h3{ color:#f8fafc; }
+
+body.dark-mode .filter-card{
+    background:#1e293b;
+    border:1px solid #334155;
+}
+
+body.dark-mode .table-card{
+    background:#1e293b;
+    border:1px solid #334155;
+}
+
+body.dark-mode .table{ color:#e2e8f0; }
+
+body.dark-mode .table thead th{
+    background:#233044;
+    color:#cbd5e1;
+    border-bottom:1px solid #334155;
+}
+
+body.dark-mode .table tbody td{ border-color:#334155; }
+body.dark-mode .table tbody tr{ background:#1e293b; }
+body.dark-mode .table tbody tr:hover{ background:#273549; }
+
+body.dark-mode .target-cell{ color:#cbd5e1; }
+body.dark-mode .module-chip{ color:#cbd5e1; }
+
+body.dark-mode .audit-modal{
+    background:#1e293b;
+}
+
+body.dark-mode .audit-modal-title,
+body.dark-mode .audit-field-value{
+    color:#f8fafc;
+}
+
+body.dark-mode .audit-modal-close{
+    background:#0f172a;
+    border-color:#334155;
+    color:#f8fafc;
+}
+
+body.dark-mode .audit-action-box,
+body.dark-mode .audit-changes-box{
+    background:#0f172a;
+    border-color:#334155;
+    color:#e2e8f0;
+}
+
+body.dark-mode .empty-state h5{ color:#fff; }
+body.dark-mode .empty-state p{ color:#94a3b8; }
+
+body.dark-mode .table > tbody > tr > *{
+    background-color:#1e293b !important;
+    color:#e2e8f0;
+    border-color:#334155;
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select{
+    background-color:#0f172a;
+    border-color:#334155;
+    color:#e2e8f0;
+}
+body.dark-mode .form-control::placeholder{ color:#64748b; }
+body.dark-mode .form-select option{ background:#0f172a; color:#e2e8f0; }
+
+</style>
+
+<div class="audit-logs">
+
+    <!-- Header -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h2 class="page-title">
+                <i class="bi bi-activity text-primary"></i>
+                Audit Logs
+            </h2>
+
+            <p class="page-subtitle">
+                Complete activity trail of all platform actions.
+            </p>
+
+        </div>
+
+        <div>
+
+            <a href="{% url 'audit_logs_export_csv' %}?{{ request.GET.urlencode }}" class="btn btn-outline-primary export-btn">
+
+                <i class="bi bi-download me-2"></i>
+                Export CSV
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Summary Cards -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-xl col-md-4 col-6">
+            <div class="summary-card summary-total">
+                <h3>{{ total_events }}</h3>
+                <span>Total Events</span>
+            </div>
+        </div>
+
+        <div class="col-xl col-md-4 col-6">
+            <div class="summary-card summary-recent">
+                <h3>{{ last_24h }}</h3>
+                <span>Last 24 Hours</span>
+            </div>
+        </div>
+
+        <div class="col-xl col-md-4 col-6">
+            <div class="summary-card summary-info">
+                <h3>{{ info_count }}</h3>
+                <span>Info</span>
+            </div>
+        </div>
+
+        <div class="col-xl col-md-4 col-6">
+            <div class="summary-card summary-warning">
+                <h3>{{ warning_count }}</h3>
+                <span>Warnings</span>
+            </div>
+        </div>
+
+        <div class="col-xl col-md-4 col-6">
+            <div class="summary-card summary-critical">
+                <h3>{{ critical_count }}</h3>
+                <span>Critical</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Filters -->
+
+    <div class="filter-card">
+
+        <form method="get">
+
+            <div class="row g-3 align-items-center">
+
+                <!-- Search -->
+
+                <div class="col-lg-3">
+                    <div class="filter-search-box">
+
+                        <i class="bi bi-search"></i>
+
+                        <input type="text" class="form-control" name="search"
+                               placeholder="Search action, actor, target..."
+                               value="{{ request.GET.search }}">
+
+                    </div>
+                </div>
+
+                <!-- Module -->
+
+                <div class="col-lg-2">
+                    <select class="form-select" name="module">
+                        <option value="">All Modules</option>
+                        {% for value, label in modules %}
+                        <option value="{{ value }}" {% if request.GET.module == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Severity -->
+
+                <div class="col-lg-2">
+                    <select class="form-select" name="severity">
+                        <option value="">All Severity</option>
+                        {% for value, label in severities %}
+                        <option value="{{ value }}" {% if request.GET.severity == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- User -->
+
+                <div class="col-lg-2">
+                    <select class="form-select" name="user">
+                        <option value="">All Users</option>
+                        {% for actor in actors %}
+                        <option value="{{ actor.id }}" {% if request.GET.user == actor.id|stringformat:"s" %}selected{% endif %}>
+                            {{ actor.first_name }} {{ actor.last_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Single Date -->
+
+                <div class="col-lg-2">
+                    <input type="date" class="form-control" name="date" value="{{ request.GET.date }}">
+                </div>
+
+                <!-- Apply / Reset -->
+
+                <div class="col-lg-1 d-flex gap-2">
+
+                    <button class="btn btn-primary w-100" title="Apply Filters">
+                        <i class="bi bi-funnel"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+            {% if request.GET.search or request.GET.module or request.GET.severity or request.GET.user or request.GET.date %}
+            <div class="mt-2">
+                <a href="{% url 'audit_logs' %}" class="small text-decoration-none">
+                    <i class="bi bi-x-circle me-1"></i> Clear filters
+                </a>
+            </div>
+            {% endif %}
+
+        </form>
+
+    </div>
+
+    <!-- Table -->
+
+    <div class="table-card">
+
+        <div class="table-responsive">
+
+            <table class="table align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Actor</th>
+                        <th>Action</th>
+                        <th>Module</th>
+                        <th>Target</th>
+                        <th>Changes</th>
+                        <th>Severity</th>
+                        <th width="30"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                {% for log in logs %}
+
+                    <tr class="audit-row"
+                        data-timestamp="{{ log.created_at|date:'M d, Y, g:i A' }}"
+                        data-severity="{{ log.severity }}"
+                        data-severity-label="{{ log.get_severity_display }}"
+                        data-actor="{{ log.actor_name }}"
+                        data-module="{{ log.get_module_display }}"
+                        data-action="{{ log.action }}"
+                        data-action-label="{{ log.action_label }}"
+                        data-target="{{ log.target }}"
+                        data-before='{{ log.changes_before_json }}'
+                        data-after='{{ log.changes_after_json }}'>
+
+                        <td class="time-cell" title="{{ log.created_at|date:'M d, Y, g:i A' }}">
+                            {{ log.created_at|timesince }} ago
+                        </td>
+
+                        <td>
+                            <div class="actor-info">
+                                <div class="actor-avatar {% if not log.actor %}system{% endif %}">
+                                    {% if log.actor %}
+                                        {{ log.actor.first_name|slice:":1"|upper|default:log.actor.email|slice:":1"|upper }}
+                                    {% endif %}
+                                </div>
+                                {% if log.actor %}
+                                    <span>{{ log.actor_name }}</span>
+                                {% endif %}
+                            </div>
+                        </td>
+
+                        <td>
+                            <strong>{{ log.action_label }}</strong>
+                        </td>
+
+                        <td>
+                            <span class="module-chip">
+                                <i class="bi bi-diagram-3"></i>
+                                {{ log.get_module_display|lower }}
+                            </span>
+                        </td>
+
+                        <td class="target-cell" title="{{ log.target }}">
+                            {{ log.target|default:"—" }}
+                        </td>
+
+                        <td class="changes-cell">
+                            {% if log.changes_summary %}
+                                <code>{{ log.changes_summary }}</code>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <span class="severity-badge severity-{{ log.severity|lower }}">
+                                {{ log.get_severity_display }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <i class="bi bi-chevron-right row-arrow"></i>
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+                        <td colspan="8">
+                            <div class="empty-state">
+                                <i class="bi bi-clock-history"></i>
+                                <h5>No audit logs found</h5>
+                                <p>Try adjusting your filters.</p>
+                            </div>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Audit Log Detail Modal -->
+
+<div id="auditModalOverlay" class="audit-modal-overlay">
+
+    <div class="audit-modal">
+
+        <div class="audit-modal-header">
+
+            <div class="audit-modal-title">
+                <i class="bi bi-activity"></i>
+                Audit Log Detail
+            </div>
+
+            <button type="button" class="audit-modal-close" id="auditModalClose">
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+        </div>
+
+        <div class="audit-modal-grid">
+
+            <div>
+                <div class="audit-field-label">Timestamp</div>
+                <div class="audit-field-value" id="modalTimestamp"></div>
+            </div>
+
+            <div>
+                <div class="audit-field-label">Severity</div>
+                <div class="audit-field-value">
+                    <span id="modalSeverity" class="severity-badge"></span>
+                </div>
+            </div>
+
+            <div>
+                <div class="audit-field-label">Actor</div>
+                <div class="audit-field-value" id="modalActor"></div>
+            </div>
+
+            <div>
+                <div class="audit-field-label">Module</div>
+                <div class="audit-field-value" id="modalModule"></div>
+            </div>
+
+            <div>
+                <div class="audit-field-label">Action</div>
+                <div class="audit-field-value">
+                    <span class="audit-action-box" id="modalAction"></span>
+                </div>
+            </div>
+
+            <div>
+                <div class="audit-field-label">Target</div>
+                <div class="audit-field-value" id="modalTarget"></div>
+            </div>
+
+        </div>
+
+        <div id="modalChangesWrapper" class="audit-changes-box" style="display:none;">
+            <div class="changes-title">Changes</div>
+            <div id="modalChangesBody"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const auditRows = document.querySelectorAll(".audit-row");
+const auditOverlay = document.getElementById("auditModalOverlay");
+const auditModalClose = document.getElementById("auditModalClose");
+
+function formatChangeObject(prefix, obj){
+    let html = "";
+    for(const key in obj){
+        html += `<code>${prefix}: ${key}: ${obj[key]}</code>`;
+    }
+    return html;
+}
+
+auditRows.forEach(function(row){
+
+    row.addEventListener("click", function(){
+
+        document.getElementById("modalTimestamp").textContent = row.dataset.timestamp;
+        document.getElementById("modalActor").textContent = row.dataset.actor;
+        document.getElementById("modalModule").textContent = row.dataset.module;
+        document.getElementById("modalAction").textContent = row.dataset.action;
+        document.getElementById("modalTarget").textContent = row.dataset.target;
+
+        const severityEl = document.getElementById("modalSeverity");
+        severityEl.textContent = row.dataset.severityLabel;
+        severityEl.className = "severity-badge severity-" + row.dataset.severity.toLowerCase();
+
+        const before = JSON.parse(row.dataset.before || "null");
+        const after = JSON.parse(row.dataset.after || "null");
+        const changesWrapper = document.getElementById("modalChangesWrapper");
+        const changesBody = document.getElementById("modalChangesBody");
+
+        if(!before && !after){
+            changesWrapper.style.display = "none";
+        } else {
+            let html = "";
+            if(before){
+                html += formatChangeObject("Before", before);
+            }
+            if(after){
+                html += formatChangeObject("After", after);
+            }
+            changesBody.innerHTML = html;
+            changesWrapper.style.display = "block";
+        }
+
+        auditOverlay.style.display = "flex";
+
+    });
+
+});
+
+auditModalClose.addEventListener("click", function(){
+    auditOverlay.style.display = "none";
+});
+
+auditOverlay.addEventListener("click", function(e){
+    if(e.target === auditOverlay){
+        auditOverlay.style.display = "none";
+    }
+});
+
+document.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){
+        auditOverlay.style.display = "none";
+    }
+});
+
+</script>
+
+{% endblock %}

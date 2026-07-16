@@ -28,16 +28,11 @@ from reportlab.platypus import (
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 
-
-
-
-
-
+from .services.ai_service import ai_assistant_reply
 
 
 @login_required
 def create_ticket(request):
-
     if request.method == "POST":
         form = TicketForm(request.POST)
 
@@ -73,15 +68,18 @@ def create_ticket(request):
             Status: {ticket.status}
 
             Our support team will contact you shortly.
-            
+
 
             Thank you.
-            
+
             """,
 
                 recipient=request.user.email
 
             )
+
+            from automation.engine import run_automation_rules
+            run_automation_rules("TICKET_CREATED", ticket)
 
             return redirect('dashboard')
 
@@ -96,10 +94,8 @@ def create_ticket(request):
     )
 
 
-
 @login_required
 def my_tickets(request):
-
     tickets = Ticket.objects.filter(
         created_by=request.user
     ).order_by("-created_at")
@@ -160,10 +156,8 @@ def my_tickets(request):
     )
 
 
-
 @login_required
 def all_tickets(request):
-
     if request.user.role not in ["ADMIN", "SUPER_ADMIN"]:
         return redirect("dashboard")
 
@@ -185,13 +179,11 @@ def all_tickets(request):
 
         )
 
-
     # -- Status --
 
     status = request.GET.get("status")
     if status:
         tickets = tickets.filter(status=status)
-
 
     # -- Priority --
 
@@ -199,13 +191,11 @@ def all_tickets(request):
     if priority:
         tickets = tickets.filter(priority=priority)
 
-
     # -- Department --
 
     department = request.GET.get("department")
     if department:
         tickets = tickets.filter(department_id=department)
-
 
     # -- Assigned --
 
@@ -220,25 +210,24 @@ def all_tickets(request):
             assigned_to__isnull=True
         )
 
+    paginator = Paginator(tickets, 10)
+    page = request.GET.get("page")
+    tickets = paginator.get_page(page)
 
-    paginator = Paginator(tickets,10)
-    page=request.GET.get("page")
-    tickets=paginator.get_page(page)
-
-    context={
-        "tickets":tickets,
-        "search":search,
-        "selected_status":status,
-        "selected_priority":priority,
-        "selected_department":department,
-        "selected_assigned":assigned,
-        "status_choices":Ticket.STATUS_CHOICES,
-        "priority_choices":Ticket.PRIORITY_CHOICES,
-        "departments":Department.objects.all(),
-        "total_tickets":Ticket.objects.count(),
-        "open_tickets":Ticket.objects.filter(status="Open").count(),
-        "resolved_tickets":Ticket.objects.filter(status="Resolved").count(),
-        "unassigned":Ticket.objects.filter(assigned_to__isnull=True).count(),
+    context = {
+        "tickets": tickets,
+        "search": search,
+        "selected_status": status,
+        "selected_priority": priority,
+        "selected_department": department,
+        "selected_assigned": assigned,
+        "status_choices": Ticket.STATUS_CHOICES,
+        "priority_choices": Ticket.PRIORITY_CHOICES,
+        "departments": Department.objects.all(),
+        "total_tickets": Ticket.objects.count(),
+        "open_tickets": Ticket.objects.filter(status="Open").count(),
+        "resolved_tickets": Ticket.objects.filter(status="Resolved").count(),
+        "unassigned": Ticket.objects.filter(assigned_to__isnull=True).count(),
     }
 
     return render(
@@ -248,7 +237,6 @@ def all_tickets(request):
 
 @login_required
 def ticket_detail(request, ticket_id):
-
     ticket = get_object_or_404(
         Ticket,
         id=ticket_id
@@ -266,7 +254,6 @@ def ticket_detail(request, ticket_id):
         if ticket.assigned_to != request.user:
             return redirect('dashboard')
 
-
     agents = User.objects.filter(
         role='AGENT'
     )
@@ -278,7 +265,7 @@ def ticket_detail(request, ticket_id):
 
         if (
                 agent_id and
-                request.user.role in [ 'ADMIN',  'SUPER_ADMIN']
+                request.user.role in ['ADMIN', 'SUPER_ADMIN']
         ):
 
             assigned_agent = User.objects.get(id=agent_id)
@@ -310,6 +297,8 @@ def ticket_detail(request, ticket_id):
                     recipient=assigned_agent.email
                 )
 
+                from automation.engine import run_automation_rules
+                run_automation_rules("TICKET_ASSIGNED", ticket)
 
         old_status = ticket.status
 
@@ -326,9 +315,9 @@ def ticket_detail(request, ticket_id):
 
                 send_ticket_email(
 
-                subject="Ticket Status Updated",
+                    subject="Ticket Status Updated",
 
-                message=f"""
+                    message=f"""
         Hello {ticket.created_by.first_name or ticket.created_by.email},
 
         Your ticket status has been updated.
@@ -343,8 +332,12 @@ def ticket_detail(request, ticket_id):
 
         Thank you.
         """,
-                recipient=ticket.created_by.email
-            )
+                    recipient=ticket.created_by.email
+                )
+
+                from automation.engine import run_automation_rules
+                run_automation_rules("STATUS_CHANGED", ticket,
+                                     extra={"old_status": old_status, "new_status": new_status})
 
         comment_text = request.POST.get('comment')
 
@@ -354,6 +347,9 @@ def ticket_detail(request, ticket_id):
                 user=request.user,
                 comment=comment_text
             )
+
+            from automation.engine import run_automation_rules
+            run_automation_rules("COMMENT_ADDED", ticket)
 
         ticket.save()
 
@@ -370,7 +366,6 @@ def ticket_detail(request, ticket_id):
 
 @login_required
 def assigned_tickets(request):
-
     if request.user.role != 'AGENT':
         return redirect('dashboard')
 
@@ -387,7 +382,6 @@ def assigned_tickets(request):
 
 @login_required
 def delete_notification(request, notification_id):
-
     notification = get_object_or_404(
         Notification,
         id=notification_id,
@@ -400,7 +394,6 @@ def delete_notification(request, notification_id):
 
 
 def open_notification(request, notification_id):
-
     notification = get_object_or_404(
         Notification,
         id=notification_id,
@@ -418,7 +411,6 @@ def open_notification(request, notification_id):
 
 @login_required
 def global_search(request):
-
     query = request.GET.get("q", "").strip()
 
     results = []
@@ -430,12 +422,12 @@ def global_search(request):
         # == Tickets ==
 
         ticket_filter = (
-            Q(ticket_number__icontains=query) |
-            Q(title__icontains=query) |
-            Q(description__icontains=query) |
-            Q(status__icontains=query) |
-            Q(priority__icontains=query) |
-            Q(department__name__icontains=query)
+                Q(ticket_number__icontains=query) |
+                Q(title__icontains=query) |
+                Q(description__icontains=query) |
+                Q(status__icontains=query) |
+                Q(priority__icontains=query) |
+                Q(department__name__icontains=query)
         )
 
         if role == "EMPLOYEE":
@@ -450,14 +442,13 @@ def global_search(request):
                 assigned_to=request.user
             ).filter(ticket_filter).distinct()[:5]
 
-        else:   # ADMIN / SUPER_ADMIN
+        else:  # ADMIN / SUPER_ADMIN
 
             tickets = Ticket.objects.filter(
                 ticket_filter
             ).distinct()[:5]
 
         for ticket in tickets:
-
             results.append({
                 "type": "ticket",
                 "title": ticket.ticket_number,
@@ -479,7 +470,6 @@ def global_search(request):
             )[:5]
 
             for user in users:
-
                 results.append({
                     "type": "user",
                     "title": f"{user.first_name} {user.last_name}",
@@ -495,7 +485,6 @@ def global_search(request):
         )[:5]
 
         for dept in departments:
-
             results.append({
                 "type": "department",
                 "title": dept.name,
@@ -509,7 +498,6 @@ def global_search(request):
 
 @require_POST
 def ai_triage_view(request):
-
     try:
 
         data = json.loads(request.body)
@@ -530,11 +518,8 @@ def ai_triage_view(request):
         })
 
 
-
-
 @login_required
 def reports(request):
-
     total_tickets = Ticket.objects.count()
 
     departments = Department.objects.all()
@@ -639,8 +624,6 @@ def reports(request):
     )
 
 
-
-
 @login_required
 def export_tickets_excel(request):
     print("TICKET EXPORT")
@@ -664,7 +647,6 @@ def export_tickets_excel(request):
     )
 
     for ticket in tickets:
-
         ws.append([
 
             ticket.ticket_number,
@@ -695,9 +677,9 @@ def export_tickets_excel(request):
 
     return response
 
+
 @login_required
 def export_tickets_pdf(request):
-
     response = HttpResponse(content_type="application/pdf")
 
     response["Content-Disposition"] = (
@@ -717,7 +699,6 @@ def export_tickets_pdf(request):
     tickets = Ticket.objects.select_related("department")
 
     for ticket in tickets:
-
         data.append([
 
             ticket.ticket_number,
@@ -736,26 +717,23 @@ def export_tickets_pdf(request):
 
     table.setStyle(TableStyle([
 
-        ("BACKGROUND",(0,0),(-1,0),colors.HexColor("#2563eb")),
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#2563eb")),
 
-        ("TEXTCOLOR",(0,0),(-1,0),colors.white),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
 
-        ("GRID",(0,0),(-1,-1),1,colors.grey),
+        ("GRID", (0, 0), (-1, -1), 1, colors.grey),
 
-        ("BACKGROUND",(0,1),(-1,-1),colors.whitesmoke),
+        ("BACKGROUND", (0, 1), (-1, -1), colors.whitesmoke),
 
-        ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
 
-        ("BOTTOMPADDING",(0,0),(-1,0),10),
+        ("BOTTOMPADDING", (0, 0), (-1, 0), 10),
 
     ]))
 
     doc.build([table])
 
     return response
-
-
-
 
 
 @login_required
@@ -889,10 +867,8 @@ def export_reports_excel(request):
     return response
 
 
-
 @login_required
 def export_reports_pdf(request):
-
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = (
         'attachment; filename="Reports.pdf"'
@@ -928,7 +904,6 @@ def export_reports_pdf(request):
     )
 
     for row in department_report:
-
         department_data.append([
             row["department__name"],
             row["total"]
@@ -936,16 +911,16 @@ def export_reports_pdf(request):
 
     table = Table(department_data)
     table.setStyle(TableStyle([
-        ("BACKGROUND",(0,0),(-1,0),colors.HexColor("#2563eb")),
-        ("TEXTCOLOR",(0,0),(-1,0),colors.white),
-        ("GRID",(0,0),(-1,-1),0.5,colors.grey),
-        ("BACKGROUND",(0,1),(-1,-1),colors.whitesmoke),
-        ("BOTTOMPADDING",(0,0),(-1,0),8),
-        ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#2563eb")),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("BACKGROUND", (0, 1), (-1, -1), colors.whitesmoke),
+        ("BOTTOMPADDING", (0, 0), (-1, 0), 8),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
     ]))
 
     elements.append(table)
-    elements.append(Spacer(1,18))
+    elements.append(Spacer(1, 18))
 
     # ================= Priority =================
 
@@ -963,7 +938,6 @@ def export_reports_pdf(request):
     )
 
     for row in priority_report:
-
         priority_data.append([
             row["priority"],
             row["total"]
@@ -972,16 +946,16 @@ def export_reports_pdf(request):
     table = Table(priority_data)
 
     table.setStyle(TableStyle([
-        ("BACKGROUND",(0,0),(-1,0),colors.HexColor("#2563eb")),
-        ("TEXTCOLOR",(0,0),(-1,0),colors.white),
-        ("GRID",(0,0),(-1,-1),0.5,colors.grey),
-        ("BACKGROUND",(0,1),(-1,-1),colors.whitesmoke),
-        ("BOTTOMPADDING",(0,0),(-1,0),8),
-        ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#2563eb")),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("BACKGROUND", (0, 1), (-1, -1), colors.whitesmoke),
+        ("BOTTOMPADDING", (0, 0), (-1, 0), 8),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
     ]))
 
     elements.append(table)
-    elements.append(Spacer(1,18))
+    elements.append(Spacer(1, 18))
 
     # ================= Status =================
 
@@ -999,7 +973,6 @@ def export_reports_pdf(request):
     )
 
     for row in status_report:
-
         status_data.append([
             row["status"],
             row["total"]
@@ -1008,16 +981,16 @@ def export_reports_pdf(request):
     table = Table(status_data)
 
     table.setStyle(TableStyle([
-        ("BACKGROUND",(0,0),(-1,0),colors.HexColor("#2563eb")),
-        ("TEXTCOLOR",(0,0),(-1,0),colors.white),
-        ("GRID",(0,0),(-1,-1),0.5,colors.grey),
-        ("BACKGROUND",(0,1),(-1,-1),colors.whitesmoke),
-        ("BOTTOMPADDING",(0,0),(-1,0),8),
-        ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#2563eb")),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("BACKGROUND", (0, 1), (-1, -1), colors.whitesmoke),
+        ("BOTTOMPADDING", (0, 0), (-1, 0), 8),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
     ]))
 
     elements.append(table)
-    elements.append(Spacer(1,18))
+    elements.append(Spacer(1, 18))
 
     # ================= Agent =================
 
@@ -1056,16 +1029,16 @@ def export_reports_pdf(request):
     table = Table(agent_data)
 
     table.setStyle(TableStyle([
-        ("BACKGROUND",(0,0),(-1,0),colors.HexColor("#2563eb")),
-        ("TEXTCOLOR",(0,0),(-1,0),colors.white),
-        ("GRID",(0,0),(-1,-1),0.5,colors.grey),
-        ("BACKGROUND",(0,1),(-1,-1),colors.whitesmoke),
-        ("BOTTOMPADDING",(0,0),(-1,0),8),
-        ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#2563eb")),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("BACKGROUND", (0, 1), (-1, -1), colors.whitesmoke),
+        ("BOTTOMPADDING", (0, 0), (-1, 0), 8),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
     ]))
 
     elements.append(table)
-    elements.append(Spacer(1,18))
+    elements.append(Spacer(1, 18))
 
     # ================= SLA =================
 
@@ -1096,12 +1069,12 @@ def export_reports_pdf(request):
     table = Table(sla_data)
 
     table.setStyle(TableStyle([
-        ("BACKGROUND",(0,0),(-1,0),colors.HexColor("#2563eb")),
-        ("TEXTCOLOR",(0,0),(-1,0),colors.white),
-        ("GRID",(0,0),(-1,-1),0.5,colors.grey),
-        ("BACKGROUND",(0,1),(-1,-1),colors.whitesmoke),
-        ("BOTTOMPADDING",(0,0),(-1,0),8),
-        ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#2563eb")),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("BACKGROUND", (0, 1), (-1, -1), colors.whitesmoke),
+        ("BOTTOMPADDING", (0, 0), (-1, 0), 8),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
     ]))
 
     elements.append(table)
@@ -1110,6 +1083,58 @@ def export_reports_pdf(request):
 
     return response
 
+@login_required
+def ai_assistant_view(request):
 
+    return render(
+        request,
+        "ai_assistant.html",
+        {}
+    )
+
+
+@login_required
+@require_POST
+def ai_assistant_chat(request):
+
+    try:
+
+        data = json.loads(request.body)
+
+        history = data.get("history", [])
+
+        clean_history = []
+
+        for msg in history[-20:]:
+
+            role = msg.get("role")
+            content = (msg.get("content") or "").strip()
+
+            if role in ["user", "assistant"] and content:
+                clean_history.append({
+                    "role": role,
+                    "content": content
+                })
+
+        if not clean_history:
+
+            return JsonResponse({
+                "success": False,
+                "error": "No message provided."
+            })
+
+        reply = ai_assistant_reply(clean_history)
+
+        return JsonResponse({
+            "success": True,
+            "reply": reply
+        })
+
+    except Exception as e:
+
+        return JsonResponse({
+            "success": False,
+            "error": str(e)
+        })
 
 

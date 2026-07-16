@@ -47,8 +47,14 @@ INSTALLED_APPS = [
     'dashboard',
     'tickets',
     'departments',
+    'automation',
     'old_reports',
     'notifications',
+    'auditlogs',
+    'configuration',
+    'knowledge_base',
+    'tenants',
+
 ]
 
 MIDDLEWARE = [

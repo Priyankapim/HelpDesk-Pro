@@ -1,0 +1,550 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Knowledge Base
+{% endblock %}
+
+{% block page_title %}
+Knowledge Base
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ===================================================
+                KNOWLEDGE BASE PAGE
+===================================================*/
+
+.kb-page{
+    animation:fadeIn .25s ease;
+}
+
+@keyframes fadeIn{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:none; }
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+    gap:16px;
+}
+
+.page-title{
+    font-size:24px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:2px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.page-subtitle{
+    color:#64748b;
+    font-size:13px;
+    margin:0;
+}
+
+.add-btn{
+    height:38px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* Filter card */
+
+.kb-filter-card{
+    background:#fff;
+    border:1px solid #edf2f7;
+    border-radius:16px;
+    padding:16px 18px;
+    margin-bottom:20px;
+}
+
+.kb-search-row{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+}
+
+.kb-search-box{
+    position:relative;
+    flex:1;
+    min-width:240px;
+}
+
+.kb-search-box i{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#94a3b8;
+    font-size:14px;
+}
+
+.kb-search-box input{
+    width:100%;
+    height:38px;
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+    padding:0 14px 0 38px;
+    font-size:13px;
+}
+
+.kb-status-pills{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+}
+
+.kb-pill{
+    height:34px;
+    padding:0 16px;
+    border-radius:20px;
+    border:1px solid #e2e8f0;
+    background:#fff;
+    color:#475569;
+    font-size:13px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    text-decoration:none;
+    transition:.15s;
+}
+
+.kb-pill:hover{
+    background:#f1f5f9;
+    color:#111827;
+}
+
+.kb-pill.active{
+    background:#2563eb;
+    border-color:#2563eb;
+    color:#fff;
+}
+
+.kb-tag-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.kb-tag-row-label{
+    font-size:12px;
+    font-weight:600;
+    color:#94a3b8;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    flex-shrink:0;
+}
+
+.kb-chip{
+    height:30px;
+    padding:0 14px;
+    border-radius:16px;
+    border:1px solid #e2e8f0;
+    background:#fff;
+    color:#475569;
+    font-size:12px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    text-decoration:none;
+    transition:.15s;
+}
+
+.kb-chip:hover{
+    background:#f1f5f9;
+    color:#111827;
+}
+
+.kb-chip.active{
+    background:#2563eb;
+    border-color:#2563eb;
+    color:#fff;
+}
+
+/* Article cards */
+
+.kb-card{
+    background:#fff;
+    border:1px solid #edf2f7;
+    border-radius:16px;
+    padding:20px;
+    height:100%;
+    transition:.2s;
+    display:flex;
+    flex-direction:column;
+}
+
+.kb-card:hover{
+    box-shadow:0 10px 26px rgba(15,23,42,.08);
+    transform:translateY(-2px);
+}
+
+.kb-badge-row{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+}
+
+.kb-badge{
+    font-size:11px;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:20px;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+}
+
+.kb-badge-published{ background:#dcfce7; color:#16a34a; }
+.kb-badge-draft{ background:#fef9c3; color:#a16207; }
+.kb-badge-archived{ background:#f1f5f9; color:#64748b; }
+.kb-badge-internal{ background:#f1f5f9; color:#475569; }
+.kb-badge-dept{ background:#dbeafe; color:#2563eb; }
+
+.kb-card-title{
+    font-size:16px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:8px;
+}
+
+.kb-card-title a{
+    color:inherit;
+    text-decoration:none;
+}
+
+.kb-card-title a:hover{
+    color:#2563eb;
+}
+
+.kb-card-summary{
+    font-size:13px;
+    color:#64748b;
+    margin-bottom:14px;
+    flex-grow:1;
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+.kb-tags{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    color:#94a3b8;
+    margin-bottom:14px;
+}
+
+.kb-card-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-top:12px;
+    border-top:1px solid #f1f5f9;
+    font-size:12px;
+    color:#94a3b8;
+}
+
+.kb-card-stats{
+    display:flex;
+    gap:14px;
+}
+
+.kb-card-stats span{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.kb-card-footer a{
+    font-size:13px;
+    font-weight:600;
+    color:#2563eb;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:4px;
+}
+
+/* Empty */
+
+.empty-state{
+    text-align:center;
+    padding:60px 20px;
+}
+
+.empty-state i{
+    font-size:54px;
+    color:#cbd5e1;
+    margin-bottom:16px;
+    display:block;
+}
+
+.empty-state h5{
+    color:#334155;
+    margin-bottom:8px;
+}
+
+.empty-state p{
+    color:#94a3b8;
+    margin:0;
+}
+
+/* Dark mode */
+
+body.dark-mode .kb-filter-card,
+body.dark-mode .kb-card{
+    background:#1e293b;
+    border-color:#334155;
+}
+
+body.dark-mode .kb-search-box input,
+body.dark-mode .kb-pill,
+body.dark-mode .kb-chip{
+    background:#0f172a;
+    border-color:#334155;
+    color:#e2e8f0;
+}
+
+body.dark-mode .kb-card-summary{
+    color:#94a3b8;
+}
+
+body.dark-mode .kb-card-footer{
+    border-color:#334155;
+}
+
+</style>
+
+<div class="kb-page">
+
+    <!-- Header -->
+
+    <div class="page-header">
+
+        <div>
+            <h2 class="page-title"><i class="bi bi-journal-bookmark"></i> Knowledge Base</h2>
+            <p class="page-subtitle">Browse articles, guides, and FAQs</p>
+        </div>
+
+        {% if can_manage %}
+        <div>
+            <a href="{% url 'kb_article_new' %}" class="btn btn-primary add-btn">
+                <i class="bi bi-plus-lg me-2"></i>
+                New Article
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <!-- Alerts -->
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Filters -->
+
+    <div class="kb-filter-card">
+
+        <form method="get" id="kbFilterForm">
+
+            <input type="hidden" name="status" id="kbStatusInput" value="{{ selected_status }}">
+            <input type="hidden" name="department" id="kbDeptInput" value="{{ selected_department }}">
+            <input type="hidden" name="category" id="kbCategoryInput" value="{{ selected_category }}">
+
+            <div class="kb-search-row">
+
+                <div class="kb-search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" name="q" value="{{ query }}" placeholder="Search articles...">
+                </div>
+
+                {% if can_manage %}
+                <div class="kb-status-pills">
+
+                    <a href="#" class="kb-pill {% if selected_status == 'ALL' %}active{% endif %}"
+                       onclick="kbSetStatus('ALL');return false;">All</a>
+
+                    <a href="#" class="kb-pill {% if selected_status == 'PUBLISHED' %}active{% endif %}"
+                       onclick="kbSetStatus('PUBLISHED');return false;">Published</a>
+
+                    <a href="#" class="kb-pill {% if selected_status == 'DRAFT' %}active{% endif %}"
+                       onclick="kbSetStatus('DRAFT');return false;">Draft</a>
+
+                    <a href="#" class="kb-pill {% if selected_status == 'ARCHIVED' %}active{% endif %}"
+                       onclick="kbSetStatus('ARCHIVED');return false;">Archived</a>
+
+                </div>
+                {% endif %}
+
+            </div>
+
+            <div class="kb-tag-row mb-2">
+
+                <span class="kb-tag-row-label"><i class="bi bi-funnel"></i> Dept:</span>
+
+                <a href="#" class="kb-chip {% if not selected_department %}active{% endif %}"
+                   onclick="kbSetDepartment('');return false;">All</a>
+
+                {% for dept in departments %}
+                <a href="#" class="kb-chip {% if selected_department == dept.id|stringformat:'s' %}active{% endif %}"
+                   onclick="kbSetDepartment('{{ dept.id }}');return false;">{{ dept.name }}</a>
+                {% endfor %}
+
+            </div>
+
+            {% if categories %}
+            <div class="kb-tag-row">
+
+                <span class="kb-tag-row-label"><i class="bi bi-tags"></i> Category:</span>
+
+                <a href="#" class="kb-chip {% if not selected_category %}active{% endif %}"
+                   onclick="kbSetCategory('');return false;">All</a>
+
+                {% for cat in categories %}
+                <a href="#" class="kb-chip {% if selected_category == cat.id|stringformat:'s' %}active{% endif %}"
+                   onclick="kbSetCategory('{{ cat.id }}');return false;">{{ cat.name }}</a>
+                {% endfor %}
+
+            </div>
+            {% endif %}
+
+        </form>
+
+    </div>
+
+    <!-- Grid -->
+
+    <div class="row g-3">
+
+        {% for article in articles %}
+
+        <div class="col-xl-4 col-md-6">
+
+            <div class="kb-card">
+
+                <div class="kb-badge-row">
+
+                    {% if article.status == 'PUBLISHED' %}
+                        <span class="kb-badge kb-badge-published">Published</span>
+                    {% elif article.status == 'DRAFT' %}
+                        <span class="kb-badge kb-badge-draft">Draft</span>
+                    {% else %}
+                        <span class="kb-badge kb-badge-archived">Archived</span>
+                    {% endif %}
+
+                    {% if article.is_internal %}
+                        <span class="kb-badge kb-badge-internal"><i class="bi bi-lock-fill"></i> Internal</span>
+                    {% endif %}
+
+                    {% if article.department %}
+                        <span class="kb-badge kb-badge-dept">{{ article.department.name }}</span>
+                    {% endif %}
+
+                </div>
+
+                <h5 class="kb-card-title">
+                    <a href="{% url 'kb_article_detail' article.id %}">{{ article.title }}</a>
+                </h5>
+
+                <p class="kb-card-summary">
+                    {{ article.summary|default:article.content }}
+                </p>
+
+                {% if article.tag_list %}
+                <div class="kb-tags">
+                    <i class="bi bi-tag"></i> {{ article.tags }}
+                </div>
+                {% endif %}
+
+                <div class="kb-card-footer">
+
+                    <div class="kb-card-stats">
+                        <span><i class="bi bi-eye"></i> {{ article.views_count }}</span>
+                        <span><i class="bi bi-hand-thumbs-up"></i> {{ article.helpful_count }}</span>
+                    </div>
+
+                    {% if can_manage %}
+                    <a href="{% url 'kb_article_edit' article.id %}">
+                        Edit <i class="bi bi-chevron-right"></i>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'kb_article_detail' article.id %}">
+                        View <i class="bi bi-chevron-right"></i>
+                    </a>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-12">
+            <div class="empty-state">
+                <i class="bi bi-journal-bookmark"></i>
+                <h5>No Articles Found</h5>
+                <p>
+                    {% if can_manage %}
+                        Click "New Article" to publish your first knowledge base article.
+                    {% else %}
+                        No articles match your search or filters yet.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<script>
+
+function kbSetStatus(value){
+    document.getElementById("kbStatusInput").value = value;
+    document.getElementById("kbFilterForm").submit();
+}
+
+function kbSetDepartment(value){
+    document.getElementById("kbDeptInput").value = value;
+    document.getElementById("kbFilterForm").submit();
+}
+
+function kbSetCategory(value){
+    document.getElementById("kbCategoryInput").value = value;
+    document.getElementById("kbFilterForm").submit();
+}
+
+</script>
+
+{% endblock %}

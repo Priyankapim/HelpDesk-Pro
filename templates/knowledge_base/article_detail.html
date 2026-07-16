@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ article.title }}
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ===================================================
+                KB ARTICLE DETAIL PAGE
+===================================================*/
+
+.kb-detail-page{
+    animation:fadeIn .25s ease;
+    max-width:900px;
+    margin:0 auto;
+}
+
+@keyframes fadeIn{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:none; }
+}
+
+.kb-breadcrumb{
+    font-size:13px;
+    color:#94a3b8;
+    margin-bottom:14px;
+}
+
+.kb-breadcrumb a{
+    color:#94a3b8;
+    text-decoration:none;
+}
+
+.kb-breadcrumb a:hover{
+    color:#2563eb;
+}
+
+.kb-badge-row{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+    margin-bottom:12px;
+}
+
+.kb-badge{
+    font-size:11px;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:20px;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+}
+
+.kb-badge-published{ background:#dcfce7; color:#16a34a; }
+.kb-badge-draft{ background:#fef9c3; color:#a16207; }
+.kb-badge-archived{ background:#f1f5f9; color:#64748b; }
+.kb-badge-internal{ background:#f1f5f9; color:#475569; }
+.kb-badge-category{ background:#dbeafe; color:#2563eb; }
+
+.kb-detail-title{
+    font-size:26px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:16px;
+}
+
+.kb-summary-box{
+    background:#f8fafc;
+    border-left:4px solid #2563eb;
+    border-radius:8px;
+    padding:16px 18px;
+    font-size:14px;
+    color:#334155;
+    margin-bottom:14px;
+}
+
+.kb-meta-row{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    font-size:13px;
+    color:#94a3b8;
+    margin-bottom:10px;
+}
+
+.kb-meta-row span{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.kb-tags-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:20px;
+}
+
+.kb-tag-chip{
+    background:#eef2ff;
+    color:#4338ca;
+    font-size:12px;
+    font-weight:600;
+    padding:4px 12px;
+    border-radius:14px;
+}
+
+.kb-content-box{
+    background:#fff;
+    border:1px solid #edf2f7;
+    border-radius:16px;
+    padding:24px;
+    font-size:14px;
+    line-height:1.8;
+    color:#334155;
+    white-space:pre-line;
+}
+
+.kb-detail-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:20px;
+    flex-wrap:wrap;
+    gap:12px;
+}
+
+.kb-helpful-label{
+    font-size:13px;
+    color:#64748b;
+    font-weight:600;
+}
+
+.kb-helpful-btn{
+    border-radius:10px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.kb-helpful-btn.marked{
+    background:#dcfce7;
+    color:#16a34a;
+    border-color:#bbf7d0;
+}
+
+/* Dark mode */
+
+body.dark-mode .kb-summary-box{
+    background:#0f172a;
+}
+
+body.dark-mode .kb-content-box{
+    background:#1e293b;
+    border-color:#334155;
+    color:#e2e8f0;
+}
+
+</style>
+
+<div class="kb-detail-page">
+
+    <div class="kb-breadcrumb">
+        <a href="{% url 'knowledge_base_list' %}">Knowledge Base</a>
+        <i class="bi bi-chevron-right" style="font-size:10px;"></i>
+        {{ article.title }}
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="kb-badge-row">
+
+        {% if article.status == 'PUBLISHED' %}
+            <span class="kb-badge kb-badge-published">Published</span>
+        {% elif article.status == 'DRAFT' %}
+            <span class="kb-badge kb-badge-draft">Draft</span>
+        {% else %}
+            <span class="kb-badge kb-badge-archived">Archived</span>
+        {% endif %}
+
+        {% if article.is_internal %}
+            <span class="kb-badge kb-badge-internal"><i class="bi bi-lock-fill"></i> Internal</span>
+        {% endif %}
+
+        {% if article.category %}
+            <span class="kb-badge kb-badge-category">{{ article.category }}</span>
+        {% elif article.department %}
+            <span class="kb-badge kb-badge-category">{{ article.department.name }}</span>
+        {% endif %}
+
+    </div>
+
+    <h1 class="kb-detail-title">{{ article.title }}</h1>
+
+    {% if article.summary %}
+    <div class="kb-summary-box">
+        {{ article.summary }}
+    </div>
+    {% endif %}
+
+    <div class="kb-meta-row">
+        <span><i class="bi bi-eye"></i> {{ article.views_count }} views</span>
+        <span><i class="bi bi-hand-thumbs-up"></i> {{ article.helpful_count }} helpful</span>
+        <span>{{ article.updated_at|timesince }} ago</span>
+    </div>
+
+    {% if article.tag_list %}
+    <div class="kb-tags-row">
+        {% for tag in article.tag_list %}
+        <span class="kb-tag-chip">{{ tag }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="kb-content-box">{{ article.content }}</div>
+
+    <div class="kb-detail-footer">
+
+        <div class="d-flex align-items-center gap-2">
+            <span class="kb-helpful-label">Was this article helpful?</span>
+            <button type="button" id="helpfulBtn"
+                    class="btn btn-outline-secondary kb-helpful-btn {% if already_marked_helpful %}marked{% endif %}"
+                    {% if already_marked_helpful %}disabled{% endif %}
+                    data-article-id="{{ article.id }}">
+                <i class="bi bi-hand-thumbs-up"></i>
+                {% if already_marked_helpful %} Thanks! {% else %} Yes, helpful {% endif %}
+            </button>
+        </div>
+
+        {% if can_manage %}
+        <a href="{% url 'kb_article_edit' article.id %}" class="btn btn-primary">
+            <i class="bi bi-pencil"></i> Edit Article
+        </a>
+        {% endif %}
+
+    </div>
+
+</div>
+
+<script>
+
+document.getElementById("helpfulBtn").addEventListener("click", function(){
+
+    const btn = this;
+    const articleId = btn.getAttribute("data-article-id");
+
+    fetch(`/knowledge-base/${articleId}/helpful/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}"
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success){
+            btn.classList.add("marked");
+            btn.disabled = true;
+            btn.innerHTML = '<i class="bi bi-hand-thumbs-up"></i> Thanks!';
+        }
+    });
+
+});
+
+</script>
+
+{% endblock %}

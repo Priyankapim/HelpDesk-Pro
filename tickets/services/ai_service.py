@@ -167,3 +167,40 @@ Do not use markdown.
     print("\n================================\n")
 
     return json.loads(text)
+
+
+def ai_assistant_reply(history):
+    """
+    history: list of {"role": "user"|"assistant", "content": "..."}
+    Returns the assistant's plain-text reply using the same Mistral client
+    already configured for ticket triage.
+    """
+
+    system_prompt = {
+        "role": "system",
+        "content": (
+            "You are the AI Assistant inside ServiceDesk Pro, an IT helpdesk "
+            "portal. You help employees troubleshoot common IT issues, explain "
+            "how to raise support tickets, describe SLA timelines, and answer "
+            "general IT support questions. Keep answers short, practical, and "
+            "friendly. If the issue sounds like it needs a human agent, suggest "
+            "the user raise a ticket using the 'Raise Ticket' button. "
+            "Do not invent company-specific policies you don't know - if unsure, "
+            "say so and suggest raising a ticket instead."
+        )
+    }
+
+    messages = [system_prompt] + history
+
+    response = client.chat.complete(
+        model="mistral-small-latest",
+        messages=messages
+    )
+
+    message = response.choices[0].message
+    text = message.content
+
+    if not text:
+        raise Exception("Mistral returned an empty response.")
+
+    return text.strip()

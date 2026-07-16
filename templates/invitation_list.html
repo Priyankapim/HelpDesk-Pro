@@ -1,0 +1,1473 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Invitations{% endblock %}
+{% block page_title %}User Management{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/users.css' %}">
+<style>
+
+/* ===================================================
+                INVITATION MANAGEMENT
+===================================================*/
+
+.invitation-management{
+    animation:fadeIn .25s ease;
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+
+    to{
+        opacity:1;
+        transform:none;
+    }
+
+}
+
+/* ===================================================
+Header
+===================================================*/
+
+.page-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+    gap:15px;
+
+}
+
+.page-title{
+
+    font-size:24px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:4px;
+
+}
+
+.page-subtitle{
+    font-size:13px;
+    color:#64748b;
+    margin:0;
+
+}
+
+.invite-btn{
+
+    height:38px;
+    padding:0 18px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:600;
+
+}
+
+/* ===================================================
+Tabs
+===================================================*/
+
+.tabs-wrapper{
+
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+
+}
+
+.tab{
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    padding:8px 14px;
+
+    border-radius:10px;
+
+    text-decoration:none;
+
+    color:#475569;
+
+    background:#fff;
+
+    border:1px solid #e2e8f0;
+
+    font-size:14px;
+
+    font-weight:500;
+
+}
+
+.tab span{
+
+    background:#eff6ff;
+
+    color:#2563eb;
+
+    border-radius:30px;
+
+    padding:2px 8px;
+
+    font-size:11px;
+
+}
+
+.tab.active{
+
+    background:#2563eb;
+
+    color:#fff;
+
+    border-color:#2563eb;
+
+}
+
+.tab.active span{
+
+    background:#fff;
+
+    color:#2563eb;
+
+}
+
+/* ===================================================
+Cards
+===================================================*/
+
+.summary-card{
+
+    background:#fff;
+
+    border-radius:14px;
+
+    border:1px solid #edf2f7;
+
+    padding:16px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+    transition:.25s;
+
+}
+
+.summary-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.summary-icon{
+
+    width:50px;
+    height:50px;
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:20px;
+
+}
+
+.summary-card h3{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    margin:0;
+
+}
+
+.summary-card span{
+
+    font-size:13px;
+
+    color:#64748b;
+
+}
+
+.summary-orange .summary-icon{
+
+    background:#fff7ed;
+
+    color:#ea580c;
+
+}
+
+.summary-green .summary-icon{
+
+    background:#dcfce7;
+
+    color:#16a34a;
+
+}
+
+.summary-gray .summary-icon{
+
+    background:#f1f5f9;
+
+    color:#64748b;
+
+}
+
+.summary-red .summary-icon{
+
+    background:#fee2e2;
+
+    color:#dc2626;
+
+}
+
+/* ===================================================
+Filter
+===================================================*/
+
+.filter-card{
+
+    background:#fff;
+
+    border-radius:14px;
+
+    padding:18px;
+
+    border:1px solid #edf2f7;
+
+    margin:22px 0;
+
+}
+
+.filter-search-box{
+
+    position:relative;
+
+}
+
+.filter-search-box i{
+
+    position:absolute;
+
+    left:14px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:#94a3b8;
+
+}
+
+.filter-search-box input{
+
+    height:40px;
+
+    padding-left:42px;
+
+    border-radius:10px;
+
+    font-size:13px;
+
+}
+/* Search Filters */
+
+.filter-card .filter-form-select{
+    height:40px;
+    min-width:170px;   /* width increase */
+    border-radius:10px;
+    font-size:14px;
+    padding:0 40px 0 14px;
+}
+
+.filter-btn{
+
+    height:40px;
+
+    border-radius:10px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    margin-left:10px;
+
+}
+
+.filter-btn i{
+
+    font-size:12px;
+
+}
+
+.btn-outline-secondary.filter-btn{
+
+    color:#d1d5db;
+
+    border:1px solid #6b7280;
+
+    background:#2b3447;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.btn-outline-secondary.filter-btn:hover{
+
+    background:#374151;
+
+    color:#fff;
+
+    border-color:#7b8799;
+
+}
+.btn-primary.filter-btn{
+
+    background:#3b82f6;
+
+    border-color:#3b82f6;
+
+}
+
+.btn-primary.filter-btn:hover{
+
+    background:#2563eb;
+
+    border-color:#2563eb;
+
+}
+/* ===================================================
+Table
+===================================================*/
+
+.table-card{
+
+    background:#fff;
+
+    border-radius:14px;
+
+    border:1px solid #edf2f7;
+
+    overflow:hidden;
+
+}
+
+.table{
+
+    margin-bottom:0;
+
+}
+
+.table thead th{
+
+    background:#f8fafc;
+
+    color:#64748b;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    padding:15px;
+
+    border-bottom:1px solid #e5e7eb;
+
+}
+
+.table tbody td{
+
+    padding:15px;
+
+    vertical-align:middle;
+
+    font-size:13px;
+
+}
+
+.table tbody tr:hover{
+
+    background:#f8fbff;
+
+}
+
+/* ===================================================
+User
+===================================================*/
+
+.user-info{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.avatar{
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:50%;
+
+    background:#2563eb;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:700;
+
+}
+
+.user-name{
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.user-id{
+
+    font-size:12px;
+
+    color:#94a3b8;
+
+}
+
+/* ===================================================
+Badges
+===================================================*/
+
+.role,
+.status{
+
+    display:inline-block;
+
+    padding:5px 12px;
+
+    border-radius:20px;
+
+    font-size:11px;
+
+    font-weight:600;
+
+}
+
+.role-admin{
+
+    background:#dbeafe;
+
+    color:#2563eb;
+
+}
+
+.role-agent{
+
+    background:#dcfce7;
+
+    color:#15803d;
+
+}
+
+.role-employee{
+
+    background:#f3f4f6;
+
+    color:#475569;
+
+}
+
+.role-super_admin{
+
+    background:#fee2e2;
+
+    color:#dc2626;
+
+}
+
+.status.pending{
+
+    background:#fef3c7;
+
+    color:#b45309;
+
+}
+
+.status.accepted{
+
+    background:#dcfce7;
+
+    color:#15803d;
+
+}
+
+.status.expired{
+
+    background:#e5e7eb;
+
+    color:#475569;
+
+}
+
+.status.revoked{
+
+    background:#fee2e2;
+
+    color:#dc2626;
+
+}
+
+/* ===================================================
+Buttons
+===================================================*/
+
+.btn-outline-primary{
+
+    font-size:12px;
+
+    border-radius:8px;
+
+    padding:5px 14px;
+
+}
+
+/* Invite User Button */
+
+.invite-btn{
+    height:40px;
+    padding:0 18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+
+    font-size:14px;
+    font-weight:600;
+
+    border-radius:10px;
+    line-height:1;
+
+    white-space:nowrap;
+}
+
+.invite-btn i{
+    font-size:15px;
+    display:flex;
+    align-items:center;
+}
+/* ===================================================
+Empty
+===================================================*/
+
+.empty-state{
+
+    padding:55px 20px;
+
+    text-align:center;
+
+}
+
+.empty-state i{
+
+    font-size:48px;
+
+    color:#cbd5e1;
+
+    display:block;
+
+    margin-bottom:12px;
+
+}
+
+.empty-state h5{
+
+    font-size:18px;
+
+    color:#334155;
+
+}
+
+.empty-state p{
+
+    color:#94a3b8;
+
+}
+
+/* ===================================================
+Responsive
+===================================================*/
+
+@media(max-width:991px){
+
+.page-header{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+.tabs-wrapper{
+
+flex-wrap:wrap;
+
+}
+
+}
+
+
+.dropdown-menu{
+
+    border-radius:12px;
+    border:1px solid #2d3748;
+    background:#1f2937;
+    min-width:220px;
+    padding:8px;
+
+}
+
+.dropdown-item{
+
+    color:#e5e7eb;
+    font-size:13px;
+    border-radius:8px;
+    padding:10px 12px;
+
+}
+
+.dropdown-item:hover{
+
+    background:#2d3748;
+    color:#fff;
+
+}
+
+.dropdown-divider{
+
+    border-color:#374151;
+
+}
+/* ===================================================
+INVITATION MANAGEMENT DARK THEME
+===================================================*/
+
+body.dark-mode .page-title{
+    color:#f8fafc;
+}
+
+body.dark-mode .page-subtitle{
+    color:#94a3b8;
+}
+
+/* ===================================================
+Tabs
+===================================================*/
+
+body.dark-mode .tab{
+    background:#1e293b;
+    border:1px solid #334155;
+    color:#e2e8f0;
+}
+
+body.dark-mode .tab:hover{
+    color:#60a5fa;
+}
+
+body.dark-mode .tab.active{
+    background:#2563eb;
+    border-color:#2563eb;
+    color:#fff;
+}
+
+body.dark-mode .tab span{
+    background:#334155;
+    color:#e2e8f0;
+}
+
+body.dark-mode .tab.active span{
+    background:#fff;
+    color:#2563eb;
+}
+
+/* ===================================================
+Summary Cards
+===================================================*/
+
+body.dark-mode .summary-card{
+    background:#1e293b;
+    border:1px solid #334155;
+    box-shadow:none;
+}
+
+body.dark-mode .summary-card:hover{
+    box-shadow:0 10px 25px rgba(0,0,0,.35);
+}
+
+body.dark-mode .summary-card h3{
+    color:#fff;
+}
+
+body.dark-mode .summary-card span{
+    color:#94a3b8;
+}
+
+body.dark-mode .summary-orange .summary-icon{
+    background:rgba(249,115,22,.18);
+    color:#fb923c;
+}
+
+body.dark-mode .summary-green .summary-icon{
+    background:rgba(34,197,94,.18);
+    color:#4ade80;
+}
+
+body.dark-mode .summary-gray .summary-icon{
+    background:rgba(148,163,184,.18);
+    color:#cbd5e1;
+}
+
+body.dark-mode .summary-red .summary-icon{
+    background:rgba(239,68,68,.18);
+    color:#f87171;
+}
+
+/* ===================================================
+Filter Card
+===================================================*/
+
+body.dark-mode .filter-card{
+    background:#1e293b;
+    border:1px solid #334155;
+}
+
+body.dark-mode .filter-search-box input{
+    background:#0f172a;
+    border:1px solid #334155;
+    color:#fff;
+}
+
+body.dark-mode .filter-search-box input::placeholder{
+    color:#64748b;
+}
+
+body.dark-mode .filter-search-box i{
+    color:#64748b;
+}
+
+body.dark-mode .filter-form-select{
+    background:#0f172a;
+    border:1px solid #334155;
+    color:#fff;
+}
+
+body.dark-mode .filter-form-select:focus,
+body.dark-mode .filter-search-box input:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 .15rem rgba(37,99,235,.25);
+}
+
+/* ===================================================
+TABLE - DARK MODE
+===================================================*/
+
+body.dark-mode .table-card{
+    background:#1e293b !important;
+    border:1px solid #334155 !important;
+}
+
+body.dark-mode .table{
+    color:#e5e7eb !important;
+    margin-bottom:0;
+}
+
+body.dark-mode .table thead th{
+    background:#273449 !important;
+    color:#f8fafc !important;
+    border-color:#334155 !important;
+}
+
+body.dark-mode .table tbody{
+    background:#1e293b !important;
+}
+
+body.dark-mode .table tbody tr{
+    background:#1e293b !important;
+}
+
+body.dark-mode .table tbody td{
+    background:#1e293b !important;
+    color:#e5e7eb !important;
+    border-color:#334155 !important;
+}
+
+body.dark-mode .table tbody tr:hover td{
+    background:#253348 !important;
+}
+
+/* Bootstrap striping remove */
+body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) > *{
+    background:#1e293b !important;
+    color:#e5e7eb !important;
+}
+
+/* Bootstrap table background variable */
+body.dark-mode .table > :not(caption) > * > *{
+    background:#1e293b !important;
+    color:#e5e7eb !important;
+    box-shadow:none !important;
+}
+
+/* ===================================================
+User
+===================================================*/
+
+body.dark-mode .avatar{
+    background:#2563eb;
+    color:#fff;
+}
+
+body.dark-mode .user-name{
+    color:#fff;
+}
+
+body.dark-mode .user-id{
+    color:#94a3b8;
+}
+
+/* ===================================================
+Role Badges
+===================================================*/
+
+body.dark-mode .role-super_admin{
+    background:#7f1d1d;
+    color:#fecaca;
+}
+
+body.dark-mode .role-admin{
+    background:#1e3a8a;
+    color:#bfdbfe;
+}
+
+body.dark-mode .role-agent{
+    background:#14532d;
+    color:#bbf7d0;
+}
+
+body.dark-mode .role-employee{
+    background:#334155;
+    color:#e2e8f0;
+}
+
+/* ===================================================
+Invitation Status
+===================================================*/
+
+body.dark-mode .status.pending{
+    background:#78350f;
+    color:#fde68a;
+}
+
+body.dark-mode .status.accepted{
+    background:#14532d;
+    color:#bbf7d0;
+}
+
+body.dark-mode .status.expired{
+    background:#334155;
+    color:#cbd5e1;
+}
+
+body.dark-mode .status.revoked{
+    background:#7f1d1d;
+    color:#fecaca;
+}
+
+/* ===================================================
+Buttons
+===================================================*/
+
+body.dark-mode .btn-outline-primary{
+    border-color:#3b82f6;
+    color:#60a5fa;
+    background:transparent;
+}
+
+body.dark-mode .btn-outline-primary:hover{
+    background:#2563eb;
+    color:#fff;
+}
+
+body.dark-mode .invite-btn{
+    color:#fff;
+}
+
+/* ===================================================
+Empty State
+===================================================*/
+
+body.dark-mode .empty-state h5{
+    color:#fff;
+}
+
+body.dark-mode .empty-state p{
+    color:#94a3b8;
+}
+
+body.dark-mode .empty-state i{
+    color:#475569;
+}
+
+/* ===================================================
+Bootstrap Overrides
+===================================================*/
+
+body.dark-mode .form-control,
+body.dark-mode .form-select{
+    background:#0f172a;
+    border-color:#334155;
+    color:#fff;
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus{
+    background:#0f172a;
+    color:#fff;
+    border-color:#2563eb;
+    box-shadow:0 0 0 .15rem rgba(37,99,235,.25);
+}
+
+body.dark-mode .dropdown-menu{
+    background:#1e293b;
+    border:1px solid #334155;
+}
+
+body.dark-mode .dropdown-item{
+    color:#e2e8f0;
+}
+
+body.dark-mode .dropdown-item:hover{
+    background:#273549;
+    color:#fff;
+}
+</style>
+<div class="user-management">
+
+    <!-- Header -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h2 class="page-title">
+
+                User Management
+            </h2>
+
+            <p class="page-subtitle">
+                Manage invitations and user onboarding.
+            </p>
+
+        </div>
+
+        <a href="{% url 'invite_user' %}" class="btn btn-primary invite-btn">
+
+            <i class="bi bi-person-plus me-2"></i>
+
+            Invite User
+
+        </a>
+
+    </div>
+
+
+    <!-- Tabs -->
+
+    <div class="tabs-wrapper">
+
+        <a href="{% url 'users_list' %}" class="tab">
+
+            <i class="bi bi-people"></i>
+
+            Users
+
+        </a>
+
+        <a href="{% url 'invitation_list' %}" class="tab active">
+
+            <i class="bi bi-envelope"></i>
+
+            Invitations
+
+            <span>
+
+                {{ invitations.count }}
+
+            </span>
+
+        </a>
+
+    </div>
+
+
+    <!-- Cards -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-lg-3">
+
+            <div class="summary-card summary-orange">
+
+                <div class="summary-icon">
+
+                    <i class="bi bi-clock-history"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>{{ pending_count }}</h3>
+
+                    <span>Pending</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="summary-card summary-green">
+
+                <div class="summary-icon">
+
+                    <i class="bi bi-check-circle"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>{{ accepted_count }}</h3>
+
+                    <span>Accepted</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="summary-card summary-gray">
+
+                <div class="summary-icon">
+
+                    <i class="bi bi-hourglass"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>{{ expired_count }}</h3>
+
+                    <span>Expired</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="summary-card summary-red">
+
+                <div class="summary-icon">
+
+                    <i class="bi bi-x-circle"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>{{ revoked_count }}</h3>
+
+                    <span>Revoked</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Filter -->
+
+    <div class="filter-card">
+
+        <form method="get">
+
+            <div class="row align-items-center g-2">
+
+                <div class="col-lg-6">
+
+                    <div class="filter-search-box">
+
+                        <i class="bi bi-search"></i>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="search"
+                            placeholder="Search by email or name"
+                            value="{{ request.GET.search }}">
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-2">
+
+                    <select
+                        class="filter-form-select"
+                        name="status">
+
+                        <option value="">All Status</option>
+
+                        <option value="PENDING"
+                            {% if request.GET.status == "PENDING" %}selected{% endif %}>
+                            Pending
+                        </option>
+
+                        <option value="ACCEPTED"
+                            {% if request.GET.status == "ACCEPTED" %}selected{% endif %}>
+                            Accepted
+                        </option>
+
+                        <option value="EXPIRED"
+                            {% if request.GET.status == "EXPIRED" %}selected{% endif %}>
+                            Expired
+                        </option>
+
+                        <option value="REVOKED"
+                            {% if request.GET.status == "REVOKED" %}selected{% endif %}>
+                            Revoked
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-lg-2 d-grid">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary filter-btn">
+
+                        <i class="bi bi-search me-1"></i>
+
+                        Apply
+
+                    </button>
+
+                </div>
+
+                <div class="col-lg-2 d-grid">
+
+                    <a
+                        href="{% url 'invitation_list' %}"
+                        class="btn btn-outline-secondary filter-btn">
+
+                        <i class="bi bi-arrow-clockwise me-1"></i>
+
+                        Clear
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- Table -->
+
+    <div class="table-card">
+
+        <table class="table align-middle">
+
+            <thead>
+
+            <tr>
+
+                <th>Invitee</th>
+
+                <th>Role</th>
+
+                <th>Department</th>
+
+                <th>Status</th>
+
+                <th>Invited By</th>
+
+                <th>Expiry</th>
+
+                <th class="text-end">Actions</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for invite in invitations %}
+
+                <tr>
+
+                    <td>
+
+                        <div class="user-info">
+
+                            <div class="avatar">
+
+                                {{ invite.first_name|first|upper }}
+
+                            </div>
+
+                            <div>
+
+                                <div class="user-name">
+
+                                    {{ invite.first_name }}
+                                    {{ invite.last_name }}
+
+                                </div>
+
+                                <div class="user-id">
+
+                                    {{ invite.email }}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+<span class="role role-{{ invite.role|lower }}">
+
+{{ invite.get_role_display }}
+
+</span>
+
+                    </td>
+
+                    <td>
+
+                        {{ invite.department }}
+
+                    </td>
+
+                    <td>
+
+<span class="status {{ invite.status|lower }}">
+
+{{ invite.get_status_display }}
+
+</span>
+
+                    </td>
+
+                    <td>
+
+                        {{ invite.invited_by.first_name }}
+
+                    </td>
+
+                    <td>
+
+{{ invite.expires_at|date:"d M Y" }}
+
+                    </td>
+
+                    <td class="text-end">
+
+                        <div class="dropdown">
+
+                            <button
+                                class="btn btn-outline-primary btn-sm dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+
+                                Manage
+
+                            </button>
+
+                            <ul class="dropdown-menu dropdown-menu-end">
+
+                                {% if invite.status == "PENDING" %}
+
+                                    <li>
+
+                                        <a class="dropdown-item"
+                                           href="{% url 'resend_invitation' invite.id %}">
+
+                                            <i class="bi bi-send me-2"></i>
+
+                                            Resend Invitation
+
+                                        </a>
+
+                                    </li>
+
+                                    <li>
+
+                                        <a class="dropdown-item text-warning"
+                                           href="{% url 'revoke_invitation' invite.id %}">
+
+                                            <i class="bi bi-x-circle me-2"></i>
+
+                                            Revoke
+
+                                        </a>
+
+                                    </li>
+
+                                {% endif %}
+
+                                {% if invite.status == "EXPIRED" %}
+
+                                    <li>
+
+                                        <a class="dropdown-item"
+                                           href="{% url 'resend_invitation' invite.id %}">
+
+                                            <i class="bi bi-send me-2"></i>
+
+                                            Resend Invitation
+
+                                        </a>
+
+                                    </li>
+
+                                {% endif %}
+
+                                {% if invite.status == "ACCEPTED" %}
+
+                                    <li>
+
+                                        <a class="dropdown-item disabled">
+
+                                            <i class="bi bi-check-circle me-2"></i>
+
+                                            Accepted
+
+                                        </a>
+
+                                    </li>
+
+                                {% endif %}
+
+                                <li><hr class="dropdown-divider"></li>
+
+                                <li>
+
+                                    <a class="dropdown-item text-danger"
+                                       href="{% url 'delete_invitation' invite.id %}">
+
+                                        <i class="bi bi-trash me-2"></i>
+
+                                        Delete
+
+                                    </a>
+
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+<tr>
+
+<td colspan="7">
+
+<div class="empty-state">
+
+<i class="bi bi-envelope-open"></i>
+
+<h5>
+
+No Invitations Found
+
+</h5>
+
+<p>
+
+Invite your first user.
+
+</p>
+
+</div>
+
+</td>
+
+</tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,431 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Tenant Management
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.tenant-page{ animation:fadeIn .25s ease; }
+
+@keyframes fadeIn{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:none; }
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+    gap:16px;
+}
+
+.page-title{ font-size:24px; font-weight:700; color:#111827; margin-bottom:2px; }
+.page-subtitle{ color:#64748b; font-size:13px; margin:0; }
+
+.summary-card{
+    background:#fff;
+    border-radius:16px;
+    padding:16px 18px;
+    border:1px solid #edf2f7;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.summary-icon{
+    width:40px; height:40px;
+    border-radius:10px;
+    background:#eff6ff;
+    color:#2563eb;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px;
+    flex-shrink:0;
+}
+
+.summary-card h3{ margin:0; font-size:22px; font-weight:700; color:#111827; }
+.summary-card span{ font-size:13px; color:#64748b; }
+
+.filter-card{
+    background:#fff;
+    border-radius:16px;
+    padding:14px 16px;
+    margin-bottom:22px;
+    border:1px solid #edf2f7;
+}
+
+.filter-search-box{ position:relative; }
+.filter-search-box i{ position:absolute; left:14px; top:50%; transform:translateY(-50%); color:#94a3b8; }
+.filter-search-box input{ padding-left:36px; }
+
+.tenant-card{
+    background:#fff;
+    border:1px solid #edf2f7;
+    border-radius:16px;
+    padding:20px 22px;
+    cursor:pointer;
+    transition:.2s;
+    height:100%;
+}
+
+.tenant-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 30px rgba(15,23,42,.08);
+    border-color:#bfdbfe;
+}
+
+.tenant-icon{
+    width:40px; height:40px;
+    border-radius:10px;
+    background:#eff6ff;
+    color:#2563eb;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px;
+    margin-bottom:12px;
+}
+
+.tenant-name{ font-size:16px; font-weight:700; color:#111827; margin-bottom:2px; }
+.tenant-slug{ font-family:monospace; font-size:12.5px; color:#94a3b8; margin-bottom:12px; }
+
+.plan-badge{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:20px;
+    font-size:11.5px;
+    font-weight:700;
+    margin-right:6px;
+}
+
+.plan-trial{ background:#fef9c3; color:#a16207; }
+.plan-starter{ background:#e0f2fe; color:#0369a1; }
+.plan-professional{ background:#ede9fe; color:#6d28d9; }
+.plan-enterprise{ background:#fce7f3; color:#be185d; }
+
+.status-badge{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:20px;
+    font-size:11.5px;
+    font-weight:700;
+}
+
+.status-active{ background:#2563eb; color:#fff; }
+.status-inactive{ background:#f1f5f9; color:#64748b; }
+
+.tenant-meta{
+    display:flex;
+    gap:16px;
+    color:#64748b;
+    font-size:13px;
+    margin:12px 0 8px 0;
+}
+
+.tenant-trial-note{ color:#d97706; font-size:12.5px; font-weight:600; }
+.tenant-created-note{ color:#94a3b8; font-size:12.5px; }
+
+.empty-state{ text-align:center; padding:60px 20px; }
+.empty-state i{ font-size:54px; color:#cbd5e1; margin-bottom:16px; display:block; }
+.empty-state h5{ color:#334155; margin-bottom:8px; }
+.empty-state p{ color:#94a3b8; margin:0; }
+
+/* Modal */
+
+.cfg-modal-overlay{
+    position:fixed; inset:0;
+    background:rgba(15,23,42,.45);
+    display:none;
+    justify-content:center; align-items:center;
+    z-index:9999;
+    padding:20px;
+}
+
+.cfg-modal{
+    width:480px; max-width:100%;
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 25px 60px rgba(0,0,0,.25);
+    padding:22px 24px;
+}
+
+.cfg-modal-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+.cfg-modal-title{ font-size:16px; font-weight:700; color:#111827; }
+.cfg-modal-close{
+    border:1px solid #e2e8f0; background:#fff; border-radius:8px;
+    width:30px; height:30px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+}
+
+.form-label{ font-size:13px; font-weight:600; color:#334155; }
+.form-control, .form-select{ border-radius:10px; font-size:14px; }
+
+.config-alert{
+    transition:opacity .5s ease, max-height .5s ease, margin .5s ease, padding .5s ease;
+    overflow:hidden;
+}
+
+.config-alert.fade-out{ opacity:0; max-height:0; margin:0; padding:0; border-width:0; }
+
+/* Dark mode */
+
+body.dark-mode .page-title{ color:#f8fafc; }
+body.dark-mode .page-subtitle{ color:#94a3b8; }
+body.dark-mode .summary-card{ background:#1e293b; border-color:#334155; }
+body.dark-mode .summary-card h3{ color:#f8fafc; }
+body.dark-mode .filter-card{ background:#1e293b; border-color:#334155; }
+body.dark-mode .tenant-card{ background:#1e293b; border-color:#334155; }
+body.dark-mode .tenant-card:hover{ border-color:#2563eb; }
+body.dark-mode .tenant-name{ color:#f8fafc; }
+body.dark-mode .tenant-meta{ color:#94a3b8; }
+body.dark-mode .cfg-modal{ background:#1e293b; }
+body.dark-mode .cfg-modal-title{ color:#f8fafc; }
+body.dark-mode .cfg-modal-close{ background:#0f172a; border-color:#334155; color:#f8fafc; }
+body.dark-mode .form-label{ color:#e2e8f0; }
+
+body.dark-mode .form-control,
+body.dark-mode .form-select{
+    background-color:#0f172a;
+    border-color:#334155;
+    color:#e2e8f0;
+}
+body.dark-mode .form-control::placeholder{ color:#64748b; }
+body.dark-mode .form-select option{ background:#0f172a; color:#e2e8f0; }
+body.dark-mode .filter-search-box i{ color:#64748b; }
+
+body.dark-mode .alert-success{ background:#052e1a; color:#86efac; border-color:#14532d; }
+body.dark-mode .alert-error, body.dark-mode .alert-danger{ background:#450a0a; color:#fca5a5; border-color:#7f1d1d; }
+
+body.dark-mode .empty-state h5{ color:#fff; }
+body.dark-mode .empty-state p{ color:#94a3b8; }
+
+</style>
+
+<div class="tenant-page">
+
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">Tenant Management</h2>
+            <p class="page-subtitle">Manage organizations using this platform.</p>
+        </div>
+
+        <button class="btn btn-primary" onclick="openModal('createTenantModal')">
+            <i class="bi bi-plus-circle me-2"></i> New Tenant
+        </button>
+    </div>
+
+    {% if messages %}
+        <div id="tenantMessages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} config-alert">{{ message }}</div>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Summary Cards -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-3 col-6">
+            <div class="summary-card">
+                <div class="summary-icon"><i class="bi bi-building"></i></div>
+                <div>
+                    <h3>{{ total_tenants }}</h3>
+                    <span>Total Tenants</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-6">
+            <div class="summary-card">
+                <div class="summary-icon"><i class="bi bi-eye"></i></div>
+                <div>
+                    <h3>{{ active_tenants }}</h3>
+                    <span>Active</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-6">
+            <div class="summary-card">
+                <div class="summary-icon"><i class="bi bi-eye"></i></div>
+                <div>
+                    <h3>{{ trial_tenants }}</h3>
+                    <span>Trial</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-6">
+            <div class="summary-card">
+                <div class="summary-icon"><i class="bi bi-people"></i></div>
+                <div>
+                    <h3>{{ total_users }}</h3>
+                    <span>Total Users</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Filters -->
+
+    <div class="filter-card">
+        <form method="get">
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <div class="filter-search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" class="form-control" name="search"
+                               placeholder="Search tenants..." value="{{ request.GET.search }}">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <select class="form-select" name="plan" onchange="this.form.submit()">
+                        <option value="">All Plans</option>
+                        {% for value, label in plans %}
+                        <option value="{{ value }}" {% if request.GET.plan == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <button class="btn btn-outline-primary w-100" type="submit">
+                        <i class="bi bi-search me-1"></i> Search
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <!-- Tenant Cards -->
+
+    <div class="row g-3">
+
+        {% for tenant in tenants %}
+        <div class="col-lg-4 col-md-6">
+            <div class="tenant-card" onclick="window.location.href='{% url 'tenant_detail' tenant.id %}'">
+
+                <div class="tenant-icon"><i class="bi bi-building"></i></div>
+
+                <div class="tenant-name">{{ tenant.name }}</div>
+                <div class="tenant-slug">{{ tenant.slug }}</div>
+
+                <div>
+                    <span class="plan-badge plan-{{ tenant.plan|lower }}">{{ tenant.get_plan_display }}</span>
+                    {% if tenant.is_active %}
+                    <span class="status-badge status-active">Active</span>
+                    {% else %}
+                    <span class="status-badge status-inactive">Inactive</span>
+                    {% endif %}
+                </div>
+
+                <div class="tenant-meta">
+                    <span><i class="bi bi-people me-1"></i>{{ tenant.total_users }} user{{ tenant.total_users|pluralize }}</span>
+                    <span><i class="bi bi-ticket me-1"></i>{{ tenant.total_tickets }} tickets</span>
+                </div>
+
+                {% if tenant.plan == 'TRIAL' and tenant.trial_ends_at %}
+                <div class="tenant-trial-note">Trial ends {{ tenant.trial_ends_at|date:"M j, Y" }}</div>
+                {% endif %}
+
+                <div class="tenant-created-note">Created {{ tenant.created_at|date:"M j, Y" }}</div>
+
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="empty-state">
+                <i class="bi bi-building"></i>
+                <h5>No tenants yet</h5>
+                <p>Click "New Tenant" to add your first organization.</p>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<!-- Create Tenant Modal -->
+
+<div class="cfg-modal-overlay" id="createTenantModal">
+    <div class="cfg-modal">
+
+        <div class="cfg-modal-header">
+            <div class="cfg-modal-title">Create New Tenant</div>
+            <button type="button" class="cfg-modal-close" onclick="closeModal('createTenantModal')">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <form method="post" action="{% url 'create_tenant' %}">
+            {% csrf_token %}
+
+            <label class="form-label">Organization Name</label>
+            <input type="text" class="form-control mb-3" name="name" id="tenantName"
+                   placeholder="Acme Corporation" oninput="autoSlug()" required>
+
+            <label class="form-label">Slug (URL identifier)</label>
+            <input type="text" class="form-control mb-3" name="slug" id="tenantSlug" placeholder="acme-corporation">
+
+            <label class="form-label">Plan</label>
+            <select class="form-select mb-3" name="plan">
+                <option value="TRIAL">Trial</option>
+                <option value="STARTER">Starter</option>
+                <option value="PROFESSIONAL">Professional</option>
+                <option value="ENTERPRISE">Enterprise</option>
+            </select>
+
+            <label class="form-label">Max Users (optional)</label>
+            <input type="number" class="form-control mb-3" name="max_users" placeholder="Unlimited">
+
+            <label class="form-label">Notes (optional)</label>
+            <input type="text" class="form-control mb-3" name="notes" placeholder="Internal notes...">
+
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-light" onclick="closeModal('createTenantModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">Create Tenant</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<script>
+
+document.querySelectorAll(".config-alert").forEach(function(alertEl){
+    setTimeout(function(){
+        alertEl.classList.add("fade-out");
+        setTimeout(function(){ alertEl.remove(); }, 500);
+    }, 6000);
+});
+
+function openModal(id){ document.getElementById(id).style.display = "flex"; }
+function closeModal(id){ document.getElementById(id).style.display = "none"; }
+
+document.querySelectorAll(".cfg-modal-overlay").forEach(function(overlay){
+    overlay.addEventListener("click", function(e){
+        if(e.target === overlay){ overlay.style.display = "none"; }
+    });
+});
+
+function autoSlug(){
+    const name = document.getElementById("tenantName").value;
+    document.getElementById("tenantSlug").value = name
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+}
+
+</script>
+
+{% endblock %}

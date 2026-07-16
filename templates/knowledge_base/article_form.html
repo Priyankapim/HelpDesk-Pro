@@ -1,0 +1,632 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{% if article %}Edit Article{% else %}New Article{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ===================================================
+                KB ARTICLE FORM PAGE
+===================================================*/
+
+.kb-form-page{
+    animation:fadeIn .25s ease;
+    max-width:900px;
+    margin:0 auto;
+}
+
+@keyframes fadeIn{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:none; }
+}
+
+.kb-form-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+    gap:12px;
+}
+
+.kb-form-header-left{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.kb-back-btn{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#475569;
+    text-decoration:none;
+    font-size:16px;
+}
+
+.kb-back-btn:hover{
+    background:#f1f5f9;
+    color:#111827;
+}
+
+.kb-form-title{
+    font-size:20px;
+    font-weight:700;
+    color:#111827;
+    margin:0;
+}
+
+.kb-form-header-right{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.kb-status-select{
+    height:38px;
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+    font-size:13px;
+    font-weight:600;
+    padding:0 30px 0 12px;
+}
+
+.kb-save-btn{
+    height:38px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.kb-form-card{
+    background:#fff;
+    border:1px solid #edf2f7;
+    border-radius:16px;
+    padding:24px;
+}
+
+.kb-form-card .form-label{
+    font-size:13px;
+    font-weight:600;
+    color:#334155;
+    margin-bottom:6px;
+}
+
+.kb-form-card .form-control,
+.kb-form-card .form-select{
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+    font-size:14px;
+}
+
+.kb-form-card .form-control:focus,
+.kb-form-card .form-select:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.12);
+}
+
+.kb-ai-btn{
+    height:30px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:600;
+    border:1px solid #e2e8f0;
+    background:#f8fafc;
+    color:#475569;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:0 12px;
+}
+
+.kb-ai-btn:hover{
+    background:#eef2ff;
+    color:#4338ca;
+    border-color:#c7d2fe;
+}
+
+.kb-ai-btn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.kb-field-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:6px;
+}
+
+.kb-settings-box{
+    background:#f8fafc;
+    border:1px solid #edf2f7;
+    border-radius:14px;
+    padding:20px;
+    margin-top:20px;
+}
+
+.kb-settings-label{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:#94a3b8;
+    margin-bottom:16px;
+}
+
+.kb-toggle-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#fff;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    padding:14px 16px;
+    margin-top:16px;
+}
+
+.kb-toggle-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.kb-toggle-icon{
+    width:36px;
+    height:36px;
+    border-radius:10px;
+    background:#f1f5f9;
+    color:#475569;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:15px;
+}
+
+.kb-toggle-title{
+    font-size:14px;
+    font-weight:600;
+    color:#111827;
+}
+
+.kb-toggle-text{
+    font-size:12px;
+    color:#64748b;
+}
+
+.kb-form-card .form-check-input{
+    width:42px;
+    height:22px;
+    cursor:pointer;
+}
+
+.kb-tags-box{
+    margin-top:16px;
+}
+
+.kb-tag-input-row{
+    display:flex;
+    gap:8px;
+}
+
+.kb-tag-chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:12px;
+}
+
+.kb-tag-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:#eef2ff;
+    color:#4338ca;
+    font-size:12px;
+    font-weight:600;
+    padding:5px 10px;
+    border-radius:14px;
+}
+
+.kb-tag-chip i{
+    cursor:pointer;
+    font-size:11px;
+}
+
+.kb-form-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:20px;
+}
+
+.kb-delete-btn{
+    font-size:13px;
+    font-weight:600;
+}
+
+/* Dark mode */
+
+body.dark-mode .kb-form-card,
+body.dark-mode .kb-back-btn{
+    background:#1e293b;
+    border-color:#334155;
+}
+
+body.dark-mode .kb-settings-box,
+body.dark-mode .kb-toggle-row{
+    background:#0f172a;
+    border-color:#334155;
+}
+
+body.dark-mode .kb-toggle-icon{
+    background:#1e293b;
+}
+
+body.dark-mode .kb-ai-btn{
+    background:#0f172a;
+    border-color:#334155;
+    color:#cbd5e1;
+}
+
+</style>
+
+<div class="kb-form-page">
+
+    <form method="POST" id="articleForm">
+
+        {% csrf_token %}
+
+        <!-- Header -->
+
+        <div class="kb-form-header">
+
+            <div class="kb-form-header-left">
+
+                <a href="{% url 'knowledge_base_list' %}" class="kb-back-btn">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+
+                <h5 class="kb-form-title">
+                    {% if article %}Edit Article{% else %}New Article{% endif %}
+                </h5>
+
+            </div>
+
+            <div class="kb-form-header-right">
+
+                <select name="status" class="form-select kb-status-select">
+                    <option value="DRAFT" {% if article.status == 'DRAFT' or not article %}selected{% endif %}>Draft</option>
+                    <option value="PUBLISHED" {% if article.status == 'PUBLISHED' %}selected{% endif %}>Published</option>
+                    <option value="ARCHIVED" {% if article.status == 'ARCHIVED' %}selected{% endif %}>Archived</option>
+                </select>
+
+                <button type="submit" class="btn btn-primary kb-save-btn">
+                    <i class="bi bi-floppy"></i> Save
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Alerts -->
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Card -->
+
+        <div class="kb-form-card">
+
+            <div class="mb-3">
+                <label class="form-label">Title <span class="text-danger">*</span></label>
+                <input type="text" name="title" id="articleTitle" class="form-control"
+                       placeholder="Article title..." value="{{ article.title|default:'' }}" required>
+            </div>
+
+            <div class="mb-3">
+
+                <div class="kb-field-row">
+                    <label class="form-label mb-0">Summary</label>
+                    <button type="button" id="aiGenerateBtn" class="kb-ai-btn">
+                        <i class="bi bi-stars"></i> AI Generate
+                    </button>
+                </div>
+
+                <textarea name="summary" id="articleSummary" class="form-control" rows="3"
+                          placeholder="Brief summary shown in article cards...">{{ article.summary|default:'' }}</textarea>
+
+            </div>
+
+            <div class="mb-2">
+                <label class="form-label">Content <span class="text-danger">*</span></label>
+                <textarea name="content" id="articleContent" class="form-control" rows="10"
+                          placeholder="Write the full article content here..." required>{{ article.content|default:'' }}</textarea>
+            </div>
+
+            <!-- Article Settings -->
+
+            <div class="kb-settings-box">
+
+                <div class="kb-settings-label">Article Settings</div>
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label class="form-label">Department</label>
+                        <select name="department" id="departmentSelect" class="form-select">
+                            <option value="">No department</option>
+                            {% for dept in departments %}
+                            <option value="{{ dept.id }}"
+                                {% if article.department_id == dept.id %}selected{% endif %}>
+                                {{ dept.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Category</label>
+                        <select name="category" id="categorySelect" class="form-select">
+                            <option value="">No category</option>
+                            {% for value, label in category_choices %}
+                            <option value="{{ value }}"
+                                {% if article.category == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="kb-toggle-row">
+
+                    <div class="kb-toggle-left">
+
+                        <div class="kb-toggle-icon">
+                            <i class="bi bi-lock"></i>
+                        </div>
+
+                        <div>
+                            <div class="kb-toggle-title">Internal only</div>
+                            <div class="kb-toggle-text">Only visible to agents and admins</div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-check form-switch mb-0">
+                        <input class="form-check-input" type="checkbox" name="is_internal"
+                               {% if article.is_internal %}checked{% endif %}>
+                    </div>
+
+                </div>
+
+                <div class="kb-tags-box">
+
+                    <label class="form-label">Tags</label>
+
+                    <div class="kb-tag-input-row">
+                        <input type="text" id="tagInput" class="form-control"
+                               placeholder="Add tag and press Enter">
+                        <button type="button" id="addTagBtn" class="btn btn-outline-secondary">Add</button>
+                    </div>
+
+                    <div class="kb-tag-chips" id="tagChips"></div>
+
+                    <input type="hidden" name="tags" id="tagsHidden" value="{{ article.tags|default:'' }}">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+
+        <div class="kb-form-footer">
+
+            <div>
+                {% if article %}
+                <button type="button" class="btn btn-outline-danger kb-delete-btn"
+                        data-bs-toggle="modal" data-bs-target="#deleteArticleModal">
+                    <i class="bi bi-trash"></i> Delete Article
+                </button>
+                {% endif %}
+            </div>
+
+            <div>
+                <a href="{% url 'knowledge_base_list' %}" class="btn btn-light">Cancel</a>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% if article %}
+<!-- Delete Confirmation Modal -->
+
+<div class="modal fade" id="deleteArticleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border:none;border-radius:16px;">
+            <div class="modal-header" style="border-bottom:1px solid #edf2f7;">
+                <h5 class="modal-title">Delete Article</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete "<strong>{{ article.title }}</strong>"?
+                This action cannot be undone.
+            </div>
+            <div class="modal-footer" style="border-top:1px solid #edf2f7;">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" action="{% url 'kb_article_delete' article.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+
+/* ---------- Tags ---------- */
+
+let kbTags = [];
+
+const tagsHidden = document.getElementById("tagsHidden");
+const tagChips = document.getElementById("tagChips");
+const tagInput = document.getElementById("tagInput");
+
+function kbRenderTags(){
+    tagChips.innerHTML = "";
+    kbTags.forEach(function(tag, index){
+        const chip = document.createElement("span");
+        chip.className = "kb-tag-chip";
+        chip.innerHTML = tag + ' <i class="bi bi-x-lg" data-index="' + index + '"></i>';
+        tagChips.appendChild(chip);
+    });
+    tagsHidden.value = kbTags.join(",");
+}
+
+function kbAddTag(){
+    const value = tagInput.value.trim().toLowerCase();
+    if(value && kbTags.indexOf(value) === -1){
+        kbTags.push(value);
+        kbRenderTags();
+    }
+    tagInput.value = "";
+}
+
+document.getElementById("addTagBtn").addEventListener("click", kbAddTag);
+
+tagInput.addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+        e.preventDefault();
+        kbAddTag();
+    }
+});
+
+tagChips.addEventListener("click", function(e){
+    if(e.target.tagName === "I"){
+        const index = parseInt(e.target.getAttribute("data-index"));
+        kbTags.splice(index, 1);
+        kbRenderTags();
+    }
+});
+
+(function initTags(){
+    const initial = tagsHidden.value.trim();
+    if(initial){
+        kbTags = initial.split(",").map(t => t.trim()).filter(t => t.length > 0);
+        kbRenderTags();
+    }
+})();
+
+/* ---------- Category filtered by Department ---------- */
+
+const departmentSelect = document.getElementById("departmentSelect");
+const categorySelect = document.getElementById("categorySelect");
+const categoryOptions = Array.from(categorySelect.options);
+const departmentCategoryMap = {{ department_category_map|safe }};
+
+function kbFilterCategories(){
+
+    const deptName = departmentSelect.options[departmentSelect.selectedIndex]
+        ? departmentSelect.options[departmentSelect.selectedIndex].text.trim()
+        : "";
+
+    const allowedCategories = departmentCategoryMap[deptName];
+
+    categoryOptions.forEach(function(opt){
+
+        if(!opt.value){
+            opt.hidden = false;
+            return;
+        }
+
+        if(!deptName || !allowedCategories){
+            // No department selected, or department has no mapped
+            // categories yet -> show every category.
+            opt.hidden = false;
+            return;
+        }
+
+        opt.hidden = allowedCategories.indexOf(opt.value) === -1;
+    });
+
+    // If the currently selected category got hidden, reset to "No category"
+    const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+    if(selectedOption && selectedOption.hidden){
+        categorySelect.value = "";
+    }
+}
+
+departmentSelect.addEventListener("change", kbFilterCategories);
+kbFilterCategories();
+
+/* ---------- AI Generate Summary ---------- */
+
+document.getElementById("aiGenerateBtn").addEventListener("click", function(){
+
+    const btn = this;
+    const content = document.getElementById("articleContent").value;
+    const title = document.getElementById("articleTitle").value;
+
+    if(!content.trim()){
+        alert("Write some article content first.");
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Generating...';
+
+    fetch("{% url 'kb_ai_generate_summary' %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+        },
+        body: JSON.stringify({ title: title, content: content })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success){
+            document.getElementById("articleSummary").value = data.summary;
+        } else {
+            alert(data.error || "Could not generate summary.");
+        }
+    })
+    .catch(() => {
+        alert("Something went wrong while generating the summary.");
+    })
+    .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-stars"></i> AI Generate';
+    });
+
+});
+
+</script>
+
+{% endblock %}

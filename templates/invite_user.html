@@ -1,0 +1,793 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Invite User
+{% endblock %}
+
+{% block page_title %}
+Invite User
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /*=====================================================
+INVITE USER
+======================================================*/
+
+.invite-page{
+
+    display:flex;
+    justify-content:center;
+    padding:15px 10px;
+
+}
+
+.invite-modal{
+
+    width:100%;
+    max-width:620px;
+
+    background:#ffffff;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 25px 60px rgba(15,23,42,.18);
+
+    border:1px solid #e5e7eb;
+
+}
+
+/*=====================================================
+HEADER
+======================================================*/
+
+.invite-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+
+    padding:24px 28px 18px;
+
+    border-bottom:1px solid #eef2f7;
+
+}
+
+.invite-title{
+
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+
+}
+
+.invite-title i{
+
+    font-size:23px;
+    color:#2563eb;
+
+    margin-top:2px;
+
+}
+
+.invite-title h2{
+
+    font-size:25px;
+    font-weight:700;
+    margin:0;
+    color:#111827;
+
+}
+
+.invite-title p{
+
+    margin:4px 0 0;
+    font-size:13px;
+    color:#64748b;
+    line-height:1.5;
+
+}
+
+.close-btn{
+
+    border:none;
+    background:none;
+
+    font-size:24px;
+    color:#64748b;
+
+    cursor:pointer;
+
+}
+
+/*=====================================================
+BODY
+======================================================*/
+
+.invite-body{
+
+    padding:24px 28px;
+
+}
+
+.section-title{
+
+    font-size:12px;
+
+    font-weight:700;
+
+    letter-spacing:.8px;
+
+    color:#64748b;
+
+    text-transform:uppercase;
+
+    margin-bottom:12px;
+
+}
+
+/*=====================================================
+LABELS
+======================================================*/
+
+.invite-page .form-label{
+
+    font-size:13px;
+
+    font-weight:600;
+
+    color:#111827;
+
+    margin-bottom:6px;
+
+}
+
+/*=====================================================
+INPUTS
+======================================================*/
+
+.invite-page .form-control,
+.invite-page .form-select{
+
+    height:42px;
+
+    border-radius:10px;
+
+    border:1px solid #d6dde8;
+
+    font-size:13px;
+
+    box-shadow:none;
+
+}
+
+.form-control:focus,
+.form-select:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 0 .18rem rgba(37,99,235,.15);
+
+}
+
+textarea.form-control{
+
+    min-height:95px;
+
+    resize:none;
+
+    padding-top:12px;
+
+}
+
+/*=====================================================
+ROW GAP
+======================================================*/
+
+.form-row{
+
+    margin-bottom:18px;
+
+}
+
+/*=====================================================
+SECTION SPACE
+======================================================*/
+
+.section-space{
+
+    margin-top:24px;
+
+}
+
+/*=====================================================
+TOGGLE CARD
+======================================================*/
+
+.invite-option{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:12px;
+
+    padding:16px 18px;
+
+    margin-top:22px;
+
+}
+
+.invite-option-left{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:12px;
+
+}
+
+.invite-option-left i{
+
+    color:#2563eb;
+
+    font-size:18px;
+
+}
+
+.invite-option-left h6{
+
+    margin:0;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.invite-option-left p{
+
+    margin:2px 0 0;
+
+    color:#64748b;
+
+    font-size:12px;
+
+}
+
+   /*=====================================================
+SWITCH
+======================================================*/
+
+.form-check.form-switch{
+
+    margin:0;
+
+}
+
+.form-switch .form-check-input{
+
+    width:48px;
+    height:24px;
+
+    cursor:pointer;
+
+    border:none;
+
+    background-color:#cbd5e1;
+
+}
+
+.form-switch .form-check-input:checked{
+
+    background-color:#2563eb;
+
+}
+
+.form-switch .form-check-input:focus{
+
+    box-shadow:none;
+
+}
+
+/*=====================================================
+FOOTER
+======================================================*/
+
+.invite-footer{
+
+    padding:20px 28px;
+
+    border-top:1px solid #eef2f7;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.btn-cancel{
+
+    min-width:100px;
+
+    height:40px;
+
+    border-radius:10px;
+
+    background:#fff;
+
+    border:1px solid #d1d5db;
+
+    color:#374151;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.btn-cancel:hover{
+
+    background:#f3f4f6;
+
+}
+
+.btn-send{
+
+    min-width:145px;
+
+    height:40px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#2563eb;
+
+    color:#fff;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    transition:.25s;
+
+}
+
+.btn-send:hover{
+
+    background:#1d4ed8;
+
+}
+
+.btn-send i{
+
+    font-size:13px;
+
+}
+
+/*=====================================================
+PLACEHOLDER
+======================================================*/
+
+::placeholder{
+
+    color:#94a3b8 !important;
+
+    font-size:13px;
+
+}
+
+/*=====================================================
+SMALL TEXT
+======================================================*/
+
+small{
+
+    color:#64748b;
+
+    font-size:11px;
+
+}
+
+/*=====================================================
+INVALID
+======================================================*/
+
+.is-invalid{
+
+    border-color:#ef4444 !important;
+
+}
+
+.invalid-feedback{
+
+    font-size:12px;
+
+}
+
+/*=====================================================
+ANIMATION
+======================================================*/
+
+.invite-modal{
+
+    animation:popup .25s ease;
+
+}
+
+@keyframes popup{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(18px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+
+    }
+
+}
+
+/*=====================================================
+DARK MODE
+======================================================*/
+
+body.dark-mode .invite-modal{
+
+    background:#1e293b;
+
+    border:1px solid #334155;
+
+    box-shadow:none;
+
+}
+
+body.dark-mode .invite-header{
+
+    border-color:#334155;
+
+}
+
+body.dark-mode .invite-footer{
+
+    border-color:#334155;
+
+}
+
+body.dark-mode .invite-title h2{
+
+    color:#f8fafc;
+
+}
+
+body.dark-mode .invite-title p{
+
+    color:#94a3b8;
+
+}
+
+body.dark-mode .section-title{
+
+    color:#94a3b8;
+
+}
+
+body.dark-mode .form-label{
+
+    color:#e2e8f0;
+
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select{
+
+    background:#0f172a;
+
+    border:1px solid #334155;
+
+    color:#f8fafc;
+
+}
+
+body.dark-mode .form-control::placeholder{
+
+    color:#64748b;
+
+}
+
+body.dark-mode textarea.form-control{
+
+    background:#0f172a;
+
+}
+
+body.dark-mode .invite-option{
+
+    background:#0f172a;
+
+    border:1px solid #334155;
+
+}
+
+body.dark-mode .invite-option-left h6{
+
+    color:#f8fafc;
+
+}
+
+body.dark-mode .invite-option-left p{
+
+    color:#94a3b8;
+
+}
+
+body.dark-mode .btn-cancel{
+
+    background:#1e293b;
+
+    border:1px solid #334155;
+
+    color:#f8fafc;
+
+}
+
+body.dark-mode .btn-cancel:hover{
+
+    background:#334155;
+
+}
+
+body.dark-mode .close-btn{
+
+    color:#94a3b8;
+
+}
+
+body.dark-mode .form-switch .form-check-input{
+
+    background-color:#475569;
+
+}
+
+body.dark-mode .form-switch .form-check-input:checked{
+
+    background:#2563eb;
+
+}
+
+/*=====================================================
+RESPONSIVE
+======================================================*/
+
+@media(max-width:768px){
+
+.invite-page{
+
+padding:15px;
+
+}
+
+.invite-header{
+
+padding:20px;
+
+}
+
+.invite-body{
+
+padding:20px;
+
+}
+
+.invite-footer{
+
+padding:20px;
+
+flex-direction:column-reverse;
+
+}
+
+.btn-send,
+.btn-cancel{
+
+width:100%;
+
+}
+
+}
+</style>
+
+
+<div class="invite-page">
+
+    <div class="invite-modal">
+
+        <!-- Header -->
+
+        <div class="invite-header">
+
+            <div class="invite-title">
+
+                <i class="bi bi-person-plus"></i>
+
+                <div>
+
+                    <h2>Invite User</h2>
+
+                    <p>
+                        Send an invitation to a new team member.
+                        They will receive a secure invitation link to activate
+                        their account.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a href="{% url 'invitation_list' %}" class="close-btn text-decoration-none">
+
+                <i class="bi bi-x-lg"></i>
+
+            </a>
+
+        </div>
+
+        <!-- Form -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="invite-body">
+
+                <!-- Contact -->
+
+                <div class="section-title">
+
+                    CONTACT DETAILS
+
+                </div>
+
+                <div class="form-row">
+
+                    <label class="form-label">
+
+                        Email Address <span class="text-danger">*</span>
+
+                    </label>
+
+                    {{ form.email }}
+
+                </div>
+
+                <div class="row form-row">
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            First Name
+
+                        </label>
+
+                        {{ form.first_name }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Last Name
+
+                        </label>
+
+                        {{ form.last_name }}
+
+                    </div>
+
+                </div>
+
+                <!-- Role -->
+
+                <div class="section-title section-space">
+
+                    ROLE & ACCESS
+
+                </div>
+
+                <div class="row form-row">
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            System Role
+
+                        </label>
+
+                        {{ form.role }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Department
+
+                        </label>
+
+                        {{ form.department }}
+
+                    </div>
+
+                </div>
+
+                <!-- Info Card -->
+
+
+
+            </div>
+
+            <!-- Footer -->
+
+            <div class="invite-footer">
+
+                <a
+                    href="{% url 'invitation_list' %}"
+                    class="btn btn-cancel">
+
+                    Cancel
+
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn-send">
+
+                    <i class="bi bi-send"></i>
+
+                    Send Invitation
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}
