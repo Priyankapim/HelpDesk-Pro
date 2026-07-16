@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'configuration',
     'knowledge_base',
     'tenants',
+    'tenant_support',
 
 ]
 

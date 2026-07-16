@@ -27,6 +27,7 @@ urlpatterns = [
     path("configuration/", include("configuration.urls")),
     path("knowledge-base/", include("knowledge_base.urls")),
     path("tenant-management/", include("tenants.urls")),
+    path("tenant-support/", include("tenant_support.urls")),
 
 ]
 

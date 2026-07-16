@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Tenant Support Inbox
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.support-page{ animation:fadeIn .25s ease; }
+
+@keyframes fadeIn{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:none; }
+}
+
+.page-header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:20px;
+}
+
+.page-header-icon{
+    width:40px; height:40px;
+    border-radius:10px;
+    background:#eff6ff;
+    color:#2563eb;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px;
+}
+
+.page-title{ font-size:22px; font-weight:700; color:#111827; margin-bottom:2px; }
+.page-subtitle{ color:#64748b; font-size:13px; margin:0; }
+
+.summary-card{
+    background:#fff; border:1px solid #edf2f7; border-radius:16px;
+    padding:16px 18px; display:flex; align-items:center; gap:12px;
+}
+
+.summary-icon{
+    width:40px; height:40px; border-radius:10px;
+    background:#eff6ff; color:#2563eb;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; flex-shrink:0;
+}
+
+.summary-card h3{ margin:0; font-size:22px; font-weight:700; color:#111827; }
+.summary-card span{ font-size:13px; color:#64748b; }
+
+.status-tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.status-tab-link{
+    padding:8px 16px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+    color:#64748b;
+    background:#f1f5f9;
+    text-decoration:none;
+    white-space:nowrap;
+}
+
+.status-tab-link.active{
+    background:#2563eb;
+    color:#fff;
+}
+
+.request-card{
+    background:#fff;
+    border:1px solid #edf2f7;
+    border-radius:14px;
+    padding:16px 20px;
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    text-decoration:none;
+    transition:.2s;
+}
+
+.request-card:hover{
+    box-shadow:0 8px 24px rgba(15,23,42,.08);
+    transform:translateY(-2px);
+}
+
+.request-status-icon{
+    width:38px; height:38px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px;
+    flex-shrink:0;
+}
+
+.status-open .request-status-icon{ background:#dbeafe; color:#2563eb; }
+.status-in_progress .request-status-icon{ background:#fef3c7; color:#b45309; }
+.status-pending_user .request-status-icon{ background:#ede9fe; color:#6d28d9; }
+.status-resolved .request-status-icon{ background:#dcfce7; color:#16a34a; }
+.status-closed .request-status-icon{ background:#f1f5f9; color:#64748b; }
+
+.request-meta{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:12.5px;
+    color:#94a3b8;
+    margin-bottom:4px;
+    flex-wrap:wrap;
+}
+
+.priority-badge{
+    display:inline-block; padding:2px 10px; border-radius:20px;
+    font-size:11px; font-weight:700;
+}
+
+.priority-low{ background:#dcfce7; color:#16a34a; }
+.priority-medium{ background:#fef3c7; color:#b45309; }
+.priority-high{ background:#ffedd5; color:#c2410c; }
+.priority-critical{ background:#fee2e2; color:#dc2626; }
+
+.tenant-chip{
+    background:#f1f5f9; color:#475569;
+    padding:2px 10px; border-radius:20px; font-size:11.5px; font-weight:600;
+}
+
+.request-subject{ font-weight:700; color:#111827; margin-bottom:2px; }
+
+.request-status-badge{
+    padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700;
+    white-space:nowrap;
+}
+
+.status-open .request-status-badge{ background:#dbeafe; color:#2563eb; }
+.status-in_progress .request-status-badge{ background:#fef3c7; color:#b45309; }
+.status-pending_user .request-status-badge{ background:#ede9fe; color:#6d28d9; }
+.status-resolved .request-status-badge{ background:#dcfce7; color:#16a34a; }
+.status-closed .request-status-badge{ background:#f1f5f9; color:#64748b; }
+
+.request-arrow{ color:#cbd5e1; font-size:16px; }
+
+.empty-state{ text-align:center; padding:60px 20px; }
+.empty-state i{ font-size:54px; color:#cbd5e1; margin-bottom:16px; display:block; }
+.empty-state h5{ color:#334155; margin-bottom:8px; }
+.empty-state p{ color:#94a3b8; margin:0; }
+
+/* Dark mode */
+
+body.dark-mode .page-title{ color:#f8fafc; }
+body.dark-mode .page-subtitle{ color:#94a3b8; }
+body.dark-mode .summary-card{ background:#1e293b; border-color:#334155; }
+body.dark-mode .summary-card h3{ color:#f8fafc; }
+body.dark-mode .status-tab-link{ background:#1e293b; color:#94a3b8; }
+body.dark-mode .status-tab-link.active{ background:#2563eb; color:#fff; }
+body.dark-mode .request-card{ background:#1e293b; border-color:#334155; }
+body.dark-mode .request-subject{ color:#f8fafc; }
+body.dark-mode .empty-state h5{ color:#fff; }
+body.dark-mode .empty-state p{ color:#94a3b8; }
+
+</style>
+
+<div class="support-page">
+
+    <div class="page-header">
+        <div class="page-header-icon"><i class="bi bi-person-circle"></i></div>
+        <div>
+            <h2 class="page-title">Tenant Support Inbox</h2>
+            <p class="page-subtitle">Review and respond to support requests raised by tenant administrators.</p>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4 col-6">
+            <div class="summary-card">
+                <div class="summary-icon"><i class="bi bi-chat-dots"></i></div>
+                <div><h3>{{ total_requests }}</h3><span>Total Requests</span></div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-6">
+            <div class="summary-card">
+                <div class="summary-icon"><i class="bi bi-clock"></i></div>
+                <div><h3>{{ active_count }}</h3><span>Active</span></div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-6">
+            <div class="summary-card">
+                <div class="summary-icon"><i class="bi bi-check-circle"></i></div>
+                <div><h3>{{ resolved_count }}</h3><span>Resolved</span></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="status-tabs">
+        <a href="{% url 'support_inbox' %}" class="status-tab-link {% if not current_status %}active{% endif %}">
+            All ({{ total_requests }})
+        </a>
+        {% for value, label in status_choices %}
+        <a href="?status={{ value }}" class="status-tab-link {% if current_status == value %}active{% endif %}">
+            {{ label }}
+        </a>
+        {% endfor %}
+    </div>
+
+    {% for req in requests %}
+    <a href="{% url 'support_detail' req.id %}" class="request-card status-{{ req.status|lower }}">
+
+        <div class="request-status-icon">
+            {% if req.status == 'RESOLVED' %}
+            <i class="bi bi-check-lg"></i>
+            {% elif req.status == 'CLOSED' %}
+            <i class="bi bi-x-lg"></i>
+            {% else %}
+            <i class="bi bi-chat-dots"></i>
+            {% endif %}
+        </div>
+
+        <div class="flex-grow-1">
+            <div class="request-meta">
+                <span>{{ req.ticket_number }}</span>
+                <span class="priority-badge priority-{{ req.priority|lower }}">{{ req.get_priority_display }}</span>
+                <span class="tenant-chip">{{ req.tenant.name }}</span>
+            </div>
+            <div class="request-subject">{{ req.subject }}</div>
+            <div class="text-muted small">{{ req.created_at|timesince }} ago</div>
+        </div>
+
+        <span class="request-status-badge">{{ req.get_status_display }}</span>
+
+        <i class="bi bi-chevron-right request-arrow"></i>
+
+    </a>
+    {% empty %}
+    <div class="empty-state">
+        <i class="bi bi-inbox"></i>
+        <h5>No support requests</h5>
+        <p>Tenant admins haven't raised any support requests yet.</p>
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

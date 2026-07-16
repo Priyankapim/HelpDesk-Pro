@@ -16,6 +16,7 @@ class AuditLog(models.Model):
         ('KNOWLEDGE_BASE', 'Knowledge Base'),
         ('TENANTS', 'Tenants'),
         ('INVITES', 'Invites'),
+        ('SUPPORT', 'Support'),
     )
 
     SEVERITY_CHOICES = (

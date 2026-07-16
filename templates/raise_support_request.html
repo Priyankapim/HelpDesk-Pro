@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Raise Support Request
+{% endblock %}
+
+{% block content %}
+
+<style>
+.raise-card{
+    background:#fff; border:1px solid #edf2f7; border-radius:16px;
+    padding:24px; max-width:600px;
+}
+
+body.dark-mode .raise-card{ background:#1e293b; border-color:#334155; }
+body.dark-mode .raise-card label{ color:#e2e8f0; }
+
+body.dark-mode .raise-card .form-control,
+body.dark-mode .raise-card .form-select{
+    background:#0f172a; border-color:#334155; color:#e2e8f0;
+}
+</style>
+
+<h2 class="mb-1">Raise Support Request</h2>
+<p class="text-muted mb-4">Contact NabiTech for platform-level issues.</p>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="raise-card">
+    <form method="post">
+        {% csrf_token %}
+
+        <label class="form-label fw-semibold">Subject</label>
+        <input type="text" class="form-control mb-3" name="subject" placeholder="e.g. Tickets are not visible" required>
+
+        <label class="form-label fw-semibold">Priority</label>
+        <select class="form-select mb-3" name="priority">
+            <option value="LOW">Low</option>
+            <option value="MEDIUM" selected>Medium</option>
+            <option value="HIGH">High</option>
+            <option value="CRITICAL">Critical</option>
+        </select>
+
+        <label class="form-label fw-semibold">Description</label>
+        <textarea class="form-control mb-3" name="description" rows="5" placeholder="Describe the issue in detail..." required></textarea>
+
+        <button type="submit" class="btn btn-primary">Submit Request</button>
+    </form>
+</div>
+
+{% endblock %}
