@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ support_request.ticket_number }}
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.support-detail-page{ animation:fadeIn .25s ease; }
+
+@keyframes fadeIn{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:none; }
+}
+
+.back-link{ color:#64748b; font-size:18px; margin-right:10px; text-decoration:none; }
+
+.detail-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-bottom:20px;
+}
+
+.detail-header-left{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+
+.ticket-number{ color:#64748b; font-size:14px; font-weight:600; }
+.ticket-title{ font-size:18px; font-weight:700; color:#111827; }
+
+.request-status-badge{ padding:6px 16px; border-radius:20px; font-size:13px; font-weight:700; }
+.status-open .request-status-badge{ background:#dbeafe; color:#2563eb; }
+.status-in_progress .request-status-badge{ background:#fef3c7; color:#b45309; }
+.status-pending_user .request-status-badge{ background:#ede9fe; color:#6d28d9; }
+.status-resolved .request-status-badge{ background:#dcfce7; color:#16a34a; }
+.status-closed .request-status-badge{ background:#f1f5f9; color:#64748b; }
+
+.meta-row{
+    display:flex; flex-wrap:wrap; gap:24px;
+    background:#fff; border:1px solid #edf2f7; border-radius:14px;
+    padding:16px 20px; margin-bottom:20px;
+}
+
+.meta-item{ font-size:13.5px; color:#334155; display:flex; align-items:center; gap:6px; }
+.meta-item i{ color:#94a3b8; }
+
+.priority-badge{ display:inline-block; padding:2px 10px; border-radius:20px; font-size:11.5px; font-weight:700; }
+.priority-low{ background:#dcfce7; color:#16a34a; }
+.priority-medium{ background:#fef3c7; color:#b45309; }
+.priority-high{ background:#ffedd5; color:#c2410c; }
+.priority-critical{ background:#fee2e2; color:#dc2626; }
+
+.description-card{
+    background:#fff; border:1px solid #edf2f7; border-radius:14px;
+    padding:18px 20px; margin-bottom:20px;
+}
+
+.description-label{
+    font-size:11.5px; font-weight:700; color:#94a3b8;
+    text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;
+}
+
+.description-text{ color:#334155; white-space:pre-line; }
+
+.conversation-card{
+    background:#fff; border:1px solid #edf2f7; border-radius:14px;
+    padding:18px 20px; margin-bottom:20px;
+}
+
+.conversation-title{ font-weight:700; color:#111827; margin-bottom:16px; }
+
+.message-row{ display:flex; flex-direction:column; margin-bottom:16px; }
+.message-row.mine{ align-items:flex-end; }
+.message-row.staff{ align-items:flex-start; }
+
+.message-meta{
+    font-size:12px; color:#94a3b8;
+    display:flex; align-items:center; gap:6px; margin-bottom:4px;
+}
+
+.sender-tag{
+    background:#eff6ff; color:#2563eb;
+    font-size:10.5px; font-weight:700; padding:1px 8px; border-radius:20px;
+}
+
+.message-bubble{ max-width:70%; padding:12px 16px; border-radius:14px; font-size:14px; line-height:1.5; }
+
+.message-row.mine .message-bubble{
+    background:#2563eb; color:#fff; border-bottom-right-radius:4px;
+}
+
+.message-row.staff .message-bubble{
+    background:#f1f5f9; color:#334155; border-bottom-left-radius:4px;
+}
+
+.reply-card{ background:#fff; border:1px solid #edf2f7; border-radius:14px; padding:16px 20px; }
+.reply-textarea{ border-radius:12px; font-size:14px; resize:vertical; }
+.reply-hint{ font-size:12px; color:#94a3b8; margin-top:6px; }
+
+.closed-note{
+    background:#f1f5f9; color:#64748b; border-radius:12px;
+    padding:14px 18px; text-align:center; font-size:13.5px;
+}
+
+/* Dark mode */
+
+body.dark-mode .ticket-title{ color:#f8fafc; }
+body.dark-mode .meta-row{ background:#1e293b; border-color:#334155; }
+body.dark-mode .meta-item{ color:#e2e8f0; }
+body.dark-mode .description-card{ background:#1e293b; border-color:#334155; }
+body.dark-mode .description-text{ color:#e2e8f0; }
+body.dark-mode .conversation-card{ background:#1e293b; border-color:#334155; }
+body.dark-mode .conversation-title{ color:#f8fafc; }
+body.dark-mode .message-row.staff .message-bubble{ background:#0f172a; color:#e2e8f0; }
+body.dark-mode .reply-card{ background:#1e293b; border-color:#334155; }
+body.dark-mode .reply-textarea{ background:#0f172a; border-color:#334155; color:#e2e8f0; }
+body.dark-mode .closed-note{ background:#0f172a; color:#94a3b8; }
+
+</style>
+
+<div class="support-detail-page">
+
+    <div class="detail-header">
+
+        <div class="detail-header-left">
+            <a href="{% url 'my_support_requests' %}" class="back-link"><i class="bi bi-arrow-left"></i></a>
+            <span class="ticket-number">{{ support_request.ticket_number }}</span>
+            <span class="ticket-title">{{ support_request.subject }}</span>
+        </div>
+
+        <span class="status-{{ support_request.status|lower }}">
+            <span class="request-status-badge">{{ support_request.get_status_display }}</span>
+        </span>
+
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="meta-row">
+        <div class="meta-item"><i class="bi bi-hash"></i> Ticket # {{ support_request.ticket_number }}</div>
+        <div class="meta-item"><i class="bi bi-flag"></i> Priority <span class="priority-badge priority-{{ support_request.priority|lower }}">{{ support_request.get_priority_display }}</span></div>
+        <div class="meta-item"><i class="bi bi-calendar"></i> Submitted {{ support_request.created_at|date:"M j, Y \a\t g:i A" }}</div>
+    </div>
+
+    <div class="description-card">
+        <div class="description-label">Issue Description</div>
+        <div class="description-text">{{ support_request.description }}</div>
+    </div>
+
+    <div class="conversation-card">
+        <div class="conversation-title">Conversation ({{ conversation.count }})</div>
+
+        {% for msg in conversation %}
+        <div class="message-row {% if msg.is_staff_reply %}staff{% else %}mine{% endif %}">
+            <div class="message-meta">
+                {% if msg.is_staff_reply %}
+                <span class="sender-tag">NabiTech</span>
+                {% else %}
+                You
+                {% endif %}
+                &middot; {{ msg.created_at|timesince }} ago
+            </div>
+            <div class="message-bubble">{{ msg.message|linebreaksbr }}</div>
+        </div>
+        {% empty %}
+        <p class="text-muted">No messages yet. NabiTech will respond here soon.</p>
+        {% endfor %}
+    </div>
+
+    {% if support_request.status == 'CLOSED' %}
+    <div class="closed-note">
+        This request has been closed. Please raise a new request if the issue persists.
+    </div>
+    {% else %}
+    <div class="reply-card">
+        <form method="post">
+            {% csrf_token %}
+            <textarea name="message" class="form-control reply-textarea" rows="3" placeholder="Add a reply..." required></textarea>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+                <span class="reply-hint">Press Ctrl+Enter to send</span>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-send me-1"></i> Send
+                </button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+
+</div>
+
+<script>
+document.querySelector('.reply-textarea')?.addEventListener('keydown', function(e){
+    if(e.ctrlKey && e.key === 'Enter'){
+        this.closest('form').submit();
+    }
+});
+</script>
+
+{% endblock %}

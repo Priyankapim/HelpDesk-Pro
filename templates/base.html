@@ -517,7 +517,12 @@
         <a href="{% url 'support_inbox' %}">
             <i class="bi bi-headset"></i> Tenant Support Inbox
         </a>
+        {% endif %}
 
+        {% if request.user.role == 'ADMIN' and request.user.tenant %}
+        <a href="{% url 'my_support_requests' %}">
+            <i class="bi bi-headset"></i> Support Requests
+        </a>
         {% endif %}
 
 

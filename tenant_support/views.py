@@ -115,15 +115,19 @@ def support_detail(request, request_id):
     return render(request, "tenant_support_detail.html", context)
 
 
+def _is_tenant_admin(user):
+    return user.role == 'ADMIN' and user.tenant is not None
+
+
 @login_required
-def raise_support_request(request):
+def my_support_requests(request):
     """
-    Lets a tenant ADMIN raise a support request to NabiTech (SuperAdmin).
-    Not shown in the reference screenshots, but needed so the inbox
-    actually has real data flowing into it.
+    Tenant ADMIN's own view of the support requests they've raised with
+    NabiTech — list + a "New Request" modal that posts back to this
+    same view.
     """
 
-    if request.user.role != 'ADMIN' or not request.user.tenant:
+    if not _is_tenant_admin(request.user):
         return redirect('dashboard')
 
     if request.method == "POST":
@@ -134,7 +138,7 @@ def raise_support_request(request):
 
         if not subject or not description:
             messages.error(request, "Subject and description are required.")
-            return redirect("raise_support_request")
+            return redirect("my_support_requests")
 
         support_request = SupportRequest.objects.create(
             tenant=request.user.tenant,
@@ -155,6 +159,84 @@ def raise_support_request(request):
 
         messages.success(request, f"Support request {support_request.ticket_number} submitted.")
 
-        return redirect("dashboard")
+        return redirect("my_support_requests")
 
-    return render(request, "raise_support_request.html")
+    requests_qs = SupportRequest.objects.filter(tenant=request.user.tenant)
+
+    status = request.GET.get("status")
+
+    if status:
+        requests_qs = requests_qs.filter(status=status)
+
+    context = {
+        "requests": requests_qs,
+        "total_requests": SupportRequest.objects.filter(tenant=request.user.tenant).count(),
+        "active_count": SupportRequest.objects.filter(
+            tenant=request.user.tenant,
+            status__in=['OPEN', 'IN_PROGRESS', 'PENDING_USER']
+        ).count(),
+        "resolved_count": SupportRequest.objects.filter(
+            tenant=request.user.tenant, status='RESOLVED'
+        ).count(),
+        "current_status": status or "",
+        "status_choices": SupportRequest.STATUS_CHOICES,
+    }
+
+    return render(request, "my_support_requests.html", context)
+
+
+@login_required
+def my_support_detail(request, request_id):
+    """
+    Tenant ADMIN's read + reply view of a single support request.
+    Unlike the SuperAdmin's support_detail, there is NO status control
+    here — only NabiTech can move a request through its lifecycle.
+    """
+
+    if not _is_tenant_admin(request.user):
+        return redirect('dashboard')
+
+    support_request = get_object_or_404(
+        SupportRequest,
+        id=request_id,
+        tenant=request.user.tenant
+    )
+
+    if request.method == "POST":
+
+        message_text = request.POST.get("message", "").strip()
+
+        if message_text:
+
+            SupportMessage.objects.create(
+                request=support_request,
+                sender=request.user,
+                is_staff_reply=False,
+                message=message_text,
+            )
+
+            # If NabiTech was waiting on the tenant and the tenant just
+            # replied, move it back into an active state automatically.
+            if support_request.status == 'PENDING_USER':
+                support_request.status = 'IN_PROGRESS'
+                support_request.save()
+
+            log_activity(
+                actor=request.user,
+                action="support.replied",
+                action_label="Tenant replied to support request",
+                module="SUPPORT",
+                target=support_request.ticket_number,
+                severity="INFO",
+            )
+
+            messages.success(request, "Reply sent.")
+
+        return redirect("my_support_detail", request_id=support_request.id)
+
+    context = {
+        "support_request": support_request,
+        "conversation": support_request.messages.select_related('sender').all(),
+    }
+
+    return render(request, "my_support_detail.html", context)
