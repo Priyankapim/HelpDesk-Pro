@@ -21,12 +21,17 @@ from .models import Invitation
 from .forms import InvitationForm
 from .utils import generate_username
 from .utils import send_invitation_email
-
 from django.db.models import Q
-
-
-
+from .models import SecuritySettings, LoginActivity, UserSession
 from .forms import AcceptInvitationForm
+from .utils import parse_user_agent
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+    if x_forwarded_for:
+        return x_forwarded_for.split(",")[0].strip()
+    return request.META.get("REMOTE_ADDR")
 
 
 def login_view(request):
@@ -36,11 +41,24 @@ def login_view(request):
         email = request.POST.get("email")
         password = request.POST.get("password")
 
+        ip_address = get_client_ip(request)
+        user_agent = request.META.get("HTTP_USER_AGENT", "")[:255]
+
+        security_settings = SecuritySettings.get_settings()
+
         user_obj = User.objects.filter(
             email=email
         ).first()
 
         if not user_obj:
+
+            LoginActivity.objects.create(
+                user=None,
+                email_attempted=email or "",
+                ip_address=ip_address,
+                user_agent=user_agent,
+                status="FAILED"
+            )
 
             messages.error(
                 request,
@@ -62,16 +80,45 @@ def login_view(request):
             return redirect("login")
 
 
-        # Account locked
+        # Account locked - check if the lockout duration has already passed
 
         if user_obj.is_locked:
 
-            messages.error(
-                request,
-                "Your account has been locked. Please contact Administrator."
-            )
+            unlock_due = None
 
-            return redirect("login")
+            if user_obj.locked_at:
+                unlock_due = user_obj.locked_at + timedelta(
+                    minutes=security_settings.lockout_duration_minutes
+                )
+
+            if unlock_due and timezone.now() >= unlock_due:
+
+                # Auto-unlock, give the user a fresh set of attempts
+                user_obj.is_locked = False
+                user_obj.locked_at = None
+                user_obj.failed_login_attempts = 0
+                user_obj.save(update_fields=[
+                    "is_locked", "locked_at", "failed_login_attempts"
+                ])
+
+            else:
+
+                LoginActivity.objects.create(
+                    user=user_obj,
+                    email_attempted=email,
+                    ip_address=ip_address,
+                    user_agent=user_agent,
+                    status="LOCKED"
+                )
+
+                messages.error(
+                    request,
+                    f"Your account is locked due to too many failed attempts. "
+                    f"Try again after {security_settings.lockout_duration_minutes} minutes, "
+                    f"or contact an Administrator."
+                )
+
+                return redirect("login")
 
 
         user = authenticate(
@@ -82,14 +129,82 @@ def login_view(request):
 
         if user:
 
+            user.failed_login_attempts = 0
+            user.is_locked = False
+            user.locked_at = None
+            user.save(update_fields=[
+                "failed_login_attempts", "is_locked", "locked_at"
+            ])
+
             login(request, user)
+
+            LoginActivity.objects.create(
+                user=user,
+                email_attempted=email,
+                ip_address=ip_address,
+                user_agent=user_agent,
+                status="SUCCESS"
+            )
+
+            if not request.session.session_key:
+                request.session.save()
+
+            UserSession.objects.update_or_create(
+                session_key=request.session.session_key,
+                defaults={
+                    "user": user,
+                    "ip_address": ip_address,
+                    "user_agent": user_agent,
+                }
+            )
 
             return redirect("dashboard")
 
 
+        # Wrong password - increment failed attempts
+
+        user_obj.failed_login_attempts += 1
+
+        if user_obj.failed_login_attempts >= security_settings.max_failed_attempts:
+
+            user_obj.is_locked = True
+            user_obj.locked_at = timezone.now()
+            user_obj.save(update_fields=[
+                "failed_login_attempts", "is_locked", "locked_at"
+            ])
+
+            LoginActivity.objects.create(
+                user=user_obj,
+                email_attempted=email,
+                ip_address=ip_address,
+                user_agent=user_agent,
+                status="LOCKED"
+            )
+
+            messages.error(
+                request,
+                f"Your account has been locked after "
+                f"{security_settings.max_failed_attempts} failed attempts. "
+                f"Try again after {security_settings.lockout_duration_minutes} minutes."
+            )
+
+            return redirect("login")
+
+        user_obj.save(update_fields=["failed_login_attempts"])
+
+        LoginActivity.objects.create(
+            user=user_obj,
+            email_attempted=email,
+            ip_address=ip_address,
+            user_agent=user_agent,
+            status="FAILED"
+        )
+
+        remaining = security_settings.max_failed_attempts - user_obj.failed_login_attempts
+
         messages.error(
             request,
-            "Invalid email or password."
+            f"Invalid email or password. {remaining} attempt(s) remaining before lockout."
         )
 
         return redirect("login")
@@ -102,7 +217,6 @@ def login_view(request):
             "email": request.GET.get("email", "")
         }
     )
-
 
 @login_required
 def dashboard_view(request):
@@ -277,11 +391,17 @@ def dashboard_view(request):
 
 
 def logout_view(request):
+
+    if request.session.session_key:
+        UserSession.objects.filter(
+            session_key=request.session.session_key
+        ).delete()
+
     logout(request)
     return redirect('login')
 
 
-from django.db.models import Q
+
 
 
 @login_required
@@ -985,3 +1105,136 @@ def resend_invitation(request, invitation_id):
     )
 
     return redirect("invitation_list")
+
+
+
+@login_required
+def security_settings_view(request):
+
+    security_settings = SecuritySettings.get_settings()
+
+    # Drop stale UserSession rows whose real Django session has expired/gone
+    from django.contrib.sessions.models import Session
+
+    live_keys = set(
+        Session.objects.filter(
+            expire_date__gte=timezone.now()
+        ).values_list("session_key", flat=True)
+    )
+
+    UserSession.objects.filter(user=request.user).exclude(
+        session_key__in=live_keys
+    ).delete()
+
+    active_sessions = UserSession.objects.filter(
+        user=request.user
+    ).order_by("-last_activity")
+
+    for s in active_sessions:
+        s.device_label = parse_user_agent(s.user_agent)
+
+    login_activity = LoginActivity.objects.filter(
+        user=request.user
+    ).order_by("-created_at")[:20]
+
+    for entry in login_activity:
+        entry.device_label = parse_user_agent(entry.user_agent)
+
+    context = {
+        "security_settings": security_settings,
+        "active_sessions": active_sessions,
+        "current_session_key": request.session.session_key,
+        "login_activity": login_activity,
+        "can_edit_lockout_policy": request.user.role in ["ADMIN", "SUPER_ADMIN"],
+    }
+
+    return render(
+        request,
+        "security_settings.html",
+        context
+    )
+
+
+@login_required
+def update_security_settings(request):
+
+    if request.user.role not in ["ADMIN", "SUPER_ADMIN"]:
+        messages.error(request, "You don't have permission to change this.")
+        return redirect("security_settings")
+
+    if request.method == "POST":
+
+        try:
+            max_attempts = int(request.POST.get("max_failed_attempts", 5))
+            duration = int(request.POST.get("lockout_duration_minutes", 15))
+
+        except ValueError:
+            messages.error(request, "Please enter valid numbers.")
+            return redirect("security_settings")
+
+        if max_attempts < 1 or duration < 1:
+            messages.error(request, "Values must be at least 1.")
+            return redirect("security_settings")
+
+        security_settings = SecuritySettings.get_settings()
+        security_settings.max_failed_attempts = max_attempts
+        security_settings.lockout_duration_minutes = duration
+        security_settings.save()
+
+        messages.success(request, "Security settings updated.")
+
+    return redirect("security_settings")
+
+
+@login_required
+def logout_other_sessions(request):
+
+    if request.session.session_key:
+
+        UserSession.objects.filter(
+            user=request.user
+        ).exclude(
+            session_key=request.session.session_key
+        ).delete()
+
+        from django.contrib.sessions.models import Session
+
+        # Delete every real session for this user except the current one
+        for session in Session.objects.filter(expire_date__gte=timezone.now()):
+            data = session.get_decoded()
+            if (
+                str(data.get("_auth_user_id")) == str(request.user.id)
+                and session.session_key != request.session.session_key
+            ):
+                session.delete()
+
+    messages.success(request, "Logged out from all other devices.")
+
+    return redirect("security_settings")
+
+
+@login_required
+def logout_session(request, session_key):
+
+    user_session = UserSession.objects.filter(
+        user=request.user,
+        session_key=session_key
+    ).first()
+
+    if not user_session:
+        messages.error(request, "Session not found.")
+        return redirect("security_settings")
+
+    if session_key == request.session.session_key:
+        messages.error(request, "Use Logout to end your current session.")
+        return redirect("security_settings")
+
+    from django.contrib.sessions.models import Session
+
+    Session.objects.filter(session_key=session_key).delete()
+    user_session.delete()
+
+    messages.success(request, "That session has been logged out.")
+
+    return redirect("security_settings")
+

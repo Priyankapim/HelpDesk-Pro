@@ -6,10 +6,12 @@ from .views import (
     delete_article,
     mark_helpful,
     ai_generate_summary,
+    faq_list,
 )
 
 urlpatterns = [
     path('', knowledge_base_list, name='knowledge_base_list'),
+    path('faq/', faq_list, name='faq_list'),
     path('new/', article_form, name='kb_article_new'),
     path('<int:article_id>/', article_detail, name='kb_article_detail'),
     path('<int:article_id>/edit/', article_form, name='kb_article_edit'),

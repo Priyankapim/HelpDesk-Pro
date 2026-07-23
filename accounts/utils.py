@@ -5,7 +5,44 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.urls import reverse
 
+def parse_user_agent(ua_string):
+    """
+    Lightweight browser/OS label from a raw User-Agent string,
+    e.g. "Chrome on Windows". No external dependency required.
+    """
 
+    if not ua_string:
+        return "Unknown device"
+
+    ua = ua_string
+
+    if "Windows" in ua:
+        os_name = "Windows"
+    elif "Mac OS" in ua or "Macintosh" in ua:
+        os_name = "macOS"
+    elif "Android" in ua:
+        os_name = "Android"
+    elif "iPhone" in ua or "iPad" in ua:
+        os_name = "iOS"
+    elif "Linux" in ua:
+        os_name = "Linux"
+    else:
+        os_name = "Unknown OS"
+
+    if "Edg/" in ua:
+        browser = "Edge"
+    elif "OPR/" in ua or "Opera" in ua:
+        browser = "Opera"
+    elif "Chrome/" in ua:
+        browser = "Chrome"
+    elif "Firefox/" in ua:
+        browser = "Firefox"
+    elif "Safari/" in ua:
+        browser = "Safari"
+    else:
+        browser = "Unknown browser"
+
+    return f"{browser} on {os_name}"
 
 def generate_password(length=10):
 

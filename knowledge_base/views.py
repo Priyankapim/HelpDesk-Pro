@@ -97,6 +97,47 @@ def article_detail(request, article_id):
         }
     )
 
+@login_required
+def faq_list(request):
+
+    query = request.GET.get('q', '').strip()
+    topic = request.GET.get('topic', '').strip()
+
+    articles = Article.objects.filter(status='PUBLISHED')
+
+    if request.user.role not in MANAGE_ROLES:
+        articles = articles.filter(is_internal=False)
+
+    if topic:
+        articles = articles.filter(tags=topic)
+
+    if query:
+        articles = articles.filter(
+            Q(title__icontains=query) |
+            Q(summary__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__icontains=query)
+        )
+
+    topics_qs = Article.objects.filter(status='PUBLISHED')
+
+    if request.user.role not in MANAGE_ROLES:
+        topics_qs = topics_qs.filter(is_internal=False)
+
+    topics = topics_qs.exclude(tags='').values_list('tags', flat=True).distinct().order_by('tags')
+
+    return render(
+        request,
+        'knowledge_base/faq_list.html',
+        {
+            'articles': articles.order_by('title'),
+            'topics': topics,
+            'selected_topic': topic,
+            'query': query,
+            'can_manage': request.user.role in MANAGE_ROLES,
+        }
+    )
+
 
 @login_required
 def article_form(request, article_id=None):

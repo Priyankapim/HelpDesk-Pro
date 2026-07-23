@@ -1,0 +1,314 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Security Settings
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.sec-page{
+    animation:fadeIn .25s ease;
+    max-width:920px;
+}
+
+@keyframes fadeIn{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:none; }
+}
+
+.sec-header{
+    margin-bottom:20px;
+}
+
+.sec-title{
+    font-size:24px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:2px;
+}
+
+.sec-subtitle{
+    color:#64748b;
+    font-size:13px;
+    margin:0;
+}
+
+.sec-card{
+    background:#fff;
+    border:1px solid #edf2f7;
+    border-radius:16px;
+    padding:22px;
+    margin-bottom:20px;
+}
+
+.sec-card-title{
+    font-size:15px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:4px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.sec-card-desc{
+    font-size:13px;
+    color:#64748b;
+    margin-bottom:16px;
+}
+
+.sec-card .form-label{
+    font-size:13px;
+    font-weight:600;
+    color:#334155;
+}
+
+.sec-card .form-control{
+    border-radius:10px;
+    font-size:14px;
+}
+
+.sec-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 0;
+    border-bottom:1px solid #f1f5f9;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.sec-row:last-child{
+    border-bottom:none;
+    padding-bottom:0;
+}
+
+.sec-row-title{
+    font-size:14px;
+    font-weight:600;
+    color:#111827;
+}
+
+.sec-row-sub{
+    font-size:12px;
+    color:#94a3b8;
+}
+
+.badge-current{
+    background:#dcfce7;
+    color:#15803d;
+    font-size:11px;
+    font-weight:600;
+    padding:3px 10px;
+    border-radius:20px;
+    margin-left:8px;
+}
+
+.badge-status{
+    font-size:11px;
+    font-weight:600;
+    padding:3px 10px;
+    border-radius:20px;
+}
+
+.badge-success{ background:#dcfce7; color:#15803d; }
+.badge-failed{ background:#fee2e2; color:#dc2626; }
+.badge-locked{ background:#fef3c7; color:#b45309; }
+
+.sec-empty{
+    font-size:13px;
+    color:#94a3b8;
+    padding:8px 0;
+}
+
+body.dark-mode .sec-title{ color:#f8fafc; }
+body.dark-mode .sec-subtitle{ color:#94a3b8; }
+body.dark-mode .sec-card{ background:#1e293b; border-color:#334155; }
+body.dark-mode .sec-card-title{ color:#f8fafc; }
+body.dark-mode .sec-card-desc{ color:#94a3b8; }
+body.dark-mode .sec-card .form-label{ color:#e2e8f0; }
+body.dark-mode .sec-card .form-control{
+    background:#0f172a; border-color:#334155; color:#f8fafc;
+}
+body.dark-mode .sec-row{ border-bottom-color:#334155; }
+body.dark-mode .sec-row-title{ color:#f8fafc; }
+
+</style>
+
+<div class="sec-page">
+
+    <div class="sec-header">
+        <h2 class="sec-title">Security Settings</h2>
+        <p class="sec-subtitle">Manage your password, login security, and active sessions</p>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Change Password -->
+
+    <div class="sec-card">
+
+        <div class="sec-card-title">
+            <i class="bi bi-key text-primary"></i> Change Password
+        </div>
+
+        <div class="sec-card-desc">
+            Update your account password. You'll stay logged in on this device.
+        </div>
+
+        <a href="{% url 'change_password' %}" class="btn btn-primary">
+            <i class="bi bi-shield-lock me-1"></i> Change Password
+        </a>
+
+    </div>
+
+    <!-- Account Lockout Settings -->
+
+    {% if can_edit_lockout_policy %}
+
+    <div class="sec-card">
+
+        <div class="sec-card-title">
+            <i class="bi bi-lock text-primary"></i> Account Lockout Settings
+        </div>
+
+        <div class="sec-card-desc">
+            Applies to every user. An account is locked automatically after too many wrong password attempts.
+        </div>
+
+        <form method="post" action="{% url 'update_security_settings' %}">
+            {% csrf_token %}
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <label class="form-label">Max Failed Attempts</label>
+                    <input type="number" min="1" name="max_failed_attempts" class="form-control"
+                           value="{{ security_settings.max_failed_attempts }}">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Lockout Duration (minutes)</label>
+                    <input type="number" min="1" name="lockout_duration_minutes" class="form-control"
+                           value="{{ security_settings.lockout_duration_minutes }}">
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">
+                <i class="bi bi-check-lg me-1"></i> Save
+            </button>
+
+        </form>
+
+    </div>
+
+    {% endif %}
+
+    <!-- Active Sessions -->
+
+    <div class="sec-card">
+
+        <div class="sec-card-title">
+            <i class="bi bi-display text-primary"></i> Active Sessions
+        </div>
+
+        <div class="sec-card-desc">
+            Devices currently logged into your account.
+        </div>
+
+        {% for session in active_sessions %}
+
+            <div class="sec-row">
+
+                <div>
+                    <div class="sec-row-title">
+                        {{ session.device_label }}
+                        {% if session.session_key == current_session_key %}
+                            <span class="badge-current">This device</span>
+                        {% endif %}
+                    </div>
+                    <div class="sec-row-sub">
+                        {{ session.ip_address|default:"Unknown IP" }} &middot; last active {{ session.last_activity|timesince }} ago
+                    </div>
+                </div>
+
+                {% if session.session_key != current_session_key %}
+                    <form method="post" action="{% url 'logout_session' session.session_key %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                            Log out
+                        </button>
+                    </form>
+                {% endif %}
+
+            </div>
+
+        {% empty %}
+            <p class="sec-empty">No active sessions found.</p>
+        {% endfor %}
+
+        {% if active_sessions|length > 1 %}
+
+            <form method="post" action="{% url 'logout_other_sessions' %}" class="mt-3">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-box-arrow-right me-1"></i> Log out from all other devices
+                </button>
+            </form>
+
+        {% endif %}
+
+    </div>
+
+    <!-- Login Activity -->
+
+    <div class="sec-card">
+
+        <div class="sec-card-title">
+            <i class="bi bi-clock-history text-primary"></i> Login Activity
+        </div>
+
+        <div class="sec-card-desc">
+            Your last 20 login attempts.
+        </div>
+
+        {% for entry in login_activity %}
+
+            <div class="sec-row">
+
+                <div>
+                    <div class="sec-row-title">{{ entry.device_label }}</div>
+                    <div class="sec-row-sub">
+                        {{ entry.ip_address|default:"Unknown IP" }} &middot; {{ entry.created_at|date:"d M Y, h:i A" }}
+                    </div>
+                </div>
+
+                {% if entry.status == "SUCCESS" %}
+                    <span class="badge-status badge-success">Success</span>
+                {% elif entry.status == "LOCKED" %}
+                    <span class="badge-status badge-locked">Locked</span>
+                {% else %}
+                    <span class="badge-status badge-failed">Failed</span>
+                {% endif %}
+
+            </div>
+
+        {% empty %}
+            <p class="sec-empty">No login activity recorded yet.</p>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -316,6 +316,27 @@ body.dark-mode .dept-actions button{
     color:#94a3b8;
 }
 
+/* The generic rule above has higher CSS specificity than the light-mode
+   .power-on/.power-off rules, so it was silently overriding them and
+   turning both Active and Inactive toggle icons the same grey color.
+   These rules add the extra "button" + class combo needed to win. */
+body.dark-mode .dept-actions button.power-on{
+    color:#4ade80;
+    border-color:#166534;
+    background:#052e1a;
+}
+
+body.dark-mode .dept-actions button.power-off{
+    color:#f87171;
+    border-color:#7f1d1d;
+    background:#450a0a;
+}
+
+body.dark-mode .dept-inactive-badge{
+    background:#450a0a;
+    color:#fca5a5;
+}
+
 body.dark-mode .dept-sla{
     background:#0f172a;
     border-color:#334155;
@@ -344,6 +365,19 @@ body.dark-mode .btn-close{
     filter:invert(1) grayscale(100%) brightness(200%);
 }
 
+.dept-alert{
+    transition:opacity .5s ease, max-height .5s ease, margin .5s ease, padding .5s ease;
+    overflow:hidden;
+}
+
+.dept-alert-fade-out{
+    opacity:0;
+    max-height:0;
+    margin:0;
+    padding:0;
+    border-width:0;
+}
+
 </style>
 
 <div class="dept-page">
@@ -370,12 +404,13 @@ body.dark-mode .btn-close{
     <!-- Alerts -->
 
     {% if messages %}
+        <div id="deptMessages">
         {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <div class="alert alert-{{ message.tags }} dept-alert" role="alert">
                 {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         {% endfor %}
+        </div>
     {% endif %}
 
     <!-- Grid -->
@@ -616,5 +651,14 @@ body.dark-mode .btn-close{
     </div>
 
 </div>
+
+<script>
+document.querySelectorAll(".dept-alert").forEach(function(alertEl){
+    setTimeout(function(){
+        alertEl.classList.add("dept-alert-fade-out");
+        setTimeout(function(){ alertEl.remove(); }, 500);
+    }, 7000); // visible for 7 seconds, then fades out
+});
+</script>
 
 {% endblock %}

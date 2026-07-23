@@ -27,6 +27,7 @@
             color:white;
             display:flex;
             flex-direction:column;
+            overflow:hidden;
         }
 
         .logo{
@@ -50,6 +51,26 @@
 
         .menu{
             padding:15px 12px;
+            flex:1 1 auto;
+            overflow-y:auto;
+            overflow-x:hidden;
+        }
+
+        .menu::-webkit-scrollbar{
+            width:6px;
+        }
+
+        .menu::-webkit-scrollbar-track{
+            background:transparent;
+        }
+
+        .menu::-webkit-scrollbar-thumb{
+            background:rgba(255,255,255,.15);
+            border-radius:10px;
+        }
+
+        .menu::-webkit-scrollbar-thumb:hover{
+            background:rgba(255,255,255,.25);
         }
 
         .menu-title{
@@ -103,9 +124,7 @@
         }
 
         .sidebar-footer{
-            position:absolute;
-            bottom:0;
-            width:100%;
+            flex-shrink:0;
             padding:14px 16px;
             border-top:1px solid rgba(255,255,255,.08);
             display:flex;
@@ -443,6 +462,8 @@
         body.dark-mode .search-item:hover{
             background:#1f2937;
         }
+
+
     </style>
 </head>
 <body>
@@ -462,12 +483,16 @@
             <i class="bi bi-grid"></i> Dashboard
         </a>
 
-        <a href="{% url 'ai_assistant' %}">
-            <i class="bi bi-stars"></i> AI Assistant
-        </a>
-
         <a href="{% url 'knowledge_base_list' %}">
             <i class="bi bi-journal-bookmark"></i> Knowledge Base
+        </a>
+
+        <a href="{% url 'faq_list' %}">
+            <i class="bi bi-question-circle"></i> FAQ
+        </a>
+
+        <a href="{% url 'ai_assistant' %}">
+            <i class="bi bi-stars"></i> AI Assistant
         </a>
 
         {% if request.user.role == 'EMPLOYEE' %}
@@ -496,6 +521,7 @@
             <i class="bi bi-ticket-detailed"></i> All Tickets
         </a>
 
+        <div class="menu-title">Administration</div>
 
         <a href="{% url 'users_list' %}">
             <i class="bi bi-people"></i> Users
@@ -525,7 +551,6 @@
         </a>
         {% endif %}
 
-
         <a href="{% url 'reports' %}">
             <i class="bi bi-bar-chart"></i> Reports
         </a>
@@ -538,8 +563,13 @@
             <i class="bi bi-gear"></i> Configuration
         </a>
 
+        <a href="{% url 'security_settings' %}">
+            <i class="bi bi-shield-check"></i> Security Settings
+        </a>
+
         {% endif %}
 
+        <div class="menu-title">Account</div>
 
         <a href="{% url 'change_password' %}">
             <i class="bi bi-shield-lock"></i> Change Password
