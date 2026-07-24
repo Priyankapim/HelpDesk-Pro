@@ -632,7 +632,7 @@ def reports(request):
 
 @login_required
 def export_tickets_excel(request):
-    print("TICKET EXPORT")
+
     wb = Workbook()
     ws = wb.active
     ws.title = "Tickets Report"
@@ -744,7 +744,7 @@ def export_tickets_pdf(request):
 
 @login_required
 def export_reports_excel(request):
-    print("REPORT EXPORT")
+
     wb = Workbook()
     ws = wb.active
     ws.title = "Reports"
