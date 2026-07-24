@@ -702,47 +702,7 @@ Raise a Ticket
 </div>
 <script>
 
-const categoryMap = {
-
-    "IT Support": [
-        "Hardware Issue",
-        "Software Issue",
-        "Network Issue",
-        "Email / Outlook"
-    ],
-
-    "HR Support": [
-        "New Employee Onboarding",
-        "Leave Policy",
-        "Payroll Inquiry"
-    ],
-
-    "Admin Support": [
-        "Office Supplies",
-        "Facility Request"
-    ],
-
-    "Finance Requests": [
-        "Invoice Processing",
-        "Budget Approval"
-    ],
-
-    "Asset Requests": [
-        "Laptop Request",
-        "Software License"
-    ],
-
-    "Access Management": [
-        "Account Creation",
-        "Permission Request",
-        "VPN Access"
-    ],
-
-    "General Services": [
-        "General Inquiry"
-    ]
-
-};
+const categoryMap = {{ department_category_map|safe }};
 
 
 const department = document.getElementById("id_department");

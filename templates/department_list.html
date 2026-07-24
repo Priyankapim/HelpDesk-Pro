@@ -378,6 +378,116 @@ body.dark-mode .btn-close{
     border-width:0;
 }
 
+
+    .cat-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:18px;
+    max-height:260px;
+    overflow-y:auto;
+}
+
+.cat-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#f8fafc;
+    border:1px solid #edf2f7;
+    border-radius:10px;
+    padding:8px 10px;
+}
+
+.cat-row form{
+    flex-grow:1;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:0;
+}
+
+.cat-row input[type="text"]{
+    flex-grow:1;
+    border:1px solid transparent;
+    background:transparent;
+    font-size:13px;
+    font-weight:600;
+    color:#111827;
+    border-radius:6px;
+    padding:4px 6px;
+}
+
+.cat-row input[type="text"]:focus{
+    outline:none;
+    border-color:#2563eb;
+    background:#fff;
+}
+
+.cat-row.inactive input[type="text"]{
+    color:#94a3b8;
+    text-decoration:line-through;
+}
+
+.cat-row-actions{
+    display:flex;
+    gap:4px;
+    flex-shrink:0;
+}
+
+.cat-row-actions button{
+    width:26px;
+    height:26px;
+    border-radius:7px;
+    border:1px solid #e2e8f0;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#64748b;
+    font-size:11px;
+}
+
+.cat-row-actions button:hover{
+    background:#f1f5f9;
+}
+
+.cat-row-actions .cat-delete-btn:hover{
+    color:#dc2626;
+    border-color:#fecaca;
+}
+
+.cat-empty{
+    text-align:center;
+    color:#94a3b8;
+    font-size:13px;
+    padding:16px 0;
+}
+
+.cat-add-row{
+    display:flex;
+    gap:8px;
+    padding-top:14px;
+    border-top:1px solid #edf2f7;
+}
+
+body.dark-mode .cat-row{
+    background:#0f172a;
+    border-color:#334155;
+}
+
+body.dark-mode .cat-row input[type="text"]{
+    color:#f1f5f9;
+}
+
+body.dark-mode .cat-row-actions button{
+    background:#1e293b;
+    border-color:#334155;
+    color:#94a3b8;
+}
+
+body.dark-mode .cat-add-row{
+    border-top-color:#334155;
+}
 </style>
 
 <div class="dept-page">
@@ -433,6 +543,12 @@ body.dark-mode .btn-close{
                         </div>
 
                         <div class="dept-actions">
+
+                            <button type="button" title="Manage Categories"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#categoryModal{{ department.id }}">
+                                <i class="bi bi-tags-fill"></i>
+                            </button>
 
                             <button type="button" title="Edit"
                                     data-bs-toggle="modal"
@@ -557,6 +673,86 @@ body.dark-mode .btn-close{
                             </div>
 
                         </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Category Management Modal (one per card) -->
+
+            <div class="modal fade" id="categoryModal{{ department.id }}" tabindex="-1" aria-hidden="true">
+
+                <div class="modal-dialog modal-dialog-centered">
+
+                    <div class="modal-content dept-modal-content">
+
+                        <div class="modal-header dept-modal-header">
+                            <h5 class="modal-title">{{ department.name }} — Categories</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body dept-modal-body">
+
+                            <div class="cat-list">
+
+                                {% for category in department.categories.all %}
+
+                                <div class="cat-row {% if not category.is_active %}inactive{% endif %}">
+
+                                    <form method="post" action="{% url 'edit_category' category.id %}">
+                                        {% csrf_token %}
+                                        <input type="text" name="name" value="{{ category.name }}">
+                                        <button type="submit" title="Save name">
+                                            <i class="bi bi-check-lg"></i>
+                                        </button>
+                                    </form>
+
+                                    <div class="cat-row-actions">
+
+                                        <form method="post" action="{% url 'toggle_category' category.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit"
+                                                    title="{% if category.is_active %}Deactivate{% else %}Activate{% endif %}">
+                                                <i class="bi bi-power"></i>
+                                            </button>
+                                        </form>
+
+                                        <form method="post" action="{% url 'delete_category' category.id %}"
+                                              onsubmit="return confirm('Delete this category? Existing tickets/articles keep the old value as plain text.');">
+                                            {% csrf_token %}
+                                            <button type="submit" class="cat-delete-btn" title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+
+                                    </div>
+
+                                </div>
+
+                                {% empty %}
+
+                                <div class="cat-empty">No categories yet under this department.</div>
+
+                                {% endfor %}
+
+                            </div>
+
+                            <form method="post" action="{% url 'add_category' department.id %}" class="cat-add-row">
+                                {% csrf_token %}
+                                <input type="text" name="name" class="form-control"
+                                       placeholder="New category name...">
+                                <button type="submit" class="btn btn-primary" style="border-radius:10px;white-space:nowrap;">
+                                    <i class="bi bi-plus-lg"></i> Add
+                                </button>
+                            </form>
+
+                        </div>
+
+                        <div class="dept-modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
 
                     </div>
 

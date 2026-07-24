@@ -3,8 +3,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from notifications.utils import send_ticket_email
 from .forms import TicketForm
-from .models import Ticket, TicketComment, Notification
+from .models import Ticket, TicketComment, Notification, Category
 from accounts.models import User
+from django.contrib import messages
+from auditlogs.utils import log_activity
 from django.http import JsonResponse
 from django.db.models import Q
 from django.urls import reverse
@@ -27,8 +29,9 @@ from reportlab.platypus import (
 
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
-
 from .services.ai_service import ai_assistant_reply
+from departments.utils import get_department_category_map
+import json
 
 
 @login_required
@@ -90,7 +93,10 @@ def create_ticket(request):
     return render(
         request,
         'tickets/create_ticket.html',
-        {'form': form}
+        {
+            'form': form,
+            'department_category_map': json.dumps(get_department_category_map()),
+        }
     )
 
 
@@ -1138,3 +1144,163 @@ def ai_assistant_chat(request):
         })
 
 
+
+@login_required
+def category_list(request):
+
+    if request.user.role not in ['ADMIN', 'SUPER_ADMIN']:
+        return redirect('dashboard')
+
+    categories = Category.objects.all().order_by('name')
+
+    return render(
+        request,
+        'category_list.html',
+        {
+            'categories': categories,
+            'active_count': categories.filter(is_active=True).count(),
+            'inactive_count': categories.filter(is_active=False).count(),
+        }
+    )
+
+
+@login_required
+def add_category(request):
+
+    if request.user.role not in ['ADMIN', 'SUPER_ADMIN']:
+        return redirect('dashboard')
+
+    if request.method == "POST":
+
+        name = request.POST.get("name", "").strip()
+
+        if not name:
+            messages.error(request, "Category name is required.")
+            return redirect("category_list")
+
+        if Category.objects.filter(name__iexact=name).exists():
+            messages.error(request, f"Category '{name}' already exists.")
+            return redirect("category_list")
+
+        category = Category.objects.create(
+            name=name,
+            description=request.POST.get("description", ""),
+        )
+
+        log_activity(
+            actor=request.user,
+            action="category.created",
+            action_label="Category created",
+            module="TICKETS",
+            target=category.name,
+            severity="INFO",
+        )
+
+        messages.success(request, f"Category '{name}' created.")
+
+        return redirect("category_list")
+
+    return redirect("category_list")
+
+
+@login_required
+def edit_category(request, category_id):
+
+    if request.user.role not in ['ADMIN', 'SUPER_ADMIN']:
+        return redirect('dashboard')
+
+    category = get_object_or_404(
+        Category,
+        id=category_id
+    )
+
+    if request.method == "POST":
+
+        name = request.POST.get("name", "").strip()
+
+        if not name:
+            messages.error(request, "Category name is required.")
+            return redirect("category_list")
+
+        if Category.objects.filter(name__iexact=name).exclude(id=category.id).exists():
+            messages.error(request, f"Category '{name}' already exists.")
+            return redirect("category_list")
+
+        category.name = name
+        category.description = request.POST.get("description", "")
+        category.save()
+
+        log_activity(
+            actor=request.user,
+            action="category.updated",
+            action_label="Category updated",
+            module="TICKETS",
+            target=category.name,
+            severity="INFO",
+        )
+
+        messages.success(request, f"Category '{name}' updated.")
+
+        return redirect("category_list")
+
+    return redirect("category_list")
+
+
+@login_required
+def toggle_category(request, category_id):
+
+    if request.user.role not in ['ADMIN', 'SUPER_ADMIN']:
+        return redirect('dashboard')
+
+    category = get_object_or_404(
+        Category,
+        id=category_id
+    )
+
+    category.is_active = not category.is_active
+    category.save()
+
+    log_activity(
+        actor=request.user,
+        action="category.status_toggled",
+        action_label="Category status changed",
+        module="TICKETS",
+        target=category.name,
+        severity="WARNING",
+    )
+
+    if category.is_active:
+        messages.success(request, f"'{category.name}' marked as active.")
+    else:
+        messages.success(request, f"'{category.name}' marked as inactive.")
+
+    return redirect("category_list")
+
+
+@login_required
+def delete_category(request, category_id):
+
+    if request.user.role not in ['ADMIN', 'SUPER_ADMIN']:
+        return redirect('dashboard')
+
+    category = get_object_or_404(
+        Category,
+        id=category_id
+    )
+
+    category_name = category.name
+
+    category.delete()
+
+    log_activity(
+        actor=request.user,
+        action="category.deleted",
+        action_label="Category deleted",
+        module="TICKETS",
+        target=category_name,
+        severity="CRITICAL",
+    )
+
+    messages.success(request, f"Category '{category_name}' deleted.")
+
+    return redirect("category_list")

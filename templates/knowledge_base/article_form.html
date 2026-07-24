@@ -384,14 +384,9 @@ body.dark-mode .kb-ai-btn{
 
                     <div class="col-md-6">
                         <label class="form-label">Category</label>
-                        <select name="category" id="categorySelect" class="form-select">
+                        <select name="category" id="categorySelect" class="form-select"
+                                data-current="{{ article.category|default:'' }}">
                             <option value="">No category</option>
-                            {% for value, label in category_choices %}
-                            <option value="{{ value }}"
-                                {% if article.category == value %}selected{% endif %}>
-                                {{ label }}
-                            </option>
-                            {% endfor %}
                         </select>
                     </div>
 
@@ -547,43 +542,50 @@ tagChips.addEventListener("click", function(e){
 
 const departmentSelect = document.getElementById("departmentSelect");
 const categorySelect = document.getElementById("categorySelect");
-const categoryOptions = Array.from(categorySelect.options);
 const departmentCategoryMap = {{ department_category_map|safe }};
+const initialCategory = categorySelect.getAttribute("data-current") || "";
 
-function kbFilterCategories(){
+function kbLoadCategories(){
 
     const deptName = departmentSelect.options[departmentSelect.selectedIndex]
         ? departmentSelect.options[departmentSelect.selectedIndex].text.trim()
         : "";
 
-    const allowedCategories = departmentCategoryMap[deptName];
+    const previouslySelected = categorySelect.value || initialCategory;
 
-    categoryOptions.forEach(function(opt){
+    categorySelect.innerHTML = "";
 
-        if(!opt.value){
-            opt.hidden = false;
-            return;
-        }
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.text = "No category";
+    categorySelect.appendChild(placeholder);
 
-        if(!deptName || !allowedCategories){
-            // No department selected, or department has no mapped
-            // categories yet -> show every category.
-            opt.hidden = false;
-            return;
-        }
+    let categoriesToShow = [];
 
-        opt.hidden = allowedCategories.indexOf(opt.value) === -1;
+    if(deptName && departmentCategoryMap[deptName]){
+        categoriesToShow = departmentCategoryMap[deptName];
+    } else if(!deptName){
+        const allCategories = new Set();
+        Object.values(departmentCategoryMap).forEach(function(list){
+            list.forEach(function(name){ allCategories.add(name); });
+        });
+        categoriesToShow = Array.from(allCategories).sort();
+    }
+
+    categoriesToShow.forEach(function(name){
+        const option = document.createElement("option");
+        option.value = name;
+        option.text = name;
+        categorySelect.appendChild(option);
     });
 
-    // If the currently selected category got hidden, reset to "No category"
-    const selectedOption = categorySelect.options[categorySelect.selectedIndex];
-    if(selectedOption && selectedOption.hidden){
-        categorySelect.value = "";
+    if(previouslySelected && categoriesToShow.indexOf(previouslySelected) !== -1){
+        categorySelect.value = previouslySelected;
     }
 }
 
-departmentSelect.addEventListener("change", kbFilterCategories);
-kbFilterCategories();
+departmentSelect.addEventListener("change", kbLoadCategories);
+kbLoadCategories();
 
 /* ---------- AI Generate Summary ---------- */
 

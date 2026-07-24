@@ -5,6 +5,15 @@ from .models import Ticket, TicketComment
 
 class TicketForm(forms.ModelForm):
 
+    category = forms.CharField(
+        widget=forms.Select(
+            attrs={
+                "class": "form-select",
+                "id": "id_category",
+            }
+        )
+    )
+
     class Meta:
 
         model = Ticket
@@ -49,13 +58,6 @@ class TicketForm(forms.ModelForm):
                 }
             ),
 
-            "category": forms.Select(
-                attrs={
-                    "class": "form-select",
-                    "id": "id_category",
-                }
-            ),
-
 
 
             "affected_system": forms.Select(
@@ -76,9 +78,6 @@ class TicketForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Inactive departments should never be selectable when raising
-        # a new ticket, even if the ticket's current department (on an
-        # edit form) happens to be one that was since deactivated.
         from departments.models import Department
 
         queryset = Department.objects.filter(is_active=True)

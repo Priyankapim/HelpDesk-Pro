@@ -1,6 +1,3 @@
-
-
-
 from django.urls import path
 
 from .views import *
@@ -16,5 +13,13 @@ urlpatterns = [
     path("toggle/<int:department_id>/", toggle_department, name="toggle_department" ),
 
     path("delete/<int:department_id>/", delete_department, name="delete_department" ),
+
+    path("category/add/<int:department_id>/", add_category, name="add_category"),
+
+    path("category/edit/<int:category_id>/", edit_category, name="edit_category"),
+
+    path("category/toggle/<int:category_id>/", toggle_category, name="toggle_category"),
+
+    path("category/delete/<int:category_id>/", delete_category, name="delete_category"),
 
 ]

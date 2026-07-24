@@ -5,6 +5,20 @@ from django.utils import timezone
 from datetime import timedelta
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return self.name
+
+
 class Ticket(models.Model):
     CATEGORY_CHOICES = [
 
@@ -128,7 +142,6 @@ class Ticket(models.Model):
 
     category = models.CharField(
         max_length=100,
-        choices=CATEGORY_CHOICES,
         default="General Inquiry"
     )
 

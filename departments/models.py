@@ -23,3 +23,26 @@ class Department(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Category(models.Model):
+
+    department = models.ForeignKey(
+        Department,
+        on_delete=models.CASCADE,
+        related_name='categories'
+    )
+
+    name = models.CharField(max_length=100)
+
+    is_active = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['department__name', 'name']
+        unique_together = ('department', 'name')
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return f"{self.department.name} - {self.name}"

@@ -6,12 +6,10 @@ from django.contrib import messages
 from django.db.models import Q
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-
 from auditlogs.utils import log_activity
 from departments.models import Department
-
 from .models import Article
-
+from departments.utils import get_department_category_map
 
 MANAGE_ROLES = ['ADMIN', 'SUPER_ADMIN']
 
@@ -221,39 +219,7 @@ def article_form(request, article_id=None):
 
     departments = Department.objects.filter(is_active=True).order_by('name')
 
-    department_category_map = {
-        "IT Support": [
-            "Hardware Issue",
-            "Software Issue",
-            "Network Issue",
-            "Email / Outlook",
-        ],
-        "HR Support": [
-            "New Employee Onboarding",
-            "Leave Policy",
-            "Payroll Inquiry",
-        ],
-        "Admin Support": [
-            "Office Supplies",
-            "Facility Request",
-        ],
-        "Finance Requests": [
-            "Invoice Processing",
-            "Budget Approval",
-        ],
-        "Asset Requests": [
-            "Laptop Request",
-            "Software License",
-        ],
-        "Access Management": [
-            "Account Creation",
-            "Permission Request",
-            "VPN Access",
-        ],
-        "General Services": [
-            "General Inquiry",
-        ],
-    }
+    department_category_map = get_department_category_map()
 
     return render(
         request,
@@ -261,7 +227,6 @@ def article_form(request, article_id=None):
         {
             'article': article,
             'departments': departments,
-            'category_choices': Article.CATEGORY_CHOICES,
             'department_category_map': json.dumps(department_category_map),
         }
     )
