@@ -1,0 +1,16 @@
+[
+{
+  "model": "tenants.tenant",
+  "pk": 1,
+  "fields": {
+    "name": "KAN Infocom Solution India Private Limited",
+    "slug": "kan-infocom-solution-india-private-limited",
+    "plan": "TRIAL",
+    "is_active": true,
+    "max_users": 10,
+    "notes": "Trial Period",
+    "trial_ends_at": null,
+    "created_at": "2026-07-16T05:34:25.353Z"
+  }
+}
+]

@@ -2,6 +2,7 @@ from django.urls import path
 from .views import login_view, dashboard_view, logout_view, users_list, edit_user, export_tickets_csv, change_password
 from .views import invitation_list, invite_user, accept_invitation, revoke_invitation, delete_invitation, resend_invitation
 from .views import security_settings_view, update_security_settings, logout_other_sessions, logout_session
+from .views import forgot_password_view, reset_password_view
 
 urlpatterns = [
     path('', login_view, name='login'),
@@ -11,6 +12,8 @@ urlpatterns = [
     path( "users/edit/<int:user_id>/", edit_user, name="edit_user" ),
     path('export-csv/', export_tickets_csv, name='export_tickets_csv'),
     path("change-password/", change_password, name="change_password" ),
+    path("forgot-password/", forgot_password_view, name="forgot_password" ),
+    path("reset-password/<uidb64>/<token>/", reset_password_view, name="reset_password" ),
     path("users/invitations/", invitation_list, name="invitation_list" ),
     path("users/invite/", invite_user, name="invite_user" ),
     path("users/accept/<uuid:token>/", accept_invitation, name="accept_invitation" ),

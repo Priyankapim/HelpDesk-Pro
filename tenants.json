@@ -1,0 +1,240 @@
+[
+{
+  "model": "tenants.tenant",
+  "pk": 1,
+  "fields": {
+    "name": "KAN Infocom Solution India Private Limited",
+    "slug": "kan-infocom-solution-india-private-limited",
+    "plan": "TRIAL",
+    "is_active": true,
+    "max_users": 10,
+    "notes": "Trial Period",
+    "trial_ends_at": null,
+    "created_at": "2026-07-16T05:34:25.353Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 1,
+  "fields": {
+    "tenant": 1,
+    "token": "d545dc00-8a20-4027-8028-496e6bde0781",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": 1,
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:37:14.978Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 2,
+  "fields": {
+    "tenant": 1,
+    "token": "cbcffee3-e472-45bc-89ec-16a88588639a",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": 1,
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:57:58.468Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 3,
+  "fields": {
+    "tenant": 1,
+    "token": "bebfc0b3-78ab-48bc-8f29-2f0607491fe5",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": 1,
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:01.588Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 4,
+  "fields": {
+    "tenant": 1,
+    "token": "75efd930-9de6-452a-a5d2-fb0364f95963",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": 1,
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:02.384Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 5,
+  "fields": {
+    "tenant": 1,
+    "token": "4ccb9590-afdc-4342-8229-1e49420ab831",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": 1,
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:02.902Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 6,
+  "fields": {
+    "tenant": 1,
+    "token": "9a2c43cc-71b0-4bdd-b2e9-a9fbf6873b82",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": 1,
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:03.134Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 7,
+  "fields": {
+    "tenant": 1,
+    "token": "dd219661-833d-4058-b2c1-9ea1a96693dc",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": 1,
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:03.369Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 8,
+  "fields": {
+    "tenant": 1,
+    "token": "887aabb2-aea2-4929-95c0-94ce5e229d24",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": 1,
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:03.589Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 9,
+  "fields": {
+    "tenant": 1,
+    "token": "5bf778fd-6b75-4d52-b819-ebc662c463cc",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": 1,
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:03.838Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 10,
+  "fields": {
+    "tenant": 1,
+    "token": "68673abb-56fc-4fab-8ec6-20e6fb5b1047",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": 1,
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:04.052Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 11,
+  "fields": {
+    "tenant": 1,
+    "token": "4064686a-1f5d-41ec-8ea0-b3936483230a",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": 1,
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:04.336Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 12,
+  "fields": {
+    "tenant": 1,
+    "token": "e5c9713e-a329-4527-9f73-84f7d12adb70",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": 1,
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:04.557Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 13,
+  "fields": {
+    "tenant": 1,
+    "token": "190605ed-7877-45e3-a547-4c086c574d78",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": 1,
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:59:58.269Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 14,
+  "fields": {
+    "tenant": 1,
+    "token": "79d788d6-def6-4212-8d6b-a604e94a298d",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "ACCEPTED",
+    "invited_by": 1,
+    "expires_at": "2026-07-23",
+    "accepted_at": "2026-07-16T06:41:59.226Z",
+    "created_at": "2026-07-16T06:39:55.346Z"
+  }
+}
+]

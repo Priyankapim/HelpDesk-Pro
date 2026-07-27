@@ -23,6 +23,10 @@ from .utils import generate_username
 from .utils import send_invitation_email
 from django.db.models import Q
 from .models import SecuritySettings, LoginActivity, UserSession
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from notifications.utils import send_ticket_email
 from .forms import AcceptInvitationForm
 from .utils import parse_user_agent
 
@@ -706,6 +710,160 @@ def change_password(request):
         "change_password.html",
         {
             "form": form
+        }
+    )
+
+
+def forgot_password_view(request):
+
+    if request.method == "POST":
+
+        email = request.POST.get("email", "").strip()
+
+        user = User.objects.filter(email__iexact=email).first()
+
+        if user:
+
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+
+            reset_link = request.build_absolute_uri(
+                reverse("reset_password", args=[uid, token])
+            )
+
+            email_message = (
+                f"Hello {user.first_name or user.email},\n\n"
+                f"We received a request to reset your ServiceDesk Pro password.\n\n"
+                f"Click the link below to set a new password:\n{reset_link}\n\n"
+                f"If you didn't request this, you can safely ignore this email - "
+                f"your password will not be changed.\n\n"
+                f"This link will stop working once you use it or change your password."
+            )
+
+            try:
+                send_ticket_email(
+                    subject="Reset your ServiceDesk Pro password",
+                    message=email_message,
+                    recipient=user.email
+                )
+            except Exception:
+                pass
+
+        # Always show the same message whether or not the email exists,
+        # so people can't use this form to check who has an account.
+        messages.success(
+            request,
+            "If an account exists with that email, a password reset link has been sent."
+        )
+
+        return redirect("login")
+
+    return render(
+        request,
+        "forgot_password.html"
+    )
+
+
+def reset_password_view(request, uidb64, token):
+
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    token_valid = (
+        user is not None
+        and default_token_generator.check_token(user, token)
+    )
+
+    if not token_valid:
+
+        messages.error(
+            request,
+            "This password reset link is invalid or has expired. Please request a new one."
+        )
+
+        return redirect("forgot_password")
+
+    if request.method == "POST":
+
+        new_password = request.POST.get("new_password", "")
+        confirm_password = request.POST.get("confirm_password", "")
+
+        if new_password != confirm_password:
+
+            messages.error(
+                request,
+                "New Password and Confirm Password do not match."
+            )
+
+        elif len(new_password) < 8:
+
+            messages.error(
+                request,
+                "Password must be at least 8 characters long."
+            )
+
+        elif not re.search(r"[A-Z]", new_password):
+
+            messages.error(
+                request,
+                "Password must contain at least one uppercase letter."
+            )
+
+        elif not re.search(r"[a-z]", new_password):
+
+            messages.error(
+                request,
+                "Password must contain at least one lowercase letter."
+            )
+
+        elif not re.search(r"\d", new_password):
+
+            messages.error(
+                request,
+                "Password must contain at least one number."
+            )
+
+        elif not re.search(r"[!@#$%^&*(),.?\":{}|<>]", new_password):
+
+            messages.error(
+                request,
+                "Password must contain at least one special character."
+            )
+
+        else:
+
+            user.set_password(new_password)
+            user.failed_login_attempts = 0
+            user.is_locked = False
+            user.locked_at = None
+            user.save()
+
+            log_activity(
+                actor=user,
+                action="user.password_reset",
+                action_label="Password reset via email link",
+                module="CONFIG",
+                target=user.email,
+                severity="WARNING",
+            )
+
+            messages.success(
+                request,
+                "Your password has been reset successfully. Please login with your new password."
+            )
+
+            return redirect("login")
+
+    return render(
+        request,
+        "reset_password.html",
+        {
+            "uidb64": uidb64,
+            "token": token
         }
     )
 

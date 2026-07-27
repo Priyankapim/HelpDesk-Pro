@@ -1,0 +1,4786 @@
+[
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accounts",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "departments",
+    "model": "department"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "tickets",
+    "model": "ticket"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "tickets",
+    "model": "ticketcomment"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "tickets",
+    "model": "notification"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accounts",
+    "model": "invitation"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auditlogs",
+    "model": "auditlog"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "configuration",
+    "model": "emailtemplate"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "configuration",
+    "model": "escalationrule"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "configuration",
+    "model": "holiday"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "configuration",
+    "model": "workinghours"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "automation",
+    "model": "automationrule"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "automation",
+    "model": "ruleaction"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "automation",
+    "model": "rulecondition"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "knowledge_base",
+    "model": "article"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "knowledge_base",
+    "model": "category"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "tenants",
+    "model": "invite"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "tenants",
+    "model": "tenant"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "tenant_support",
+    "model": "supportmessage"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "tenant_support",
+    "model": "supportrequest"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accounts",
+    "model": "loginactivity"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accounts",
+    "model": "securitysettings"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accounts",
+    "model": "usersession"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "tickets",
+    "model": "category"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "departments",
+    "model": "category"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "6z8vsuhekuxv6lr1gfgomeq8crqk1j8p",
+  "fields": {
+    "session_data": ".eJxVjMsOgjAQRf-la0NoeXSGpYlfYUwzbYe0AdFQqgvjv4uGhWzPuee-hKG8BJMTzyZ60QkpDv_Mkht4-gpy7panJRUbSsXpSnE8boNdFSiFNQGLqlYNSoQSvPUMQKTZypadbFqS1GtXW0XOswYoG-2wQgWIUlcey_V0sOYR-cne0LxEN3IS3VlefiLweO_zuDfvD1t2RdQ:1wnClE:GnzEuvTGVkBSPhhWrB4BqA4Y9lcnfjRDqvqrVe2jHpo",
+    "expire_date": "2026-08-07T10:04:08.229Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "eq2tvdptyhf5j7fd3yk76uaslsbq1d82",
+  "fields": {
+    "session_data": ".eJxVi80KwjAMgN-lZxltuiarR8HnKGna0KFOsNtJfHcZ7KDX7-dtEm9rS1uvrzQXczbOnH5ZZrnVZRcs8tyWtQ8H6sP1wfP9cgR_V-Pe9sXFmAlJig0C3voQeVLCXAgFSSX6TACqUDF4BxRlxBHUTp61qprPFzU1M6I:1wWXQa:lQ-TNyNYv6benPAYzdRGFpb-qGY_N61YzZSemZjn8rE",
+    "expire_date": "2026-06-22T10:41:56.381Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "gblwn3uj8pb60fia8qqtnf8naoawr5th",
+  "fields": {
+    "session_data": ".eJxVizsOwjAQBe_iGkWOP4tNicQ5rN31Wo6AIOG4QtydREoRmlfMm_mohH2pqTd5pymrixq1Oh0hId9l3h5kfvV5acOO2nB74vS47sJfVbHVNfHAplgXgUoxTIBWfAnaWD6PLkYQXlcjO8k-ZA0SkCiGXDCwWEL1_QFyMTTr:1wmlsk:_YfADmnIiB_6jYch9b4n7sHM9jBNpKGBKNYLcEjuvmo",
+    "expire_date": "2026-08-06T05:22:06.685Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "rhjd4j2w8rrltldi78rqtqbrbhttfgie",
+  "fields": {
+    "session_data": ".eJxVi0sKwjAQQO-StZRMJhkal4LnCJkPpKgVTLMS765CF7p9n6crdWytjG6Psqg7uuAOv4yrXGz9iipyH-vWpx316Xyry_W0B39Xq719llk4BCBFn8EgImYiTJI5KID3NptiCkreDCgBUPYcg3BkycrI7vUGF1kzCg:1wWuCY:KvU3DQu08h9-gdOeuuwTU8pOhxfcORusX4omwwcnUTo",
+    "expire_date": "2026-06-23T11:00:58.883Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "us9mk2j0x663ulhab90h2doiokvea1an",
+  "fields": {
+    "session_data": ".eJxVi80KwjAMgN-lZxltuiarR8HnKGna0KFOsNtJfHcZ7KDX7-dtEm9rS1uvrzQXczbOnH5ZZrnVZRcs8tyWtQ8H6sP1wfP9cgR_V-Pe9sXFmAlJig0C3voQeVLCXAgFSSX6TACqUDF4BxRlxBHUTp61qprPFzU1M6I:1wWRGV:uULsL0QGbbJDDBjj22_BTpMYgTyKhWmczstaQRunUBQ",
+    "expire_date": "2026-06-22T04:07:07.917Z"
+  }
+},
+{
+  "model": "accounts.securitysettings",
+  "pk": 1,
+  "fields": {
+    "max_failed_attempts": 5,
+    "lockout_duration_minutes": 15,
+    "updated_at": "2026-07-22T06:33:08.077Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 1,
+  "fields": {
+    "name": "Hardware Issue",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.633Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 2,
+  "fields": {
+    "name": "Software Issue",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.633Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 3,
+  "fields": {
+    "name": "Network Issue",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.633Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 4,
+  "fields": {
+    "name": "Email / Outlook",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.633Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 5,
+  "fields": {
+    "name": "New Employee Onboarding",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.633Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 6,
+  "fields": {
+    "name": "Leave Policy",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.633Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 7,
+  "fields": {
+    "name": "Payroll Inquiry",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.633Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 8,
+  "fields": {
+    "name": "Office Supplies",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.633Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 9,
+  "fields": {
+    "name": "Facility Request",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.633Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 10,
+  "fields": {
+    "name": "Invoice Processing",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.633Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 11,
+  "fields": {
+    "name": "Budget Approval",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.633Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 12,
+  "fields": {
+    "name": "Laptop Request",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.633Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 13,
+  "fields": {
+    "name": "Software License",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.633Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 14,
+  "fields": {
+    "name": "Account Creation",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.633Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 15,
+  "fields": {
+    "name": "Permission Request",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.649Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 16,
+  "fields": {
+    "name": "VPN Access",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.649Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 17,
+  "fields": {
+    "name": "General Inquiry",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-23T07:10:52.649Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 18,
+  "fields": {
+    "name": "HR Policy",
+    "description": "HR Policy",
+    "is_active": true,
+    "created_at": "2026-07-23T13:41:30.235Z"
+  }
+},
+{
+  "model": "tickets.category",
+  "pk": 19,
+  "fields": {
+    "name": "Document Issue",
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-07-24T05:58:46.273Z"
+  }
+},
+{
+  "model": "departments.department",
+  "pk": 1,
+  "fields": {
+    "name": "IT Support",
+    "description": "Handles technical issues",
+    "is_active": true,
+    "tenant": null,
+    "sla_critical": 2,
+    "sla_high": 8,
+    "sla_medium": 24,
+    "sla_low": 72,
+    "created_at": "2026-06-01T08:15:11.408Z"
+  }
+},
+{
+  "model": "departments.department",
+  "pk": 5,
+  "fields": {
+    "name": "HR Support",
+    "description": "",
+    "is_active": true,
+    "tenant": null,
+    "sla_critical": 2,
+    "sla_high": 8,
+    "sla_medium": 24,
+    "sla_low": 72,
+    "created_at": "2026-06-30T10:59:40.484Z"
+  }
+},
+{
+  "model": "departments.department",
+  "pk": 6,
+  "fields": {
+    "name": "Admin Support",
+    "description": "",
+    "is_active": true,
+    "tenant": null,
+    "sla_critical": 2,
+    "sla_high": 8,
+    "sla_medium": 24,
+    "sla_low": 72,
+    "created_at": "2026-06-30T10:59:40.489Z"
+  }
+},
+{
+  "model": "departments.department",
+  "pk": 7,
+  "fields": {
+    "name": "Finance Requests",
+    "description": "",
+    "is_active": true,
+    "tenant": null,
+    "sla_critical": 2,
+    "sla_high": 8,
+    "sla_medium": 24,
+    "sla_low": 72,
+    "created_at": "2026-06-30T10:59:40.489Z"
+  }
+},
+{
+  "model": "departments.department",
+  "pk": 8,
+  "fields": {
+    "name": "Asset Requests",
+    "description": "",
+    "is_active": true,
+    "tenant": null,
+    "sla_critical": 2,
+    "sla_high": 8,
+    "sla_medium": 24,
+    "sla_low": 72,
+    "created_at": "2026-06-30T10:59:40.489Z"
+  }
+},
+{
+  "model": "departments.department",
+  "pk": 9,
+  "fields": {
+    "name": "Access Managements",
+    "description": "Managemnt ",
+    "is_active": true,
+    "tenant": null,
+    "sla_critical": 2,
+    "sla_high": 8,
+    "sla_medium": 24,
+    "sla_low": 72,
+    "created_at": "2026-06-30T10:59:40.505Z"
+  }
+},
+{
+  "model": "departments.department",
+  "pk": 10,
+  "fields": {
+    "name": "General Services",
+    "description": "",
+    "is_active": true,
+    "tenant": null,
+    "sla_critical": 2,
+    "sla_high": 8,
+    "sla_medium": 24,
+    "sla_low": 72,
+    "created_at": "2026-06-30T10:59:41.568Z"
+  }
+},
+{
+  "model": "departments.department",
+  "pk": 11,
+  "fields": {
+    "name": "Other",
+    "description": "Other",
+    "is_active": true,
+    "tenant": null,
+    "sla_critical": 2,
+    "sla_high": 8,
+    "sla_medium": 24,
+    "sla_low": 72,
+    "created_at": "2026-07-14T04:32:51.204Z"
+  }
+},
+{
+  "model": "departments.department",
+  "pk": 12,
+  "fields": {
+    "name": "Projects & PMO",
+    "description": "Project Support, Change Request, Project Approval, Resource Request",
+    "is_active": true,
+    "tenant": null,
+    "sla_critical": 2,
+    "sla_high": 8,
+    "sla_medium": 24,
+    "sla_low": 72,
+    "created_at": "2026-07-23T06:18:26.605Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 1,
+  "fields": {
+    "department": 1,
+    "name": "Hardware Issue",
+    "is_active": true,
+    "created_at": "2026-07-24T05:56:08.219Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 2,
+  "fields": {
+    "department": 1,
+    "name": "Software Issue",
+    "is_active": true,
+    "created_at": "2026-07-24T05:56:08.219Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 3,
+  "fields": {
+    "department": 1,
+    "name": "Network Issue",
+    "is_active": true,
+    "created_at": "2026-07-24T05:56:08.219Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 4,
+  "fields": {
+    "department": 1,
+    "name": "Email / Outlook",
+    "is_active": true,
+    "created_at": "2026-07-24T05:56:08.219Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 5,
+  "fields": {
+    "department": 5,
+    "name": "New Employee Onboarding",
+    "is_active": true,
+    "created_at": "2026-07-24T05:56:08.235Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 6,
+  "fields": {
+    "department": 5,
+    "name": "Leave Policy",
+    "is_active": true,
+    "created_at": "2026-07-24T05:56:08.235Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 7,
+  "fields": {
+    "department": 5,
+    "name": "Payroll Inquiry",
+    "is_active": true,
+    "created_at": "2026-07-24T05:56:08.235Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 8,
+  "fields": {
+    "department": 6,
+    "name": "Office Supplies",
+    "is_active": true,
+    "created_at": "2026-07-24T05:56:08.235Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 9,
+  "fields": {
+    "department": 6,
+    "name": "Facility Request",
+    "is_active": true,
+    "created_at": "2026-07-24T05:56:08.235Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 10,
+  "fields": {
+    "department": 7,
+    "name": "Invoice Processing",
+    "is_active": true,
+    "created_at": "2026-07-24T05:56:08.235Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 11,
+  "fields": {
+    "department": 7,
+    "name": "Budget Approval",
+    "is_active": true,
+    "created_at": "2026-07-24T05:56:08.243Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 12,
+  "fields": {
+    "department": 8,
+    "name": "Laptop Request",
+    "is_active": true,
+    "created_at": "2026-07-24T05:56:08.245Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 13,
+  "fields": {
+    "department": 8,
+    "name": "Software License",
+    "is_active": true,
+    "created_at": "2026-07-24T05:56:08.245Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 14,
+  "fields": {
+    "department": 10,
+    "name": "General Inquiry",
+    "is_active": true,
+    "created_at": "2026-07-24T05:56:08.245Z"
+  }
+},
+{
+  "model": "departments.category",
+  "pk": 15,
+  "fields": {
+    "department": 9,
+    "name": "Document Management",
+    "is_active": true,
+    "created_at": "2026-07-24T10:09:23.281Z"
+  }
+},
+{
+  "model": "automation.ruleaction",
+  "pk": 1,
+  "fields": {
+    "rule": 1,
+    "action_type": "send_email_notification",
+    "value": ""
+  }
+},
+{
+  "model": "configuration.workinghours",
+  "pk": 1,
+  "fields": {
+    "day": "MON",
+    "is_working": true,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "configuration.workinghours",
+  "pk": 2,
+  "fields": {
+    "day": "TUE",
+    "is_working": true,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "configuration.workinghours",
+  "pk": 3,
+  "fields": {
+    "day": "WED",
+    "is_working": true,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "configuration.workinghours",
+  "pk": 4,
+  "fields": {
+    "day": "THU",
+    "is_working": true,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "configuration.workinghours",
+  "pk": 5,
+  "fields": {
+    "day": "FRI",
+    "is_working": true,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "configuration.workinghours",
+  "pk": 6,
+  "fields": {
+    "day": "SAT",
+    "is_working": false,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "configuration.workinghours",
+  "pk": 7,
+  "fields": {
+    "day": "SUN",
+    "is_working": false,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "configuration.holiday",
+  "pk": 1,
+  "fields": {
+    "name": "Chritmas Day",
+    "date": "2026-12-25",
+    "recurring": false
+  }
+},
+{
+  "model": "configuration.emailtemplate",
+  "pk": 1,
+  "fields": {
+    "name": "Ticket Created",
+    "trigger_event": "TICKET_CREATED",
+    "subject": "Ticket Created",
+    "body": "Ticket Created",
+    "is_active": true,
+    "created_at": "2026-07-15T06:43:43.675Z"
+  }
+},
+{
+  "model": "tenants.tenant",
+  "pk": 1,
+  "fields": {
+    "name": "KAN Infocom Solution India Private Limited",
+    "slug": "kan-infocom-solution-india-private-limited",
+    "plan": "TRIAL",
+    "is_active": true,
+    "max_users": 10,
+    "notes": "Trial Period",
+    "trial_ends_at": null,
+    "created_at": "2026-07-16T05:34:25.353Z"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add user",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change user",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete user",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view user",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add department",
+    "content_type": [
+      "departments",
+      "department"
+    ],
+    "codename": "add_department"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change department",
+    "content_type": [
+      "departments",
+      "department"
+    ],
+    "codename": "change_department"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete department",
+    "content_type": [
+      "departments",
+      "department"
+    ],
+    "codename": "delete_department"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view department",
+    "content_type": [
+      "departments",
+      "department"
+    ],
+    "codename": "view_department"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add ticket",
+    "content_type": [
+      "tickets",
+      "ticket"
+    ],
+    "codename": "add_ticket"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change ticket",
+    "content_type": [
+      "tickets",
+      "ticket"
+    ],
+    "codename": "change_ticket"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete ticket",
+    "content_type": [
+      "tickets",
+      "ticket"
+    ],
+    "codename": "delete_ticket"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view ticket",
+    "content_type": [
+      "tickets",
+      "ticket"
+    ],
+    "codename": "view_ticket"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add ticket comment",
+    "content_type": [
+      "tickets",
+      "ticketcomment"
+    ],
+    "codename": "add_ticketcomment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change ticket comment",
+    "content_type": [
+      "tickets",
+      "ticketcomment"
+    ],
+    "codename": "change_ticketcomment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete ticket comment",
+    "content_type": [
+      "tickets",
+      "ticketcomment"
+    ],
+    "codename": "delete_ticketcomment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view ticket comment",
+    "content_type": [
+      "tickets",
+      "ticketcomment"
+    ],
+    "codename": "view_ticketcomment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add notification",
+    "content_type": [
+      "tickets",
+      "notification"
+    ],
+    "codename": "add_notification"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change notification",
+    "content_type": [
+      "tickets",
+      "notification"
+    ],
+    "codename": "change_notification"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete notification",
+    "content_type": [
+      "tickets",
+      "notification"
+    ],
+    "codename": "delete_notification"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view notification",
+    "content_type": [
+      "tickets",
+      "notification"
+    ],
+    "codename": "view_notification"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add invitation",
+    "content_type": [
+      "accounts",
+      "invitation"
+    ],
+    "codename": "add_invitation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change invitation",
+    "content_type": [
+      "accounts",
+      "invitation"
+    ],
+    "codename": "change_invitation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete invitation",
+    "content_type": [
+      "accounts",
+      "invitation"
+    ],
+    "codename": "delete_invitation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view invitation",
+    "content_type": [
+      "accounts",
+      "invitation"
+    ],
+    "codename": "view_invitation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add audit log",
+    "content_type": [
+      "auditlogs",
+      "auditlog"
+    ],
+    "codename": "add_auditlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change audit log",
+    "content_type": [
+      "auditlogs",
+      "auditlog"
+    ],
+    "codename": "change_auditlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete audit log",
+    "content_type": [
+      "auditlogs",
+      "auditlog"
+    ],
+    "codename": "delete_auditlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view audit log",
+    "content_type": [
+      "auditlogs",
+      "auditlog"
+    ],
+    "codename": "view_auditlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add working hours",
+    "content_type": [
+      "configuration",
+      "workinghours"
+    ],
+    "codename": "add_workinghours"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change working hours",
+    "content_type": [
+      "configuration",
+      "workinghours"
+    ],
+    "codename": "change_workinghours"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete working hours",
+    "content_type": [
+      "configuration",
+      "workinghours"
+    ],
+    "codename": "delete_workinghours"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view working hours",
+    "content_type": [
+      "configuration",
+      "workinghours"
+    ],
+    "codename": "view_workinghours"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add holiday",
+    "content_type": [
+      "configuration",
+      "holiday"
+    ],
+    "codename": "add_holiday"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change holiday",
+    "content_type": [
+      "configuration",
+      "holiday"
+    ],
+    "codename": "change_holiday"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete holiday",
+    "content_type": [
+      "configuration",
+      "holiday"
+    ],
+    "codename": "delete_holiday"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view holiday",
+    "content_type": [
+      "configuration",
+      "holiday"
+    ],
+    "codename": "view_holiday"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add email template",
+    "content_type": [
+      "configuration",
+      "emailtemplate"
+    ],
+    "codename": "add_emailtemplate"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change email template",
+    "content_type": [
+      "configuration",
+      "emailtemplate"
+    ],
+    "codename": "change_emailtemplate"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete email template",
+    "content_type": [
+      "configuration",
+      "emailtemplate"
+    ],
+    "codename": "delete_emailtemplate"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view email template",
+    "content_type": [
+      "configuration",
+      "emailtemplate"
+    ],
+    "codename": "view_emailtemplate"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add escalation rule",
+    "content_type": [
+      "configuration",
+      "escalationrule"
+    ],
+    "codename": "add_escalationrule"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change escalation rule",
+    "content_type": [
+      "configuration",
+      "escalationrule"
+    ],
+    "codename": "change_escalationrule"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete escalation rule",
+    "content_type": [
+      "configuration",
+      "escalationrule"
+    ],
+    "codename": "delete_escalationrule"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view escalation rule",
+    "content_type": [
+      "configuration",
+      "escalationrule"
+    ],
+    "codename": "view_escalationrule"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add automation rule",
+    "content_type": [
+      "automation",
+      "automationrule"
+    ],
+    "codename": "add_automationrule"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change automation rule",
+    "content_type": [
+      "automation",
+      "automationrule"
+    ],
+    "codename": "change_automationrule"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete automation rule",
+    "content_type": [
+      "automation",
+      "automationrule"
+    ],
+    "codename": "delete_automationrule"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view automation rule",
+    "content_type": [
+      "automation",
+      "automationrule"
+    ],
+    "codename": "view_automationrule"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add rule condition",
+    "content_type": [
+      "automation",
+      "rulecondition"
+    ],
+    "codename": "add_rulecondition"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change rule condition",
+    "content_type": [
+      "automation",
+      "rulecondition"
+    ],
+    "codename": "change_rulecondition"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete rule condition",
+    "content_type": [
+      "automation",
+      "rulecondition"
+    ],
+    "codename": "delete_rulecondition"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view rule condition",
+    "content_type": [
+      "automation",
+      "rulecondition"
+    ],
+    "codename": "view_rulecondition"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add rule action",
+    "content_type": [
+      "automation",
+      "ruleaction"
+    ],
+    "codename": "add_ruleaction"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change rule action",
+    "content_type": [
+      "automation",
+      "ruleaction"
+    ],
+    "codename": "change_ruleaction"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete rule action",
+    "content_type": [
+      "automation",
+      "ruleaction"
+    ],
+    "codename": "delete_ruleaction"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view rule action",
+    "content_type": [
+      "automation",
+      "ruleaction"
+    ],
+    "codename": "view_ruleaction"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add category",
+    "content_type": [
+      "knowledge_base",
+      "category"
+    ],
+    "codename": "add_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change category",
+    "content_type": [
+      "knowledge_base",
+      "category"
+    ],
+    "codename": "change_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete category",
+    "content_type": [
+      "knowledge_base",
+      "category"
+    ],
+    "codename": "delete_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view category",
+    "content_type": [
+      "knowledge_base",
+      "category"
+    ],
+    "codename": "view_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add article",
+    "content_type": [
+      "knowledge_base",
+      "article"
+    ],
+    "codename": "add_article"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change article",
+    "content_type": [
+      "knowledge_base",
+      "article"
+    ],
+    "codename": "change_article"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete article",
+    "content_type": [
+      "knowledge_base",
+      "article"
+    ],
+    "codename": "delete_article"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view article",
+    "content_type": [
+      "knowledge_base",
+      "article"
+    ],
+    "codename": "view_article"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add tenant",
+    "content_type": [
+      "tenants",
+      "tenant"
+    ],
+    "codename": "add_tenant"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change tenant",
+    "content_type": [
+      "tenants",
+      "tenant"
+    ],
+    "codename": "change_tenant"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete tenant",
+    "content_type": [
+      "tenants",
+      "tenant"
+    ],
+    "codename": "delete_tenant"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view tenant",
+    "content_type": [
+      "tenants",
+      "tenant"
+    ],
+    "codename": "view_tenant"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add invite",
+    "content_type": [
+      "tenants",
+      "invite"
+    ],
+    "codename": "add_invite"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change invite",
+    "content_type": [
+      "tenants",
+      "invite"
+    ],
+    "codename": "change_invite"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete invite",
+    "content_type": [
+      "tenants",
+      "invite"
+    ],
+    "codename": "delete_invite"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view invite",
+    "content_type": [
+      "tenants",
+      "invite"
+    ],
+    "codename": "view_invite"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add support request",
+    "content_type": [
+      "tenant_support",
+      "supportrequest"
+    ],
+    "codename": "add_supportrequest"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change support request",
+    "content_type": [
+      "tenant_support",
+      "supportrequest"
+    ],
+    "codename": "change_supportrequest"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete support request",
+    "content_type": [
+      "tenant_support",
+      "supportrequest"
+    ],
+    "codename": "delete_supportrequest"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view support request",
+    "content_type": [
+      "tenant_support",
+      "supportrequest"
+    ],
+    "codename": "view_supportrequest"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add support message",
+    "content_type": [
+      "tenant_support",
+      "supportmessage"
+    ],
+    "codename": "add_supportmessage"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change support message",
+    "content_type": [
+      "tenant_support",
+      "supportmessage"
+    ],
+    "codename": "change_supportmessage"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete support message",
+    "content_type": [
+      "tenant_support",
+      "supportmessage"
+    ],
+    "codename": "delete_supportmessage"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view support message",
+    "content_type": [
+      "tenant_support",
+      "supportmessage"
+    ],
+    "codename": "view_supportmessage"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add security settings",
+    "content_type": [
+      "accounts",
+      "securitysettings"
+    ],
+    "codename": "add_securitysettings"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change security settings",
+    "content_type": [
+      "accounts",
+      "securitysettings"
+    ],
+    "codename": "change_securitysettings"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete security settings",
+    "content_type": [
+      "accounts",
+      "securitysettings"
+    ],
+    "codename": "delete_securitysettings"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view security settings",
+    "content_type": [
+      "accounts",
+      "securitysettings"
+    ],
+    "codename": "view_securitysettings"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add login activity",
+    "content_type": [
+      "accounts",
+      "loginactivity"
+    ],
+    "codename": "add_loginactivity"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change login activity",
+    "content_type": [
+      "accounts",
+      "loginactivity"
+    ],
+    "codename": "change_loginactivity"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete login activity",
+    "content_type": [
+      "accounts",
+      "loginactivity"
+    ],
+    "codename": "delete_loginactivity"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view login activity",
+    "content_type": [
+      "accounts",
+      "loginactivity"
+    ],
+    "codename": "view_loginactivity"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add user session",
+    "content_type": [
+      "accounts",
+      "usersession"
+    ],
+    "codename": "add_usersession"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change user session",
+    "content_type": [
+      "accounts",
+      "usersession"
+    ],
+    "codename": "change_usersession"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete user session",
+    "content_type": [
+      "accounts",
+      "usersession"
+    ],
+    "codename": "delete_usersession"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view user session",
+    "content_type": [
+      "accounts",
+      "usersession"
+    ],
+    "codename": "view_usersession"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add category",
+    "content_type": [
+      "tickets",
+      "category"
+    ],
+    "codename": "add_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change category",
+    "content_type": [
+      "tickets",
+      "category"
+    ],
+    "codename": "change_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete category",
+    "content_type": [
+      "tickets",
+      "category"
+    ],
+    "codename": "delete_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view category",
+    "content_type": [
+      "tickets",
+      "category"
+    ],
+    "codename": "view_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add category",
+    "content_type": [
+      "departments",
+      "category"
+    ],
+    "codename": "add_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change category",
+    "content_type": [
+      "departments",
+      "category"
+    ],
+    "codename": "change_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete category",
+    "content_type": [
+      "departments",
+      "category"
+    ],
+    "codename": "delete_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view category",
+    "content_type": [
+      "departments",
+      "category"
+    ],
+    "codename": "view_category"
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$pipyjbBBNzFXfCw1nnaaZZ$/Wz+ikOOJn/u9+m1fXFZUC0EJiZsjSEDtACd2OVFL64=",
+    "last_login": "2026-07-24T10:04:08.143Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "priya Admin",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-06-01T07:59:29Z",
+    "email": "priyankapimpariya178@gmail.com",
+    "role": "SUPER_ADMIN",
+    "phone": null,
+    "profile_image": "",
+    "department": null,
+    "tenant": null,
+    "is_locked": false,
+    "failed_login_attempts": 0,
+    "locked_at": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$MpV6KNKdZw8pdQ47BUfCGy$8NCTXll+wf/JVffcoTgt6Za3d1Ii11QqJOPmwS1/gUw=",
+    "last_login": "2026-07-07T11:17:46.001Z",
+    "is_superuser": false,
+    "username": "agent1",
+    "first_name": "Paras Agent",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-01T08:28:20Z",
+    "email": "parasmalpimpariya21@gmail.com",
+    "role": "AGENT",
+    "phone": null,
+    "profile_image": "",
+    "department": 1,
+    "tenant": null,
+    "is_locked": false,
+    "failed_login_attempts": 0,
+    "locked_at": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$UDMOJdyqXdHrG8EBTdOamq$m0OtkgNzboMFNimllh6ZsUoWQo4J4y9GzKWktq9EJOY=",
+    "last_login": "2026-07-14T09:40:55Z",
+    "is_superuser": false,
+    "username": "employee1",
+    "first_name": "priyanka employee",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-01T10:09:00Z",
+    "email": "priyankapimpariya17@gmail.com",
+    "role": "EMPLOYEE",
+    "phone": null,
+    "profile_image": "",
+    "department": null,
+    "tenant": null,
+    "is_locked": false,
+    "failed_login_attempts": 0,
+    "locked_at": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "!0tkATYsYNieNrFRAbCGvt7Tk5rusY63VeRs6q3ZG",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "yogesh",
+    "first_name": "yogesh",
+    "last_name": "mishra",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-03T10:58:41Z",
+    "email": "yogesh@hepdesk.com",
+    "role": "EMPLOYEE",
+    "phone": null,
+    "profile_image": "",
+    "department": null,
+    "tenant": null,
+    "is_locked": false,
+    "failed_login_attempts": 0,
+    "locked_at": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$hShGGsDpRqi23UHLVWWdQU$JT812E1/V/A+h4Vb3qRyGupXg8uVoKq4VhQwdf04IZo=",
+    "last_login": "2026-07-14T07:02:02.072Z",
+    "is_superuser": false,
+    "username": "priyankapimpariya07991",
+    "first_name": "Shree",
+    "last_name": "Jadhav",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-07-14T07:01:52.938Z",
+    "email": "priyankapimpariya07@gmail.com",
+    "role": "EMPLOYEE",
+    "phone": null,
+    "profile_image": "",
+    "department": 5,
+    "tenant": null,
+    "is_locked": true,
+    "failed_login_attempts": 0,
+    "locked_at": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$HziCpV49WOFJJc4wGXXi9i$xVE3CiG/SozUl9hth4OT47fOvXT1zfXH+mfF0fSxVAQ=",
+    "last_login": "2026-07-23T05:22:06.662Z",
+    "is_superuser": false,
+    "username": "priyankapimpariya177577",
+    "first_name": "Surabhi",
+    "last_name": "Bhosale",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-07-16T06:41:56.426Z",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "phone": null,
+    "profile_image": "",
+    "department": null,
+    "tenant": 1,
+    "is_locked": false,
+    "failed_login_attempts": 0,
+    "locked_at": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.invitation",
+  "pk": 1,
+  "fields": {
+    "email": "priyankapimpariya07@gmail.com",
+    "first_name": "Samarth",
+    "last_name": "Das",
+    "role": "EMPLOYEE",
+    "department": 5,
+    "token": "efcd435a-e781-435d-8e78-d8f7fcdaf314",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "status": "PENDING",
+    "expires_at": "2026-07-20T11:41:10.539Z",
+    "created_at": "2026-07-13T11:41:10.539Z"
+  }
+},
+{
+  "model": "accounts.invitation",
+  "pk": 2,
+  "fields": {
+    "email": "priyankapimpariya07@gmail.com",
+    "first_name": "Shree",
+    "last_name": "Jadhav",
+    "role": "EMPLOYEE",
+    "department": 5,
+    "token": "9607c534-4415-4ff0-890b-6fb2fd37853e",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "status": "ACCEPTED",
+    "expires_at": "2026-07-21T06:49:46.568Z",
+    "created_at": "2026-07-14T06:49:46.568Z"
+  }
+},
+{
+  "model": "accounts.invitation",
+  "pk": 4,
+  "fields": {
+    "email": "pimpariyaarpita1641@gmail.com",
+    "first_name": "Arpita",
+    "last_name": "Sarvaiye",
+    "role": "EMPLOYEE",
+    "department": null,
+    "token": "da2102b8-39f5-4b48-9bf4-1f118433d8e5",
+    "invited_by": [
+      "priyankapimpariya177@gmail.com"
+    ],
+    "status": "PENDING",
+    "expires_at": "2026-07-30T06:10:59.141Z",
+    "created_at": "2026-07-23T06:10:59.142Z"
+  }
+},
+{
+  "model": "accounts.loginactivity",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "email_attempted": "priyankapimpariya178@gmail.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0",
+    "status": "SUCCESS",
+    "created_at": "2026-07-23T05:12:09.087Z"
+  }
+},
+{
+  "model": "accounts.loginactivity",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "priyankapimpariya177@gmail.com"
+    ],
+    "email_attempted": "priyankapimpariya177@gmail.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "status": "SUCCESS",
+    "created_at": "2026-07-23T05:22:06.669Z"
+  }
+},
+{
+  "model": "accounts.loginactivity",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "email_attempted": "priyankapimpariya178@gmail.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0",
+    "status": "SUCCESS",
+    "created_at": "2026-07-23T13:38:16.109Z"
+  }
+},
+{
+  "model": "accounts.loginactivity",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "email_attempted": "priyankapimpariya178@gmail.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0",
+    "status": "SUCCESS",
+    "created_at": "2026-07-24T04:23:07.596Z"
+  }
+},
+{
+  "model": "accounts.loginactivity",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "email_attempted": "priyankapimpariya178@gmail.com",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0",
+    "status": "SUCCESS",
+    "created_at": "2026-07-24T10:04:08.150Z"
+  }
+},
+{
+  "model": "accounts.usersession",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "session_key": "6z8vsuhekuxv6lr1gfgomeq8crqk1j8p",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0",
+    "created_at": "2026-07-23T05:12:09.100Z",
+    "last_activity": "2026-07-24T10:04:08.167Z"
+  }
+},
+{
+  "model": "accounts.usersession",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "priyankapimpariya177@gmail.com"
+    ],
+    "session_key": "gblwn3uj8pb60fia8qqtnf8naoawr5th",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "created_at": "2026-07-23T05:22:06.683Z",
+    "last_activity": "2026-07-23T05:22:06.683Z"
+  }
+},
+{
+  "model": "tickets.ticket",
+  "pk": 1,
+  "fields": {
+    "ticket_number": "TKT-0001",
+    "title": "Login Issue",
+    "description": "User name not found",
+    "department": 1,
+    "priority": "Critical",
+    "status": "Closed",
+    "created_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "assigned_to": [
+      "parasmalpimpariya21@gmail.com"
+    ],
+    "created_at": "2026-06-02T07:31:30.653Z",
+    "updated_at": "2026-06-08T11:02:10.371Z",
+    "category": "General Inquiry",
+    "affected_system": "Other",
+    "tags": ""
+  }
+},
+{
+  "model": "tickets.ticket",
+  "pk": 2,
+  "fields": {
+    "ticket_number": "TKT-0002",
+    "title": "Charger not working",
+    "description": "Charger not working",
+    "department": 1,
+    "priority": "Low",
+    "status": "In Progress",
+    "created_by": [
+      "priyankapimpariya17@gmail.com"
+    ],
+    "assigned_to": [
+      "parasmalpimpariya21@gmail.com"
+    ],
+    "created_at": "2026-06-09T08:00:08.909Z",
+    "updated_at": "2026-06-09T11:10:10.962Z",
+    "category": "General Inquiry",
+    "affected_system": "Other",
+    "tags": ""
+  }
+},
+{
+  "model": "tickets.ticket",
+  "pk": 3,
+  "fields": {
+    "ticket_number": "TKT-0003",
+    "title": "login issue",
+    "description": "login issue",
+    "department": 1,
+    "priority": "High",
+    "status": "Resolved",
+    "created_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "assigned_to": [
+      "parasmalpimpariya21@gmail.com"
+    ],
+    "created_at": "2026-06-23T05:15:25.410Z",
+    "updated_at": "2026-06-25T06:29:34.633Z",
+    "category": "General Inquiry",
+    "affected_system": "Other",
+    "tags": ""
+  }
+},
+{
+  "model": "tickets.ticket",
+  "pk": 9,
+  "fields": {
+    "ticket_number": "TKT-0009",
+    "title": "Login issue",
+    "description": "username not found",
+    "department": 1,
+    "priority": "High",
+    "status": "Open",
+    "created_by": [
+      "priyankapimpariya17@gmail.com"
+    ],
+    "assigned_to": null,
+    "created_at": "2026-06-30T06:25:37.463Z",
+    "updated_at": "2026-06-30T06:25:37.463Z",
+    "category": "General Inquiry",
+    "affected_system": "Other",
+    "tags": ""
+  }
+},
+{
+  "model": "tickets.ticket",
+  "pk": 10,
+  "fields": {
+    "ticket_number": "TKT-0005",
+    "title": "\"Cannot login to VPN\"",
+    "description": "\"Cannot login to VPN\"",
+    "department": 9,
+    "priority": "High",
+    "status": "Open",
+    "created_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "assigned_to": null,
+    "created_at": "2026-07-02T12:08:23.017Z",
+    "updated_at": "2026-07-02T12:08:23.017Z",
+    "category": "VPN Access",
+    "affected_system": "VPN",
+    "tags": "login, vpn, access, authentication"
+  }
+},
+{
+  "model": "tickets.ticket",
+  "pk": 11,
+  "fields": {
+    "ticket_number": "TKT-0006",
+    "title": "Mouse Not working",
+    "description": "Mouse not working",
+    "department": 1,
+    "priority": "Medium",
+    "status": "Open",
+    "created_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "assigned_to": null,
+    "created_at": "2026-07-16T07:14:24.587Z",
+    "updated_at": "2026-07-16T07:14:24.587Z",
+    "category": "Hardware Issue",
+    "affected_system": "Hardware",
+    "tags": "mouse, hardware, peripheral, not working, input"
+  }
+},
+{
+  "model": "tickets.ticket",
+  "pk": 12,
+  "fields": {
+    "ticket_number": "TKT-0007",
+    "title": "Screen error",
+    "description": "Screen not visible",
+    "department": 1,
+    "priority": "High",
+    "status": "Open",
+    "created_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "assigned_to": null,
+    "created_at": "2026-07-16T07:23:51.921Z",
+    "updated_at": "2026-07-16T07:23:51.921Z",
+    "category": "Hardware Issue",
+    "affected_system": "Laptop",
+    "tags": "screen, display, visibility, hardware, issue"
+  }
+},
+{
+  "model": "tickets.ticketcomment",
+  "pk": 1,
+  "fields": {
+    "ticket": 1,
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "comment": "issue assigned",
+    "created_at": "2026-06-04T06:37:41.352Z"
+  }
+},
+{
+  "model": "tickets.ticketcomment",
+  "pk": 6,
+  "fields": {
+    "ticket": 1,
+    "user": [
+      "parasmalpimpariya21@gmail.com"
+    ],
+    "comment": "Start             ",
+    "created_at": "2026-06-08T10:45:12.296Z"
+  }
+},
+{
+  "model": "tickets.notification",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "priyankapimpariya17@gmail.com"
+    ],
+    "ticket": 9,
+    "title": "Ticket Created",
+    "message": "Your ticket \"Login issue\" has been created.",
+    "is_read": true,
+    "created_at": "2026-06-30T06:25:37.484Z"
+  }
+},
+{
+  "model": "tickets.notification",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "ticket": 10,
+    "title": "Ticket Created",
+    "message": "Your ticket \"\"Cannot login to VPN\"\" has been created.",
+    "is_read": false,
+    "created_at": "2026-07-02T12:08:23.023Z"
+  }
+},
+{
+  "model": "tickets.notification",
+  "pk": 6,
+  "fields": {
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "ticket": 11,
+    "title": "Ticket Created",
+    "message": "Your ticket \"Mouse Not working\" has been created.",
+    "is_read": false,
+    "created_at": "2026-07-16T07:14:24.588Z"
+  }
+},
+{
+  "model": "tickets.notification",
+  "pk": 7,
+  "fields": {
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "ticket": 12,
+    "title": "Ticket Created",
+    "message": "Your ticket \"Screen error\" has been created.",
+    "is_read": false,
+    "created_at": "2026-07-16T07:23:51.931Z"
+  }
+},
+{
+  "model": "automation.automationrule",
+  "pk": 1,
+  "fields": {
+    "name": "Ticket Created",
+    "description": "Ticket Created",
+    "trigger": "TICKET_CREATED",
+    "is_active": true,
+    "execution_count": 1,
+    "created_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "created_at": "2026-07-16T07:01:51.218Z",
+    "updated_at": "2026-07-16T07:01:51.218Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 1,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "user.role_updated",
+    "action_label": "User role updated",
+    "module": "USERS",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": {
+      "role": "EMPLOYEE"
+    },
+    "changes_after": {
+      "role": "EMPLOYEE"
+    },
+    "created_at": "2026-07-14T10:42:05.258Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 2,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "department.status_toggled",
+    "action_label": "Department status changed",
+    "module": "DEPARTMENTS",
+    "target": "Access Managements",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-14T12:28:53.355Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 3,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "config.sla_rules_updated",
+    "action_label": "SLA rules updated",
+    "module": "CONFIG",
+    "target": "Admin Support",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "critical": "2",
+      "high": "9",
+      "medium": "24",
+      "low": "72"
+    },
+    "created_at": "2026-07-15T06:39:33.746Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 4,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "config.sla_rules_updated",
+    "action_label": "SLA rules updated",
+    "module": "CONFIG",
+    "target": "Admin Support",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "critical": "2",
+      "high": "8",
+      "medium": "24",
+      "low": "72"
+    },
+    "created_at": "2026-07-15T06:39:44.593Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 5,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "config.working_hours_updated",
+    "action_label": "Working hours updated",
+    "module": "CONFIG",
+    "target": "Working Hours Schedule",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-15T06:40:00.141Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 6,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "config.holiday_created",
+    "action_label": "Holiday added",
+    "module": "CONFIG",
+    "target": "Chritmas Day",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-15T06:42:36.772Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 7,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "config.escalation_rule_created",
+    "action_label": "Escalation rule created",
+    "module": "CONFIG",
+    "target": "Admin Support - High",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-15T06:43:09.072Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 8,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "config.email_template_created",
+    "action_label": "Email template created",
+    "module": "CONFIG",
+    "target": "Ticket Created",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-15T06:43:43.675Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 9,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "config.escalation_rule_deleted",
+    "action_label": "Escalation rule deleted",
+    "module": "CONFIG",
+    "target": "Admin Support - High",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-15T06:44:06.799Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 10,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "knowledge_base.article_created",
+    "action_label": "Knowledge base article created",
+    "module": "KNOWLEDGE_BASE",
+    "target": "Why Ticket-Based Applications Improve Customer Support Efficiency.",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-15T10:30:55.676Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 11,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "department.status_toggled",
+    "action_label": "Department status changed",
+    "module": "DEPARTMENTS",
+    "target": "Access Managements",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-15T10:48:25.850Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 12,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "department.status_toggled",
+    "action_label": "Department status changed",
+    "module": "DEPARTMENTS",
+    "target": "Access Managements",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-15T10:48:32.287Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 13,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "department.status_toggled",
+    "action_label": "Department status changed",
+    "module": "DEPARTMENTS",
+    "target": "Access Managements",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-15T10:48:44.271Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 14,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "department.status_toggled",
+    "action_label": "Department status changed",
+    "module": "DEPARTMENTS",
+    "target": "Access Managements",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-15T10:48:45.310Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 15,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "department.status_toggled",
+    "action_label": "Department status changed",
+    "module": "DEPARTMENTS",
+    "target": "Access Managements",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-15T10:48:47.240Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 16,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "department.status_toggled",
+    "action_label": "Department status changed",
+    "module": "DEPARTMENTS",
+    "target": "Access Managements",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-15T10:48:51.036Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 17,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "department.status_toggled",
+    "action_label": "Department status changed",
+    "module": "DEPARTMENTS",
+    "target": "Access Managements",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-15T10:50:15.380Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 18,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "department.status_toggled",
+    "action_label": "Department status changed",
+    "module": "DEPARTMENTS",
+    "target": "IT Support",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-15T10:50:44.100Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 19,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "tenant.created",
+    "action_label": "Tenant created",
+    "module": "TENANTS",
+    "target": "KAN Infocom Solution India Private Limited",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "plan": "TRIAL"
+    },
+    "created_at": "2026-07-16T05:34:25.364Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 20,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN"
+    },
+    "created_at": "2026-07-16T05:37:14.978Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 21,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.revoked",
+    "action_label": "Invite revoked",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-16T05:57:45.665Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 22,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN"
+    },
+    "created_at": "2026-07-16T05:57:58.470Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 23,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN"
+    },
+    "created_at": "2026-07-16T05:58:01.602Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 24,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN"
+    },
+    "created_at": "2026-07-16T05:58:02.384Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 25,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN"
+    },
+    "created_at": "2026-07-16T05:58:02.906Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 26,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN"
+    },
+    "created_at": "2026-07-16T05:58:03.134Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 27,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN"
+    },
+    "created_at": "2026-07-16T05:58:03.383Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 28,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN"
+    },
+    "created_at": "2026-07-16T05:58:03.602Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 29,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN"
+    },
+    "created_at": "2026-07-16T05:58:03.838Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 30,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN"
+    },
+    "created_at": "2026-07-16T05:58:04.072Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 31,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN"
+    },
+    "created_at": "2026-07-16T05:58:04.352Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 32,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN"
+    },
+    "created_at": "2026-07-16T05:58:04.568Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 33,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.revoked",
+    "action_label": "Invite revoked",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-16T05:58:24.703Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 34,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.revoked",
+    "action_label": "Invite revoked",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-16T05:58:30.418Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 35,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.revoked",
+    "action_label": "Invite revoked",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-16T05:58:37.369Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 36,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.revoked",
+    "action_label": "Invite revoked",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-16T05:58:43.138Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 37,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.revoked",
+    "action_label": "Invite revoked",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-16T05:58:48.428Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 38,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.revoked",
+    "action_label": "Invite revoked",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-16T05:59:20.090Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 39,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.revoked",
+    "action_label": "Invite revoked",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-16T05:59:28.077Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 40,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.revoked",
+    "action_label": "Invite revoked",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-16T05:59:33.576Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 41,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.revoked",
+    "action_label": "Invite revoked",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-16T05:59:39.214Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 42,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.revoked",
+    "action_label": "Invite revoked",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-16T05:59:43.779Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 43,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.revoked",
+    "action_label": "Invite revoked",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-16T05:59:48.078Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 44,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN"
+    },
+    "created_at": "2026-07-16T05:59:58.280Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 45,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.revoked",
+    "action_label": "Invite revoked",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-16T06:39:44.616Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 46,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN"
+    },
+    "created_at": "2026-07-16T06:39:55.359Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 47,
+  "fields": {
+    "actor": null,
+    "action": "invite.accepted",
+    "action_label": "Invite accepted",
+    "module": "INVITES",
+    "target": "priyankapimpariya177@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "ADMIN",
+      "tenant": "KAN Infocom Solution India Private Limited"
+    },
+    "created_at": "2026-07-16T06:41:59.240Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 48,
+  "fields": {
+    "actor": [
+      "priyankapimpariya177@gmail.com"
+    ],
+    "action": "support.created",
+    "action_label": "Support request created",
+    "module": "SUPPORT",
+    "target": "SAAS-67PA4JJ6N",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-22T05:39:29.119Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 49,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "support.status_updated",
+    "action_label": "Support request status updated",
+    "module": "SUPPORT",
+    "target": "SAAS-67PA4JJ6N",
+    "severity": "INFO",
+    "changes_before": {
+      "status": "OPEN"
+    },
+    "changes_after": {
+      "status": "RESOLVED"
+    },
+    "created_at": "2026-07-22T05:40:20.455Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 50,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "department.status_toggled",
+    "action_label": "Department status changed",
+    "module": "DEPARTMENTS",
+    "target": "IT Support",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-23T05:42:55.062Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 51,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "department.status_toggled",
+    "action_label": "Department status changed",
+    "module": "DEPARTMENTS",
+    "target": "Access Managements",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-23T05:59:07.252Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 52,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "department.status_toggled",
+    "action_label": "Department status changed",
+    "module": "DEPARTMENTS",
+    "target": "Access Managements",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-23T05:59:17.168Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 53,
+  "fields": {
+    "actor": [
+      "priyankapimpariya177@gmail.com"
+    ],
+    "action": "invite.created",
+    "action_label": "Invite created",
+    "module": "INVITES",
+    "target": "pimpariyaarpita1641@gmail.com",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": {
+      "role": "EMPLOYEE",
+      "department": "None"
+    },
+    "created_at": "2026-07-23T06:11:04.472Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 54,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "department.created",
+    "action_label": "Department created",
+    "module": "DEPARTMENTS",
+    "target": "Projects & PMO",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-23T06:18:26.605Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 55,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "category.created",
+    "action_label": "Category created",
+    "module": "TICKETS",
+    "target": "HR Policy",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-23T13:41:30.244Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 56,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "category.created",
+    "action_label": "Category created",
+    "module": "TICKETS",
+    "target": "Document Issue",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-24T05:58:46.278Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 57,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "category.status_toggled",
+    "action_label": "Category status changed",
+    "module": "DEPARTMENTS",
+    "target": "HR Support - Payroll Inquiry",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-24T10:08:42.754Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 58,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "category.status_toggled",
+    "action_label": "Category status changed",
+    "module": "DEPARTMENTS",
+    "target": "HR Support - Payroll Inquiry",
+    "severity": "WARNING",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-24T10:09:00.488Z"
+  }
+},
+{
+  "model": "auditlogs.auditlog",
+  "pk": 59,
+  "fields": {
+    "actor": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "action": "category.created",
+    "action_label": "Category created",
+    "module": "DEPARTMENTS",
+    "target": "Access Managements - Document Management",
+    "severity": "INFO",
+    "changes_before": null,
+    "changes_after": null,
+    "created_at": "2026-07-24T10:09:23.296Z"
+  }
+},
+{
+  "model": "knowledge_base.article",
+  "pk": 1,
+  "fields": {
+    "title": "Why Ticket-Based Applications Improve Customer Support Efficiency.",
+    "summary": "A ticket-based application organizes customer requests into structured tickets, improving efficiency by centralizing details like priority, status, and assigned agents. This reduces confusion, eliminates duplicate work, and enhances team collaboration for faster, more reliable support.",
+    "content": "In today's fast-paced digital world, customers expect quick and reliable support. Managing customer requests through emails, phone calls, or chat messages alone can become confusing as the number of inquiries grows. A ticket-based application provides a simple and organized solution by converting every customer request into a unique support ticket.\r\n\r\nEach ticket contains important details such as the customer's information, issue description, priority level, assigned support agent, and current status. This makes it easy for support teams to monitor progress and ensure every request is handled efficiently.\r\n\r\nOne of the biggest advantages of a ticket-based system is improved organization. Instead of searching through multiple communication channels, support teams can access all customer interactions from a single platform. This helps reduce duplicate work and improves collaboration among team members.",
+    "department": 6,
+    "category": "",
+    "status": "PUBLISHED",
+    "is_internal": false,
+    "tags": "",
+    "views_count": 1,
+    "helpful_count": 1,
+    "created_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "created_at": "2026-07-15T10:30:55.674Z",
+    "updated_at": "2026-07-15T10:30:55.674Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 1,
+  "fields": {
+    "tenant": 1,
+    "token": "d545dc00-8a20-4027-8028-496e6bde0781",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:37:14.978Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 2,
+  "fields": {
+    "tenant": 1,
+    "token": "cbcffee3-e472-45bc-89ec-16a88588639a",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:57:58.468Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 3,
+  "fields": {
+    "tenant": 1,
+    "token": "bebfc0b3-78ab-48bc-8f29-2f0607491fe5",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:01.588Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 4,
+  "fields": {
+    "tenant": 1,
+    "token": "75efd930-9de6-452a-a5d2-fb0364f95963",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:02.384Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 5,
+  "fields": {
+    "tenant": 1,
+    "token": "4ccb9590-afdc-4342-8229-1e49420ab831",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:02.902Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 6,
+  "fields": {
+    "tenant": 1,
+    "token": "9a2c43cc-71b0-4bdd-b2e9-a9fbf6873b82",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:03.134Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 7,
+  "fields": {
+    "tenant": 1,
+    "token": "dd219661-833d-4058-b2c1-9ea1a96693dc",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:03.369Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 8,
+  "fields": {
+    "tenant": 1,
+    "token": "887aabb2-aea2-4929-95c0-94ce5e229d24",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:03.589Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 9,
+  "fields": {
+    "tenant": 1,
+    "token": "5bf778fd-6b75-4d52-b819-ebc662c463cc",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:03.838Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 10,
+  "fields": {
+    "tenant": 1,
+    "token": "68673abb-56fc-4fab-8ec6-20e6fb5b1047",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:04.052Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 11,
+  "fields": {
+    "tenant": 1,
+    "token": "4064686a-1f5d-41ec-8ea0-b3936483230a",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:04.336Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 12,
+  "fields": {
+    "tenant": 1,
+    "token": "e5c9713e-a329-4527-9f73-84f7d12adb70",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:58:04.557Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 13,
+  "fields": {
+    "tenant": 1,
+    "token": "190605ed-7877-45e3-a547-4c086c574d78",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "REVOKED",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "expires_at": "2026-07-23",
+    "accepted_at": null,
+    "created_at": "2026-07-16T05:59:58.269Z"
+  }
+},
+{
+  "model": "tenants.invite",
+  "pk": 14,
+  "fields": {
+    "tenant": 1,
+    "token": "79d788d6-def6-4212-8d6b-a604e94a298d",
+    "name": "Surabhi Bhosale",
+    "email": "priyankapimpariya177@gmail.com",
+    "role": "ADMIN",
+    "status": "ACCEPTED",
+    "invited_by": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "expires_at": "2026-07-23",
+    "accepted_at": "2026-07-16T06:41:59.226Z",
+    "created_at": "2026-07-16T06:39:55.346Z"
+  }
+},
+{
+  "model": "tenant_support.supportrequest",
+  "pk": 1,
+  "fields": {
+    "ticket_number": "SAAS-67PA4JJ6N",
+    "tenant": 1,
+    "raised_by": [
+      "priyankapimpariya177@gmail.com"
+    ],
+    "subject": "User not visible",
+    "description": "User list not visible",
+    "priority": "MEDIUM",
+    "status": "RESOLVED",
+    "created_at": "2026-07-22T05:39:29.107Z",
+    "updated_at": "2026-07-22T05:40:20.443Z"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2026-06-01T08:15:11.411Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "departments",
+      "department"
+    ],
+    "object_id": "1",
+    "object_repr": "IT Support",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2026-06-01T08:15:28.317Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "departments",
+      "department"
+    ],
+    "object_id": "2",
+    "object_repr": "HR",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2026-06-01T08:15:45.212Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "departments",
+      "department"
+    ],
+    "object_id": "3",
+    "object_repr": "Finance",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2026-06-01T08:15:50.546Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "departments",
+      "department"
+    ],
+    "object_id": "1",
+    "object_repr": "IT Support",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2026-06-01T08:28:20.481Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "2",
+    "object_repr": "",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2026-06-01T08:30:32.298Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "2",
+    "object_repr": "agent@helpdesk.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email\", \"Role\", \"Department\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2026-06-01T10:09:00.957Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2026-06-01T10:09:22.122Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "employee@helpdesk.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email\", \"Department\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2026-06-01T10:09:26.007Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "employee@helpdesk.com",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2026-06-03T08:19:54.269Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "1",
+    "object_repr": "admin@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Role\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2026-06-03T10:57:23.436Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "2",
+    "object_repr": "rajat@helpdesk.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Email\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2026-06-03T10:58:41.169Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "4",
+    "object_repr": "",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2026-06-03T10:59:33.560Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "4",
+    "object_repr": "yogesh@hepdesk.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Email\", \"Role\", \"Department\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2026-06-04T06:41:28.985Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "tickets",
+      "ticketcomment"
+    ],
+    "object_id": "5",
+    "object_repr": "admin@gmail.com - TKT-0001",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2026-06-04T06:41:28.985Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "tickets",
+      "ticketcomment"
+    ],
+    "object_id": "4",
+    "object_repr": "admin@gmail.com - TKT-0001",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2026-06-04T06:41:28.985Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "tickets",
+      "ticketcomment"
+    ],
+    "object_id": "3",
+    "object_repr": "admin@gmail.com - TKT-0001",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2026-06-04T06:41:28.985Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "tickets",
+      "ticketcomment"
+    ],
+    "object_id": "2",
+    "object_repr": "admin@gmail.com - TKT-0001",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2026-06-08T10:07:52.902Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "employee@helpdesk.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"password\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2026-06-08T10:11:31.791Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "employee@helpdesk.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"password\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2026-06-08T10:41:56.344Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "2",
+    "object_repr": "rajat@helpdesk.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"password\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2026-06-08T10:41:58.638Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "2",
+    "object_repr": "rajat@helpdesk.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"password\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2026-06-08T10:43:04.331Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "tickets",
+      "ticket"
+    ],
+    "object_id": "1",
+    "object_repr": "TKT-0001",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Assigned to\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2026-06-09T07:28:45.467Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "departments",
+      "department"
+    ],
+    "object_id": "4",
+    "object_repr": "emp",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2026-06-09T07:58:22.681Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "priyankapimpariya177@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Email\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2026-06-09T08:05:01.602Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "2",
+    "object_repr": "parasmalpimpariya21@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Email\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2026-06-09T08:05:42.722Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "1",
+    "object_repr": "priyankapimpariya178@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Email\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2026-06-09T08:06:02.613Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "1",
+    "object_repr": "priyankapimpariya178@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2026-06-09T08:06:12.560Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "2",
+    "object_repr": "parasmalpimpariya21@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2026-06-09T08:06:26.450Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "priyankapimpariya177@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2026-07-09T07:58:46.838Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "5",
+    "object_repr": "",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2026-07-09T07:59:38.432Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "5",
+    "object_repr": "",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 32,
+  "fields": {
+    "action_time": "2026-07-09T08:04:59.977Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "6",
+    "object_repr": "priyankapimpariya07@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 33,
+  "fields": {
+    "action_time": "2026-07-09T08:16:31.627Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "6",
+    "object_repr": "priyankapimpariya07@gmail.com",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2026-07-09T08:16:59.752Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "7",
+    "object_repr": "priyankapimpariya07@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 35,
+  "fields": {
+    "action_time": "2026-07-09T08:28:18.843Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "7",
+    "object_repr": "priyankapimpariya07@gmail.com",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 36,
+  "fields": {
+    "action_time": "2026-07-09T08:28:40.066Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "8",
+    "object_repr": "priyankapimpariya07@gmail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 37,
+  "fields": {
+    "action_time": "2026-07-13T11:40:23.707Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "8",
+    "object_repr": "priyankapimpariya07@gmail.com",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 38,
+  "fields": {
+    "action_time": "2026-07-16T05:29:26.724Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "1",
+    "object_repr": "priyankapimpariya178@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Role\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 39,
+  "fields": {
+    "action_time": "2026-07-16T06:05:00.017Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "priyankapimpariya177@gmail.com",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 40,
+  "fields": {
+    "action_time": "2026-07-16T06:10:13.300Z",
+    "user": [
+      "priyankapimpariya178@gmail.com"
+    ],
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "priyankapimpariya17@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email\"]}}]"
+  }
+}
+]
