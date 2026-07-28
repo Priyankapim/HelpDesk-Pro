@@ -861,9 +861,11 @@ function applyAISuggestions(){
 
     const dept = document.getElementById("id_department");
 
+    const normalize = s => (s || "").trim().toLowerCase();
+
     for(let i=0;i<dept.options.length;i++){
 
-        if(dept.options[i].text.trim()==ai.department){
+        if(normalize(dept.options[i].text)==normalize(ai.department)){
 
             dept.selectedIndex=i;
 
@@ -885,7 +887,7 @@ function applyAISuggestions(){
 
     for(let i=0;i<category.options.length;i++){
 
-        if(category.options[i].text.trim()==ai.category){
+        if(normalize(category.options[i].text)==normalize(ai.category)){
 
             category.selectedIndex=i;
 

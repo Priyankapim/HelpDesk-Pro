@@ -6,7 +6,31 @@ client = Mistral(api_key=settings.MISTRAL_API_KEY)
 
 
 
+def _build_department_category_block():
+    """
+    Pull real department/category names from the DB so the AI
+    always suggests values that actually exist in the dropdowns.
+    Prevents drift like 'Access Management' vs 'Access Managements'.
+    """
+    from departments.models import Department
+
+    depts = Department.objects.filter(is_active=True).prefetch_related("categories")
+
+    dept_lines = [f"- {d.name}" for d in depts]
+
+    category_blocks = []
+    for d in depts:
+        cats = d.categories.filter(is_active=True)
+        if cats:
+            block = d.name + "\n" + "\n".join(f"- {c.name}" for c in cats)
+            category_blocks.append(block)
+
+    return "\n".join(dept_lines), "\n\n".join(category_blocks)
+
+
 def analyze_ticket(subject, description):
+
+    dept_block, category_block = _build_department_category_block()
 
     prompt = f"""
 You are an IT HelpDesk AI.
@@ -32,48 +56,13 @@ Use this exact format.
     "confidence":0
 }}
 
-Departments:
+Departments (use the EXACT spelling shown):
 
-- IT Support
-- HR Support
-- Admin Support
-- Finance Requests
-- Asset Requests
-- Access Management
-- General Services
+{dept_block}
 
-Categories:
+Categories (use the EXACT spelling shown):
 
-IT Support
-- Hardware Issue
-- Software Issue
-- Network Issue
-- Email / Outlook
-
-HR Support
-- New Employee Onboarding
-- Leave Policy
-- Payroll Inquiry
-
-Admin Support
-- Office Supplies
-- Facility Request
-
-Finance Requests
-- Invoice Processing
-- Budget Approval
-
-Asset Requests
-- Laptop Request
-- Software License
-
-Access Management
-- Account Creation
-- Permission Request
-- VPN Access
-
-General Services
-- General Inquiry
+{category_block}
 
 Rules:
 
