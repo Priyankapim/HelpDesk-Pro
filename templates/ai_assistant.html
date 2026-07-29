@@ -340,12 +340,49 @@ AI Assistant
 
 /* Responsive */
 
+@media(max-width:1024px){
+    .ai-page{
+        height:calc(100vh - 90px);
+    }
+}
+
+@media(max-width:767px){
+    .ai-page{
+        height:calc(100vh - 130px);
+    }
+
+    .ai-header-actions{
+        width:100%;
+    }
+
+    .ai-header-actions .btn{
+        flex:1;
+    }
+}
+
 @media(max-width:640px){
     .ai-suggestions{
         grid-template-columns:1fr;
     }
     .ai-msg-row, .ai-msg-row.user{
         max-width:92%;
+    }
+}
+
+@media(max-width:480px){
+    .ai-page{
+        height:calc(100vh - 150px);
+    }
+
+    .ai-avatar{
+        width:38px;
+        height:38px;
+        font-size:17px;
+    }
+
+    .ai-msg-bubble{
+        padding:10px 13px;
+        font-size:13px;
     }
 }
 

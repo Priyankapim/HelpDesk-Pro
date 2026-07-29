@@ -413,6 +413,34 @@ Raise a Ticket
     color:#dc2626;
     font-weight:700;
 }
+
+@media(max-width:640px){
+    .priority-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .ai-triage{
+        flex-wrap:wrap;
+        gap:8px;
+    }
+}
+
+@media(max-width:480px){
+    .priority-grid{
+        grid-template-columns:1fr;
+    }
+
+    .d-flex.justify-content-end.mt-4{
+        flex-direction:column-reverse;
+        gap:8px;
+    }
+
+    .ticket-card .btn-light,
+    .ticket-card .btn-primary{
+        width:100%;
+        margin:0 !important;
+    }
+}
 </style>
 
 <div class="ticket-wrapper">

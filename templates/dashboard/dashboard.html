@@ -196,6 +196,41 @@ Dashboard
         font-size:12px;
     }
 
+    @media(max-width:1024px){
+        .row.g-2.mb-4 > .col-md{
+            flex:0 0 33.333%;
+            max-width:33.333%;
+            margin-bottom:12px;
+        }
+    }
+
+    @media(max-width:640px){
+        .row.g-2.mb-4 > .col-md{
+            flex:0 0 50%;
+            max-width:50%;
+        }
+
+        .chart-large{ height:auto; }
+        .chart-small{ height:auto; }
+        .chart-medium{ height:auto; }
+    }
+
+    @media(max-width:420px){
+        .row.g-2.mb-4 > .col-md{
+            flex:0 0 100%;
+            max-width:100%;
+        }
+
+        .kpi-card{
+            height:auto;
+            min-height:100px;
+        }
+
+        .kpi-value{
+            font-size:20px;
+        }
+    }
+
 </style>
 
 <div class="container-fluid">
@@ -235,19 +270,23 @@ Dashboard
 
     <div class="d-flex flex-wrap gap-2">
 
-        <button class="btn btn-primary btn-sm rounded-pill">
+        <a href="?days={{ selected_days }}"
+           class="btn btn-sm rounded-pill {% if not selected_department %}btn-primary{% else %}btn-outline-secondary{% endif %}">
             All
-        </button>
+        </a>
 
         {% for department in departments %}
 
-            <button class="btn btn-outline-secondary btn-sm rounded-pill">
+            <a href="?days={{ selected_days }}&department={{ department.id }}"
+               class="btn btn-sm rounded-pill {% if selected_department == department.id|stringformat:'s' %}btn-primary{% else %}btn-outline-secondary{% endif %}">
                 {{ department.name }}
-            </button>
+            </a>
 
         {% endfor %}
 
     </div>
+
+</div>
 </div>
 
     <div class="row g-2 mb-4">

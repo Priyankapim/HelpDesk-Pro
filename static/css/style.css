@@ -1,0 +1,88 @@
+/* =====================================================================
+   GLOBAL RESPONSIVE SAFETY NET
+   Applies across every page. Does not change colors, fonts or the
+   existing design language - only prevents overflow/breakage and
+   adapts spacing/sizing across breakpoints:
+     Mobile         : 320px  - 480px
+     Large Mobile   : 481px  - 767px
+     Tablet         : 768px  - 1024px
+     Laptop         : 1025px - 1440px
+     Large Desktop  : 1441px+
+   ===================================================================== */
+
+*{
+    box-sizing:border-box;
+}
+
+html, body{
+    max-width:100%;
+    overflow-x:hidden;
+}
+
+img, svg, canvas, video, iframe{
+    max-width:100%;
+    height:auto;
+}
+
+table{
+    max-width:100%;
+}
+
+.table-responsive{
+    -webkit-overflow-scrolling:touch;
+}
+
+pre, code{
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+/* Generic word wrapping so long strings (emails, ticket titles, tenant
+   names, etc.) never force horizontal scrolling on small screens */
+.card, .kpi-card, .table-card, .chart-card, .page-content, .modal-body{
+    max-width:100%;
+    word-wrap:break-word;
+    overflow-wrap:break-word;
+}
+
+/* ---------- Large Desktop polish (1441px+) ---------- */
+@media (min-width:1441px){
+    .page-content{
+        max-width:1600px;
+        margin-left:auto;
+        margin-right:auto;
+    }
+}
+
+/* ---------- Tablet (768px - 1024px) ---------- */
+@media (max-width:1024px){
+    .page-content{
+        padding:20px;
+    }
+}
+
+/* ---------- Large Mobile (481px - 767px) ---------- */
+@media (max-width:767px){
+    .page-content{
+        padding:16px;
+    }
+
+    h1{ font-size:22px; }
+    h2{ font-size:20px; }
+    h3{ font-size:18px; }
+}
+
+/* ---------- Mobile (320px - 480px) ---------- */
+@media (max-width:480px){
+    .page-content{
+        padding:12px;
+    }
+
+    h1{ font-size:20px; }
+    h2{ font-size:18px; }
+    h3{ font-size:16px; }
+
+    .btn{
+        font-size:13px;
+    }
+}

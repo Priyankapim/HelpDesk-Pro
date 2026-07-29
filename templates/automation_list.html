@@ -561,9 +561,40 @@ Modal
     padding:8px 18px;
 }
 
+@media(max-width:767px){
+    .dyn-row{
+        flex-wrap:wrap;
+    }
+
+    .dyn-row select,
+    .dyn-row input{
+        flex:1 1 140px;
+        min-width:0;
+    }
+
+    .rule-controls{
+        flex-wrap:wrap;
+    }
+}
+
 @media(max-width:576px){
     .trigger-grid{ grid-template-columns:1fr; }
-}
+
+    .rule-card{
+        padding:14px;
+    }
+
+    .automation-modal-body{
+        padding:16px 16px 4px;
+    }
+
+    .automation-modal-header{
+        padding:16px 16px 12px;
+    }
+
+    .automation-modal-footer{
+        padding:12px 16px 16px;
+    }
 
 /* ===================================================
                 DARK MODE

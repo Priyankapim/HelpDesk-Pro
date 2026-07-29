@@ -225,6 +225,7 @@ def login_view(request):
 @login_required
 def dashboard_view(request):
     days_filter = request.GET.get("days", "30")
+    department_filter = request.GET.get("department", "")
 
     if days_filter == "7":
         filter_days = 7
@@ -243,8 +244,13 @@ def dashboard_view(request):
             assigned_to=request.user
         )
 
+
     else:
+
         tickets = Ticket.objects.all()
+
+    if department_filter:
+        tickets = tickets.filter(department_id=department_filter)
 
     total_tickets = tickets.count()
 
@@ -381,6 +387,7 @@ def dashboard_view(request):
         "trend_data": ticket_counts,
 
         "selected_days": days_filter,
+        "selected_department": department_filter,
         "sla_rate": sla_rate,
         "breached_tickets": breached_tickets,
 

@@ -153,6 +153,27 @@ body.dark-mode .form-select option{ background:#0f172a; color:#e2e8f0; }
 body.dark-mode .alert-success{ background:#052e1a; color:#86efac; border-color:#14532d; }
 body.dark-mode .alert-error, body.dark-mode .alert-danger{ background:#450a0a; color:#fca5a5; border-color:#7f1d1d; }
 
+@media(max-width:767px){
+    .request-card{
+        padding:14px 16px;
+    }
+}
+
+@media(max-width:480px){
+    .request-card{
+        flex-wrap:wrap;
+        gap:10px;
+    }
+
+    .request-status-badge{
+        order:1;
+    }
+
+    .request-arrow{
+        display:none;
+    }
+}
+
 </style>
 
 <div class="support-page">

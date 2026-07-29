@@ -330,6 +330,22 @@ All Tickets
         background:#E5E7EB;
         color:#4B5563;
     }
+
+    @media(max-width:767px){
+        .ticket-table{
+            font-size:12px;
+        }
+
+        .ticket-table-card .card-body{
+            padding:14px;
+        }
+    }
+
+    @media(max-width:480px){
+        .filter-card{
+            padding:14px;
+        }
+    }
 </style>
 
 <div class="d-flex justify-content-between align-items-start mb-4">
@@ -483,6 +499,7 @@ document.querySelectorAll("select").forEach(function(item){
 
 <div class="card ticket-table-card">
 <div class="card-body">
+<div class="table-responsive">
 <table class="table ticket-table">
     <thead>
         <tr>
@@ -664,6 +681,7 @@ document.querySelectorAll("select").forEach(function(item){
     {% endfor %}
     </tbody>
 </table>
+</div>
 
 <nav class="mt-4">
 

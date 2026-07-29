@@ -454,8 +454,55 @@ body.dark-mode .form-select{
     border-color:#334155;
     color:#e2e8f0;
 }
+
 body.dark-mode .form-control::placeholder{ color:#64748b; }
 body.dark-mode .form-select option{ background:#0f172a; color:#e2e8f0; }
+
+@media(max-width:1024px){
+    .summary-card{
+        margin-bottom:12px;
+    }
+}
+
+@media(max-width:767px){
+    .page-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+
+    .target-cell{
+        max-width:120px;
+    }
+
+    .audit-modal-grid{
+        grid-template-columns:1fr;
+    }
+
+    .audit-modal{
+        width:100%;
+        padding:18px;
+    }
+}
+
+@media(max-width:480px){
+    .table{
+        font-size:12px;
+    }
+
+    .severity-badge{
+        padding:4px 8px;
+        font-size:11px;
+    }
+
+    .target-cell{
+        max-width:90px;
+    }
+
+    .audit-modal{
+        padding:14px;
+    }
+}
 
 </style>
 

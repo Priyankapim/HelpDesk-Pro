@@ -671,5 +671,47 @@ body.dark-mode .cancel-btn:hover{
 
 }
 
+@media(max-width:767px){
+
+.manage-user-page{
+    margin:16px auto;
+}
+
+.manage-header{
+    flex-wrap:wrap;
+    gap:12px;
+}
+
+.control-card{
+    flex-wrap:wrap;
+    gap:10px;
+}
+}
+
+@media(max-width:480px){
+
+.manage-header{
+    padding:16px;
+}
+
+.manage-avatar{
+    width:46px;
+    height:46px;
+    font-size:18px;
+}
+
+.manage-footer{
+    flex-direction:column-reverse;
+}
+
+.cancel-btn,
+.save-btn{
+    width:100%;
+    justify-content:center;
+}
+}
+
 </style>
+
+
 {% endblock %}

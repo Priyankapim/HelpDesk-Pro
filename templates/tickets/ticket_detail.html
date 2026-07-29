@@ -10,9 +10,8 @@ Ticket Details
 
 <style>
 
-/* =====*/
 
-body{
+    body{
     font-family:Inter,sans-serif;
     font-size:14px;
     background:#f7f9fc;
@@ -359,36 +358,47 @@ textarea.form-control{
 
 @media(max-width:992px){
 
-.ticket-title{
+    .ticket-title{
+        font-size:18px;
+    }
 
-font-size:18px;
+    .timeline{
+        overflow:auto;
+    }
 
-}
+    .timeline-step{
+        min-width:120px;
+    }
 
-.timeline{
+    .details-card{
+        margin-top:20px;
+    }
 
-overflow:auto;
-
-}
-
-.timeline-step{
-
-min-width:120px;
-
-}
-
-.details-card{
-
-margin-top:20px;
+    .card-body{
+        padding:16px;
+    }
 
 }
 
-.card-body{
+@media(max-width:767px){
 
-padding:16px;
-
+.sla-header{
+    flex-wrap:wrap;
+    gap:6px;
 }
 
+.chat-message{
+    padding:12px;
+}
+}
+
+@media(max-width:480px){
+
+.ticket-detail-page .btn-primary,
+.ticket-detail-page .btn-success{
+    min-width:0;
+    width:100%;
+}
 }
 
   /* ==========================================

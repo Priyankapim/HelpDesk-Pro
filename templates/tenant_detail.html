@@ -254,6 +254,39 @@ body.dark-mode .form-select option{ background:#0f172a; color:#e2e8f0; }
 body.dark-mode .alert-success{ background:#052e1a; color:#86efac; border-color:#14532d; }
 body.dark-mode .alert-error, body.dark-mode .alert-danger{ background:#450a0a; color:#fca5a5; border-color:#7f1d1d; }
 
+@media(max-width:767px){
+    .person-row{
+        flex-wrap:wrap;
+        gap:8px;
+    }
+
+    .config-card{
+        padding:16px;
+    }
+
+    .onboard-step{
+        padding:12px 14px;
+    }
+}
+
+@media(max-width:480px){
+    .tenant-header-icon{
+        width:38px; height:38px; font-size:17px;
+    }
+
+    .tenant-header-name{
+        font-size:17px;
+    }
+
+    .summary-card{
+        padding:14px;
+    }
+
+    .cfg-modal{
+        padding:16px;
+    }
+}
+
 </style>
 
 <div class="tenant-detail-page">

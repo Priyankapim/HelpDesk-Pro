@@ -1,11 +1,9 @@
 import csv
-
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.utils import timezone
 from datetime import timedelta
-
 from accounts.models import User
 from .models import AuditLog
 

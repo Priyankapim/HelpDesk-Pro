@@ -302,8 +302,53 @@ body.dark-mode .form-select option{ background:#0f172a; color:#e2e8f0; }
     transition:opacity .5s ease, max-height .5s ease, margin .5s ease, padding .5s ease;
     overflow:hidden;
 }
+
 .config-alert.fade-out{
     opacity:0; max-height:0; margin:0; padding:0; border-width:0;
+}
+
+@media(max-width:767px){
+    .wh-row{
+        flex-wrap:wrap;
+        gap:8px;
+    }
+
+    .wh-day{
+        width:100%;
+    }
+
+    .wh-time{
+        flex-wrap:wrap;
+    }
+
+    .wh-time input{
+        width:100px;
+    }
+
+    .template-card{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:8px;
+    }
+
+    .config-card{
+        padding:16px;
+    }
+}
+
+@media(max-width:480px){
+    .config-tab-btn{
+        padding:8px 12px;
+        font-size:13px;
+    }
+
+    .wh-time input{
+        width:88px;
+    }
+
+    #slaDepartmentSelect{
+        max-width:100% !important;
+    }
 }
 
 </style>
