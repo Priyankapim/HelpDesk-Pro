@@ -169,18 +169,21 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 
 # Email Configuration
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_HOST = 'smtp.gmail.com'
 
-EMAIL_PORT = 587
+#EMAIL_PORT = 587
 
-EMAIL_USE_TLS = True
+#EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = 'priyankapimpariya178@gmail.com'
+#EMAIL_HOST_USER = 'priyankapimpariya178@gmail.com'
 
-EMAIL_HOST_PASSWORD =  'lfilseahkssuqkwr'
+#EMAIL_HOST_PASSWORD =  'lfilseahkssuqkwr'
 
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+#DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "no-reply@servicedeskpro.com")
+
 
 

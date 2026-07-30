@@ -1,13 +1,18 @@
-from django.core.mail import send_mail
-from django.conf import settings
+from notifications.email_service import send_email
 
 
 def send_ticket_email(subject, message, recipient):
 
-    send_mail(
+    html_content = f"""
+    <html>
+    <body style="font-family: Arial, Helvetica, sans-serif; font-size:15px; color:#333333; line-height:1.7;">
+        <p>{message}</p>
+    </body>
+    </html>
+    """
+
+    send_email(
+        to_email=recipient,
         subject=subject,
-        message=message,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[recipient],
-        fail_silently=False,
+        html_content=html_content,
     )

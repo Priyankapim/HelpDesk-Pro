@@ -2,7 +2,7 @@ import random
 import string
 from .models import User
 from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
+from notifications.email_service import send_email
 from django.urls import reverse
 
 def parse_user_agent(ua_string):
@@ -134,24 +134,11 @@ def send_welcome_email(user, password):
     </html>
     """
 
-    email = EmailMultiAlternatives(
-
+    send_email(
+        to_email=user.email,
         subject=subject,
-
-        body="Please use an HTML supported email client.",
-
-        from_email=settings.DEFAULT_FROM_EMAIL,
-
-        to=[user.email],
-
+        html_content=html_content,
     )
-
-    email.attach_alternative(
-        html_content,
-        "text/html"
-    )
-
-    email.send()
 
 
 def generate_username(email):
@@ -397,21 +384,8 @@ def send_invitation_email(invitation):
     </html>
     """
 
-    email = EmailMultiAlternatives(
-
-        subject,
-
-        "",
-
-        settings.DEFAULT_FROM_EMAIL,
-
-        [invitation.email]
-
+    send_email(
+        to_email=invitation.email,
+        subject=subject,
+        html_content=html_content,
     )
-
-    email.attach_alternative(
-        html_content,
-        "text/html"
-    )
-
-    email.send()

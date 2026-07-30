@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
+from notifications.email_service import send_email
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -35,21 +35,22 @@ def _send_invite_email(request, invite):
 
     subject = f"You're invited to join {invite.tenant.name} on ServiceDesk Pro"
 
-    message = (
-        f"Hi {invite.name},\n\n"
-        f"You have been invited to join {invite.tenant.name} on ServiceDesk Pro "
-        f"as a {invite.get_role_display()}.\n\n"
-        f"Click here to activate your account:\n{accept_url}\n\n"
-        f"This invite expires on {invite.expires_at.strftime('%B %d, %Y')}.\n\n"
-        f"ServiceDesk Pro Team"
-    )
+    html_content = f"""
+        <html>
+        <body style="font-family: Arial, Helvetica, sans-serif; font-size:15px; color:#333333; line-height:1.7;">
+            <p>Hi {invite.name},</p>
+            <p>You have been invited to join <strong>{invite.tenant.name}</strong> on ServiceDesk Pro as a {invite.get_role_display()}.</p>
+            <p><a href="{accept_url}">Click here to activate your account</a></p>
+            <p>This invite expires on {invite.expires_at.strftime('%B %d, %Y')}.</p>
+            <p>ServiceDesk Pro Team</p>
+        </body>
+        </html>
+        """
 
-    send_mail(
+    send_email(
+        to_email=invite.email,
         subject=subject,
-        message=message,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[invite.email],
-        fail_silently=False,
+        html_content=html_content,
     )
 
 
