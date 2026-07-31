@@ -23,6 +23,8 @@ from .utils import generate_username
 from .utils import send_invitation_email
 from django.db.models import Q
 from .models import SecuritySettings, LoginActivity, UserSession
+from tenants.models import Tenant
+from tenant_support.models import SupportRequest
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
@@ -222,8 +224,88 @@ def login_view(request):
         }
     )
 
+def _super_admin_dashboard(request):
+    """
+    Platform-level dashboard for SUPER_ADMIN — shows tenant and
+    Support Request stats instead of any single tenant's internal
+    ticket data.
+    """
+    total_tenants = Tenant.objects.count()
+    active_tenants = Tenant.objects.filter(is_active=True).count()
+
+    requests_qs = SupportRequest.objects.all()
+
+    total_requests = requests_qs.count()
+
+    open_requests = requests_qs.filter(
+        status__in=['OPEN', 'IN_PROGRESS', 'PENDING_USER']
+    ).count()
+
+    resolved_requests = requests_qs.filter(
+        status__in=['RESOLVED', 'CLOSED']
+    ).count()
+
+    critical_requests = requests_qs.filter(
+        priority='CRITICAL'
+    ).count()
+
+    status_labels = [
+        'Open',
+        'In Progress',
+        'Pending User',
+        'Resolved',
+        'Closed'
+    ]
+
+    status_data = [
+        requests_qs.filter(status='OPEN').count(),
+        requests_qs.filter(status='IN_PROGRESS').count(),
+        requests_qs.filter(status='PENDING_USER').count(),
+        requests_qs.filter(status='RESOLVED').count(),
+        requests_qs.filter(status='CLOSED').count(),
+    ]
+
+    priority_labels = ['Low', 'Medium', 'High', 'Critical']
+
+    priority_data = [
+        requests_qs.filter(priority='LOW').count(),
+        requests_qs.filter(priority='MEDIUM').count(),
+        requests_qs.filter(priority='HIGH').count(),
+        requests_qs.filter(priority='CRITICAL').count(),
+    ]
+
+    recent_requests = requests_qs.select_related(
+        'tenant'
+    ).order_by('-created_at')[:6]
+
+    recent_tenants = Tenant.objects.order_by('-created_at')[:5]
+
+    context = {
+        "total_tenants": total_tenants,
+        "active_tenants": active_tenants,
+        "total_requests": total_requests,
+        "open_requests": open_requests,
+        "resolved_requests": resolved_requests,
+        "critical_requests": critical_requests,
+        "status_labels": status_labels,
+        "status_data": status_data,
+        "priority_labels": priority_labels,
+        "priority_data": priority_data,
+        "recent_requests": recent_requests,
+        "recent_tenants": recent_tenants,
+    }
+
+    return render(
+        request,
+        "dashboard/super_admin_dashboard.html",
+        context
+    )
+
 @login_required
 def dashboard_view(request):
+    if request.user.role == "SUPER_ADMIN":
+        return _super_admin_dashboard(request)
+
     days_filter = request.GET.get("days", "30")
     department_filter = request.GET.get("department", "")
 
@@ -250,9 +332,9 @@ def dashboard_view(request):
         )
 
 
+
     else:
-        # SUPER_ADMIN: does not own tenant tickets — they use the
-        # Support Requests inbox instead.
+        # AGENT/EMPLOYEE fallback (should not normally reach here)
         tickets = Ticket.objects.none()
 
     if department_filter:

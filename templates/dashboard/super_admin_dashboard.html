@@ -1,0 +1,403 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block page_title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .kpi-card{
+        border:none;
+        border-radius:16px;
+        box-shadow:0 2px 10px rgba(0,0,0,.05);
+        transition:.3s;
+        height:120px;
+    }
+
+    .kpi-card:hover{
+        transform:translateY(-3px);
+    }
+
+    .kpi-label{
+        font-size:10px;
+        font-weight:600;
+        color:#6b7280;
+        text-transform:uppercase;
+        min-height:28px;
+    }
+
+    .kpi-value{
+        font-size:25px;
+        font-weight:700;
+        margin-top:15px;
+        text-align:left;
+    }
+
+    .kpi-icon{
+        width:15px;
+        height:15px;
+        border-radius:12px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:18px;
+    }
+
+    .bg-blue{ background:#dbeafe; color:#2563eb; }
+    .bg-yellow{ background:#fef3c7; color:#d97706; }
+    .bg-purple{ background:#f3e8ff; color:#9333ea; }
+    .bg-green{ background:#dcfce7; color:#16a34a; }
+    .bg-red{ background:#fee2e2; color:#dc2626; }
+
+    h2{ font-size:24px; margin-top:0px; }
+    p{ font-size:14px; }
+
+    .table-card{
+        border:none;
+        border-radius:18px;
+        box-shadow:0 2px 10px rgba(0,0,0,.05);
+    }
+
+    .table-card .card-body{ padding:20px; }
+
+    .ticket-card{
+        border:none;
+        border-radius:14px;
+        box-shadow:0 2px 8px rgba(0,0,0,.05);
+        transition:.2s;
+    }
+
+    .ticket-card:hover{ transform:translateY(-2px); }
+
+    .ticket-number{
+        font-size:11px;
+        color:#6b7280;
+        font-weight:600;
+    }
+
+    .ticket-title{
+        font-size:14px;
+        font-weight:600;
+        color:#111827;
+    }
+
+    body.dark-mode .ticket-title{ color:#f8fafc; }
+
+    .ticket-date{ font-size:11px; color:#9ca3af; }
+
+    .badge-status{ font-size:10px; padding:6px 10px; border-radius:20px; }
+    .badge-priority{ font-size:10px; padding:6px 10px; border-radius:20px; }
+
+    .chart-card{
+        border:none;
+        border-radius:16px;
+        box-shadow:0 2px 10px rgba(0,0,0,.05);
+        background:#fff;
+    }
+
+    .chart-card .card-body{ padding:18px; }
+
+    .chart-title{
+        font-size:15px;
+        font-weight:600;
+        margin-bottom:12px;
+    }
+
+    .chart-small{ height:250px; }
+    .chart-small canvas{ height:170px !important; max-height:170px !important; }
+
+    @media(max-width:1024px){
+        .row.g-2.mb-4 > .col-md{
+            flex:0 0 33.333%;
+            max-width:33.333%;
+            margin-bottom:12px;
+        }
+    }
+
+    @media(max-width:640px){
+        .row.g-2.mb-4 > .col-md{ flex:0 0 50%; max-width:50%; }
+        .chart-small{ height:auto; }
+    }
+
+    @media(max-width:420px){
+        .row.g-2.mb-4 > .col-md{ flex:0 0 100%; max-width:100%; }
+        .kpi-card{ height:auto; min-height:100px; }
+        .kpi-value{ font-size:20px; }
+    }
+
+</style>
+
+<div class="container-fluid">
+    <div class="mb-4">
+        <h2 class="fw-bold mb-1">Dashboard</h2>
+        <p class="text-muted mb-0">
+            Platform Overview &mdash; Tenants & Support Requests
+        </p>
+    </div>
+
+    <div class="row g-2 mb-4">
+
+        <div class="col-md">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <span class="kpi-label">Total Tenants</span>
+                        <div class="kpi-icon bg-blue">🏢</div>
+                    </div>
+                    <div class="kpi-value">{{ total_tenants }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <span class="kpi-label">Active Tenants</span>
+                        <div class="kpi-icon bg-green">✔</div>
+                    </div>
+                    <div class="kpi-value">{{ active_tenants }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <span class="kpi-label">Total Requests</span>
+                        <div class="kpi-icon bg-purple">🎫</div>
+                    </div>
+                    <div class="kpi-value">{{ total_requests }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <span class="kpi-label">Open Requests</span>
+                        <div class="kpi-icon bg-yellow">⏺</div>
+                    </div>
+                    <div class="kpi-value">{{ open_requests }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <span class="kpi-label">Resolved</span>
+                        <div class="kpi-icon bg-green">✔</div>
+                    </div>
+                    <div class="kpi-value">{{ resolved_requests }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <span class="kpi-label">Critical</span>
+                        <div class="kpi-icon bg-red">⚡</div>
+                    </div>
+                    <div class="kpi-value">{{ critical_requests }}</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="my-4">
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-lg-6">
+            <div class="card chart-card chart-small">
+                <div class="card-body">
+                    <div class="chart-title">Support Requests by Status</div>
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card chart-card chart-small">
+                <div class="card-body">
+                    <div class="chart-title">Support Requests by Priority</div>
+                    <canvas id="priorityChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        function textColor(){
+            return document.body.classList.contains("dark-mode") ? "#e5e7eb" : "#374151";
+        }
+
+        new Chart(document.getElementById('statusChart'), {
+            type: 'doughnut',
+            data: {
+                labels: {{ status_labels|safe }},
+                datasets: [{
+                    data: {{ status_data|safe }},
+                    backgroundColor: ['#f59e0b', '#3b82f6', '#a855f7', '#16a34a', '#6b7280']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { color: textColor() } } }
+            }
+        });
+
+        new Chart(document.getElementById('priorityChart'), {
+            type: 'pie',
+            data: {
+                labels: {{ priority_labels|safe }},
+                datasets: [{
+                    data: {{ priority_data|safe }},
+                    backgroundColor: ['#16a34a', '#3b82f6', '#f59e0b', '#dc2626']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { color: textColor() } } }
+            }
+        });
+
+    });
+    </script>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold mb-0">Recent Support Requests</h4>
+        <a href="{% url 'support_inbox' %}" class="text-decoration-none">
+            View All →
+        </a>
+    </div>
+
+    <div class="row g-3 mb-4">
+
+        {% for req in recent_requests %}
+
+        <div class="col-md-6">
+            <div class="card ticket-card">
+                <div class="card-body">
+
+                    <div class="ticket-number">
+                        {{ req.ticket_number }} &middot; {{ req.tenant.name }}
+                    </div>
+
+                    <div class="ticket-title mt-2">
+                        {{ req.subject }}
+                    </div>
+
+                    <div class="d-flex gap-2 mt-3">
+
+                        <span class="badge badge-status
+                        {% if req.status == 'OPEN' %} bg-warning
+                        {% elif req.status == 'IN_PROGRESS' %} bg-primary
+                        {% elif req.status == 'PENDING_USER' %} bg-info
+                        {% elif req.status == 'RESOLVED' %} bg-success
+                        {% else %} bg-secondary
+                        {% endif %}">
+                            {{ req.get_status_display }}
+                        </span>
+
+                        <span class="badge badge-priority
+                        {% if req.priority == 'CRITICAL' %} bg-danger
+                        {% elif req.priority == 'HIGH' %} bg-warning
+                        {% elif req.priority == 'MEDIUM' %} bg-info
+                        {% else %} bg-success
+                        {% endif %}">
+                            {{ req.get_priority_display }}
+                        </span>
+
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-3">
+                        <span class="ticket-date">
+                            {{ req.created_at|date:"d M Y" }}
+                        </span>
+
+                        <a href="{% url 'support_detail' req.id %}">
+                            View →
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {% empty %}
+
+        <div class="col-12">
+            <div class="alert alert-light">
+                No support requests yet.
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold mb-0">Recent Tenants</h4>
+        <a href="{% url 'tenant_list' %}" class="text-decoration-none">
+            View All →
+        </a>
+    </div>
+
+    <div class="card table-card">
+        <div class="card-body">
+            <table class="table table-borderless align-middle mb-0">
+                <thead>
+                    <tr class="text-muted" style="font-size:12px;">
+                        <th>Tenant</th>
+                        <th>Plan</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tenant in recent_tenants %}
+                    <tr>
+                        <td>{{ tenant.name }}</td>
+                        <td>{{ tenant.get_plan_display }}</td>
+                        <td>
+                            {% if tenant.is_active %}
+                                <span class="badge bg-success">Active</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ tenant.created_at|date:"d M Y" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-muted">No tenants yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
