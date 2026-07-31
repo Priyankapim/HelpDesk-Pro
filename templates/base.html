@@ -653,9 +653,11 @@
 
         {% if request.user.role == 'ADMIN' or request.user.role == 'SUPER_ADMIN' %}
 
+        {% if request.user.role == 'ADMIN' %}
         <a href="{% url 'all_tickets' %}">
             <i class="bi bi-ticket-detailed"></i> All Tickets
         </a>
+        {% endif %}
 
         <div class="menu-title">Administration</div>
 
@@ -843,10 +845,12 @@
 
                 <!-- New Ticket -->
 
+                {% if request.user.role != 'SUPER_ADMIN' %}
                 <a href="{% url 'create_ticket' %}"
                    class="btn btn-primary new-ticket-btn">
                     <i class="bi bi-plus-circle"></i> New Ticket
                 </a>
+                {% endif %}
 
             </div>
         </div>

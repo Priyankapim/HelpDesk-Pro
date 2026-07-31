@@ -47,8 +47,10 @@ def _scope_tickets_qs(request):
     return Ticket.objects.all()
 
 
-@login_required
 def create_ticket(request):
+    if request.user.role == "SUPER_ADMIN":
+        return redirect("dashboard")
+
     if request.method == "POST":
         form = TicketForm(request.POST)
 
@@ -175,9 +177,8 @@ def my_tickets(request):
     )
 
 
-@login_required
 def all_tickets(request):
-    if request.user.role not in ["ADMIN", "SUPER_ADMIN"]:
+    if request.user.role not in ["ADMIN"]:
         return redirect("dashboard")
 
     tickets = Ticket.objects.select_related(
