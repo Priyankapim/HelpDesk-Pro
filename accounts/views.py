@@ -244,9 +244,13 @@ def dashboard_view(request):
             assigned_to=request.user
         )
 
+    elif request.user.role == "ADMIN":
+        tickets = Ticket.objects.filter(
+            tenant_id=request.user.tenant_id
+        )
 
     else:
-
+        # SUPER_ADMIN: sees tickets across all tenants
         tickets = Ticket.objects.all()
 
     if department_filter:

@@ -157,10 +157,22 @@ class Ticket(models.Model):
         default=""
     )
 
+    tenant = models.ForeignKey(
+        'tenants.Tenant',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='tickets'
+    )
+
     def save(self, *args, **kwargs):
         if not self.ticket_number:
             last_ticket = Ticket.objects.count() + 1
             self.ticket_number = f"TKT-{last_ticket:04d}"
+
+        if not self.tenant_id and self.created_by_id:
+            self.tenant_id = self.created_by.tenant_id
+
         super().save(*args, **kwargs)
 
     def __str__(self):

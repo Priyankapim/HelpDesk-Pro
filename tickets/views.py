@@ -34,6 +34,16 @@ from departments.utils import get_department_category_map
 import json
 
 
+def _scope_tickets_qs(request):
+    """
+    Returns the base Ticket queryset scoped to the requesting user's
+    tenant when they're an ADMIN. SUPER_ADMIN sees all tenants.
+    """
+    if request.user.role == "ADMIN":
+        return Ticket.objects.filter(tenant_id=request.user.tenant_id)
+    return Ticket.objects.all()
+
+
 @login_required
 def create_ticket(request):
     if request.method == "POST":
@@ -173,6 +183,9 @@ def all_tickets(request):
         "assigned_to"
     ).order_by("-created_at")
 
+    if request.user.role == "ADMIN":
+        tickets = tickets.filter(tenant_id=request.user.tenant_id)
+
     # -- Search --
 
     search = request.GET.get("search")
@@ -220,6 +233,13 @@ def all_tickets(request):
     page = request.GET.get("page")
     tickets = paginator.get_page(page)
 
+    if request.user.role == "ADMIN":
+        dept_qs = Department.objects.filter(tenant_id=request.user.tenant_id)
+        base_qs = Ticket.objects.filter(tenant_id=request.user.tenant_id)
+    else:
+        dept_qs = Department.objects.all()
+        base_qs = Ticket.objects.all()
+
     context = {
         "tickets": tickets,
         "search": search,
@@ -229,11 +249,11 @@ def all_tickets(request):
         "selected_assigned": assigned,
         "status_choices": Ticket.STATUS_CHOICES,
         "priority_choices": Ticket.PRIORITY_CHOICES,
-        "departments": Department.objects.all(),
-        "total_tickets": Ticket.objects.count(),
-        "open_tickets": Ticket.objects.filter(status="Open").count(),
-        "resolved_tickets": Ticket.objects.filter(status="Resolved").count(),
-        "unassigned": Ticket.objects.filter(assigned_to__isnull=True).count(),
+        "departments": dept_qs,
+        "total_tickets": base_qs.count(),
+        "open_tickets": base_qs.filter(status="Open").count(),
+        "resolved_tickets": base_qs.filter(status="Resolved").count(),
+        "unassigned": base_qs.filter(assigned_to__isnull=True).count(),
     }
 
     return render(
@@ -448,7 +468,13 @@ def global_search(request):
                 assigned_to=request.user
             ).filter(ticket_filter).distinct()[:5]
 
-        else:  # ADMIN / SUPER_ADMIN
+        elif role == "ADMIN":
+
+            tickets = Ticket.objects.filter(
+                tenant_id=request.user.tenant_id
+            ).filter(ticket_filter).distinct()[:5]
+
+        else:  # SUPER_ADMIN
 
             tickets = Ticket.objects.filter(
                 ticket_filter
@@ -526,26 +552,31 @@ def ai_triage_view(request):
 
 @login_required
 def reports(request):
-    total_tickets = Ticket.objects.count()
+    if request.user.role == "ADMIN":
+        base_qs = Ticket.objects.filter(tenant_id=request.user.tenant_id)
+        departments = Department.objects.filter(tenant_id=request.user.tenant_id)
+    else:
+        base_qs = Ticket.objects.all()
+        departments = Department.objects.all()
 
-    departments = Department.objects.all()
+    total_tickets = base_qs.count()
 
     department_report = (
-        Ticket.objects
+        base_qs
         .values("department__name")
         .annotate(total=Count("id"))
         .order_by("-total")
     )
 
     priority_report = (
-        Ticket.objects
+        base_qs
         .values("priority")
         .annotate(total=Count("id"))
         .order_by("-total")
     )
 
     agent_report = (
-        Ticket.objects
+        base_qs
         .filter(assigned_to__isnull=False)
         .values(
             "assigned_to__first_name",
@@ -557,21 +588,21 @@ def reports(request):
     )
 
     status_report = (
-        Ticket.objects
+        base_qs
         .values("status")
         .annotate(total=Count("id"))
         .order_by("-total")
     )
 
     category_report = (
-        Ticket.objects
+        base_qs
         .values("category")
         .annotate(total=Count("id"))
         .order_by("-total")
     )
 
     monthly_report = (
-        Ticket.objects
+        base_qs
         .annotate(month=TruncMonth("created_at"))
         .values("month")
         .annotate(total=Count("id"))
@@ -582,7 +613,7 @@ def reports(request):
     breached = 0
     within = 0
 
-    for ticket in Ticket.objects.all():
+    for ticket in base_qs:
 
         if ticket.status in ["Resolved", "Closed"]:
             within += 1
@@ -647,7 +678,7 @@ def export_tickets_excel(request):
         "Created Date"
     ])
 
-    tickets = Ticket.objects.select_related(
+    tickets = _scope_tickets_qs(request).select_related(
         "department",
         "assigned_to"
     )
@@ -702,7 +733,7 @@ def export_tickets_pdf(request):
         "Created"
     ]]
 
-    tickets = Ticket.objects.select_related("department")
+    tickets = _scope_tickets_qs(request).select_related("department")
 
     for ticket in tickets:
         data.append([
@@ -749,13 +780,15 @@ def export_reports_excel(request):
     ws = wb.active
     ws.title = "Reports"
 
+    base_qs = _scope_tickets_qs(request)
+
     # ================= Department =================
 
     ws.append(["Department Report"])
     ws.append(["Department", "Total Tickets"])
 
     department_report = (
-        Ticket.objects
+        base_qs
         .values("department__name")
         .annotate(total=Count("id"))
         .order_by("-total")
@@ -775,7 +808,7 @@ def export_reports_excel(request):
     ws.append(["Priority", "Total Tickets"])
 
     priority_report = (
-        Ticket.objects
+        base_qs
         .values("priority")
         .annotate(total=Count("id"))
         .order_by("-total")
@@ -795,7 +828,7 @@ def export_reports_excel(request):
     ws.append(["Status", "Total Tickets"])
 
     status_report = (
-        Ticket.objects
+        base_qs
         .values("status")
         .annotate(total=Count("id"))
         .order_by("-total")
@@ -815,7 +848,7 @@ def export_reports_excel(request):
     ws.append(["Agent", "Assigned Tickets"])
 
     agent_report = (
-        Ticket.objects
+        base_qs
         .filter(assigned_to__isnull=False)
         .values(
             "assigned_to__first_name",
@@ -844,7 +877,7 @@ def export_reports_excel(request):
     within = 0
     breached = 0
 
-    for ticket in Ticket.objects.all():
+    for ticket in base_qs.all():
 
         if ticket.status in ["Resolved", "Closed"]:
             within += 1
@@ -882,6 +915,8 @@ def export_reports_pdf(request):
 
     doc = SimpleDocTemplate(response)
 
+    base_qs = _scope_tickets_qs(request)
+
     elements = []
 
     styles = getSampleStyleSheet()
@@ -903,7 +938,7 @@ def export_reports_pdf(request):
     department_data = [["Department", "Total Tickets"]]
 
     department_report = (
-        Ticket.objects
+        base_qs
         .values("department__name")
         .annotate(total=Count("id"))
         .order_by("-total")
@@ -937,7 +972,7 @@ def export_reports_pdf(request):
     priority_data = [["Priority", "Total Tickets"]]
 
     priority_report = (
-        Ticket.objects
+        base_qs
         .values("priority")
         .annotate(total=Count("id"))
         .order_by("-total")
@@ -972,7 +1007,7 @@ def export_reports_pdf(request):
     status_data = [["Status", "Total Tickets"]]
 
     status_report = (
-        Ticket.objects
+        base_qs
         .values("status")
         .annotate(total=Count("id"))
         .order_by("-total")
@@ -1007,7 +1042,7 @@ def export_reports_pdf(request):
     agent_data = [["Agent", "Assigned Tickets"]]
 
     agent_report = (
-        Ticket.objects
+        base_qs
         .filter(assigned_to__isnull=False)
         .values(
             "assigned_to__first_name",
@@ -1051,7 +1086,7 @@ def export_reports_pdf(request):
     within = 0
     breached = 0
 
-    for ticket in Ticket.objects.all():
+    for ticket in base_qs.all():
 
         if ticket.status in ["Resolved", "Closed"]:
             within += 1
