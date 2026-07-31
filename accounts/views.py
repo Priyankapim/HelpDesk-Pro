@@ -251,8 +251,8 @@ def _super_admin_dashboard(request):
 
     status_labels = [
         'Open',
-        'In Progress',
-        'Pending User',
+        'Progress',
+        'Pending',
         'Resolved',
         'Closed'
     ]
