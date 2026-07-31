@@ -37,10 +37,13 @@ import json
 def _scope_tickets_qs(request):
     """
     Returns the base Ticket queryset scoped to the requesting user's
-    tenant when they're an ADMIN. SUPER_ADMIN sees all tenants.
+    tenant when they're an ADMIN. SUPER_ADMIN does not see tenant-
+    internal tickets — they use the Support Requests inbox instead.
     """
     if request.user.role == "ADMIN":
         return Ticket.objects.filter(tenant_id=request.user.tenant_id)
+    if request.user.role == "SUPER_ADMIN":
+        return Ticket.objects.none()
     return Ticket.objects.all()
 
 
@@ -185,6 +188,8 @@ def all_tickets(request):
 
     if request.user.role == "ADMIN":
         tickets = tickets.filter(tenant_id=request.user.tenant_id)
+    elif request.user.role == "SUPER_ADMIN":
+        tickets = tickets.none()
 
     # -- Search --
 
@@ -236,6 +241,9 @@ def all_tickets(request):
     if request.user.role == "ADMIN":
         dept_qs = Department.objects.filter(tenant_id=request.user.tenant_id)
         base_qs = Ticket.objects.filter(tenant_id=request.user.tenant_id)
+    elif request.user.role == "SUPER_ADMIN":
+        dept_qs = Department.objects.none()
+        base_qs = Ticket.objects.none()
     else:
         dept_qs = Department.objects.all()
         base_qs = Ticket.objects.all()
@@ -474,11 +482,10 @@ def global_search(request):
                 tenant_id=request.user.tenant_id
             ).filter(ticket_filter).distinct()[:5]
 
+
         else:  # SUPER_ADMIN
 
-            tickets = Ticket.objects.filter(
-                ticket_filter
-            ).distinct()[:5]
+            tickets = Ticket.objects.none()
 
         for ticket in tickets:
             results.append({
@@ -555,6 +562,9 @@ def reports(request):
     if request.user.role == "ADMIN":
         base_qs = Ticket.objects.filter(tenant_id=request.user.tenant_id)
         departments = Department.objects.filter(tenant_id=request.user.tenant_id)
+    elif request.user.role == "SUPER_ADMIN":
+        base_qs = Ticket.objects.none()
+        departments = Department.objects.none()
     else:
         base_qs = Ticket.objects.all()
         departments = Department.objects.all()

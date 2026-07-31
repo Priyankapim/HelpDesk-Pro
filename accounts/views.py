@@ -249,9 +249,11 @@ def dashboard_view(request):
             tenant_id=request.user.tenant_id
         )
 
+
     else:
-        # SUPER_ADMIN: sees tickets across all tenants
-        tickets = Ticket.objects.all()
+        # SUPER_ADMIN: does not own tenant tickets — they use the
+        # Support Requests inbox instead.
+        tickets = Ticket.objects.none()
 
     if department_filter:
         tickets = tickets.filter(department_id=department_filter)
@@ -609,7 +611,15 @@ def export_tickets_csv(request):
         'Created Date'
     ])
 
-    tickets = Ticket.objects.all()
+    if request.user.role == "EMPLOYEE":
+        tickets = Ticket.objects.filter(created_by=request.user)
+    elif request.user.role == "AGENT":
+        tickets = Ticket.objects.filter(assigned_to=request.user)
+    elif request.user.role == "ADMIN":
+        tickets = Ticket.objects.filter(tenant_id=request.user.tenant_id)
+    else:
+        # SUPER_ADMIN: does not own tenant tickets
+        tickets = Ticket.objects.none()
 
     for ticket in tickets:
 
