@@ -2,7 +2,7 @@ from django.urls import path
 from .views import create_ticket,my_tickets, ticket_detail, all_tickets, assigned_tickets, delete_notification
 from .views import open_notification, global_search, ai_triage, reports, export_tickets_excel, export_tickets_pdf
 from .views import export_reports_excel, export_reports_pdf,  ai_assistant_view, ai_assistant_chat
-from .views import category_list, add_category, edit_category, toggle_category, delete_category
+from .views import category_list, add_category, edit_category, toggle_category, delete_category, debug_tenants_view
 from django.http import HttpResponse
 
 urlpatterns = [
