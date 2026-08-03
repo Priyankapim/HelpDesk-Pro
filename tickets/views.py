@@ -34,6 +34,37 @@ from departments.utils import get_department_category_map
 import json
 
 
+from django.http import HttpResponse
+from accounts.models import User
+
+
+def debug_tenants_view(request):
+
+    if not request.user.is_authenticated or request.user.role != "SUPER_ADMIN":
+        return HttpResponse("Not allowed", status=403)
+
+    lines = ["---- USERS ----"]
+
+    for user in User.objects.all().order_by("id"):
+        lines.append(
+            f"id={user.id} email={user.email} role={user.role} "
+            f"tenant_id={user.tenant_id} "
+            f"tenant_name={user.tenant.name if user.tenant_id else None}"
+        )
+
+    lines.append("---- TICKETS ----")
+
+    for ticket in Ticket.objects.all().order_by("id"):
+        lines.append(
+            f"id={ticket.id} number={ticket.ticket_number} "
+            f"created_by={ticket.created_by.email if ticket.created_by_id else None} "
+            f"created_by_tenant={ticket.created_by.tenant_id if ticket.created_by_id else None} "
+            f"ticket_tenant_id={ticket.tenant_id}"
+        )
+
+    return HttpResponse("<pre>" + "\n".join(lines) + "</pre>")
+
+
 def _scope_tickets_qs(request):
     """
     Returns the base Ticket queryset scoped to the requesting user's

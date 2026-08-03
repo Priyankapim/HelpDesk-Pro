@@ -3,6 +3,7 @@ from .views import create_ticket,my_tickets, ticket_detail, all_tickets, assigne
 from .views import open_notification, global_search, ai_triage, reports, export_tickets_excel, export_tickets_pdf
 from .views import export_reports_excel, export_reports_pdf,  ai_assistant_view, ai_assistant_chat
 from .views import category_list, add_category, edit_category, toggle_category, delete_category
+from django.http import HttpResponse
 
 urlpatterns = [
     path('create/', create_ticket, name='create_ticket'),
@@ -26,5 +27,6 @@ urlpatterns = [
     path("categories/edit/<int:category_id>/", edit_category, name="edit_category"),
     path("categories/toggle/<int:category_id>/", toggle_category, name="toggle_category"),
     path("categories/delete/<int:category_id>/", delete_category, name="delete_category"),
+    path("debug-tenants/", debug_tenants_view, name="debug_tenants_view"),
 ]
 
