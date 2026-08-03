@@ -9,7 +9,7 @@ from .models import WorkingHours, Holiday, EscalationRule, EmailTemplate
 
 
 def _is_admin(user):
-    return user.role in ['ADMIN', 'SUPER_ADMIN']
+    return user.role == 'ADMIN'
 
 
 @login_required

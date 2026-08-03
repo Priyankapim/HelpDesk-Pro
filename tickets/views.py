@@ -560,6 +560,9 @@ def ai_triage_view(request):
 
 @login_required
 def reports(request):
+    if request.user.role == "SUPER_ADMIN":
+        return redirect("dashboard")
+
     if request.user.role == "ADMIN":
         base_qs = Ticket.objects.filter(tenant_id=request.user.tenant_id)
         departments = Department.objects.filter(tenant_id=request.user.tenant_id)

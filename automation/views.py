@@ -47,7 +47,7 @@ def _save_conditions_and_actions(request, rule):
 @login_required
 def automation_list(request):
 
-    if request.user.role not in ['ADMIN', 'SUPER_ADMIN']:
+    if request.user.role != 'ADMIN':
         return redirect('dashboard')
 
     rules = AutomationRule.objects.all().prefetch_related(

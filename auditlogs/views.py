@@ -69,10 +69,12 @@ def _apply_filters(request, logs):
 @login_required
 def audit_log_list(request):
 
-    if request.user.role not in ['ADMIN', 'SUPER_ADMIN']:
+    if request.user.role != 'ADMIN':
         return redirect('dashboard')
 
-    logs = AuditLog.objects.select_related('actor').all()
+    logs = AuditLog.objects.select_related('actor').filter(
+        actor__tenant_id=request.user.tenant_id
+    )
 
     logs = _apply_filters(request, logs)
 
@@ -80,7 +82,9 @@ def audit_log_list(request):
     # Summary Cards
     # =======================
 
-    all_logs = AuditLog.objects.all()
+    all_logs = AuditLog.objects.filter(
+        actor__tenant_id=request.user.tenant_id
+    )
 
     total_events = all_logs.count()
 
@@ -102,7 +106,8 @@ def audit_log_list(request):
         "modules": AuditLog.MODULE_CHOICES,
         "severities": AuditLog.SEVERITY_CHOICES,
         "actors": User.objects.filter(
-            audit_logs__isnull=False
+            audit_logs__isnull=False,
+            tenant_id=request.user.tenant_id
         ).distinct().order_by('first_name'),
     }
 
@@ -116,10 +121,12 @@ def audit_log_list(request):
 @login_required
 def audit_log_export_csv(request):
 
-    if request.user.role not in ['ADMIN', 'SUPER_ADMIN']:
+    if request.user.role != 'ADMIN':
         return redirect('dashboard')
 
-    logs = AuditLog.objects.select_related('actor').all()
+    logs = AuditLog.objects.select_related('actor').filter(
+        actor__tenant_id=request.user.tenant_id
+    )
     logs = _apply_filters(request, logs)
 
     response = HttpResponse(content_type='text/csv')
@@ -141,3 +148,41 @@ def audit_log_export_csv(request):
         ])
 
     return response
+
+
+
+@login_required
+def platform_audit_log(request):
+    """
+    Cross-tenant log of the SUPER_ADMIN's own platform-level actions
+    (tenant created / suspended / reactivated / deleted, etc.).
+    Not scoped to any tenant since it IS the platform owner's log.
+    """
+
+    if request.user.role != 'SUPER_ADMIN':
+        return redirect('dashboard')
+
+    logs = AuditLog.objects.select_related('actor').filter(
+        module='TENANTS'
+    )
+
+    logs = _apply_filters(request, logs)
+
+    total_events = logs.count()
+
+    last_24h = logs.filter(
+        created_at__gte=timezone.now() - timedelta(hours=24)
+    ).count()
+
+    context = {
+        "logs": logs,
+        "total_events": total_events,
+        "last_24h": last_24h,
+        "severities": AuditLog.SEVERITY_CHOICES,
+    }
+
+    return render(
+        request,
+        "platform_audit_log.html",
+        context
+    )

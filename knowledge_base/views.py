@@ -17,6 +17,9 @@ MANAGE_ROLES = ['ADMIN', 'SUPER_ADMIN']
 @login_required
 def knowledge_base_list(request):
 
+    if request.user.role == 'SUPER_ADMIN':
+        return redirect('dashboard')
+
     status = request.GET.get('status', 'PUBLISHED')
     department_id = request.GET.get('department', '')
     category = request.GET.get('category', '')
@@ -97,6 +100,9 @@ def article_detail(request, article_id):
 
 @login_required
 def faq_list(request):
+
+    if request.user.role == 'SUPER_ADMIN':
+        return redirect('dashboard')
 
     query = request.GET.get('q', '').strip()
     topic = request.GET.get('topic', '').strip()

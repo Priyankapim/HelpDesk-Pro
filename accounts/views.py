@@ -506,12 +506,12 @@ def logout_view(request):
 @login_required
 def users_list(request):
 
-    users = User.objects.all().order_by("first_name")
+    if request.user.role != 'ADMIN':
+        return redirect('dashboard')
 
-    # Non-super-admins only ever see users from their own tenant.
-    # SUPER_ADMIN sees every tenant's users.
-    if request.user.role != 'SUPER_ADMIN':
-        users = users.filter(tenant=request.user.tenant)
+    users = User.objects.filter(
+        tenant=request.user.tenant
+    ).order_by("first_name")
 
 
 

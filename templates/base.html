@@ -619,6 +619,8 @@
             <i class="bi bi-grid"></i> Dashboard
         </a>
 
+        {% if request.user.role != 'SUPER_ADMIN' %}
+
         <a href="{% url 'knowledge_base_list' %}">
             <i class="bi bi-journal-bookmark"></i> Knowledge Base
         </a>
@@ -626,6 +628,8 @@
         <a href="{% url 'faq_list' %}">
             <i class="bi bi-question-circle"></i> FAQ
         </a>
+
+        {% endif %}
 
         <a href="{% url 'ai_assistant' %}">
             <i class="bi bi-stars"></i> AI Assistant
@@ -661,6 +665,8 @@
 
         <div class="menu-title">Administration</div>
 
+        {% if request.user.role == 'ADMIN' %}
+
         <a href="{% url 'users_list' %}">
             <i class="bi bi-people"></i> Users
         </a>
@@ -669,11 +675,11 @@
             <i class="bi bi-building"></i> Departments
         </a>
 
-
-
         <a href="{% url 'automation_list' %}">
             <i class="bi bi-lightning-charge"></i> Automation
         </a>
+
+        {% endif %}
 
         {% if request.user.role == 'SUPER_ADMIN' %}
         <a href="{% url 'tenant_list' %}">
@@ -691,6 +697,8 @@
         </a>
         {% endif %}
 
+        {% if request.user.role == 'ADMIN' %}
+
         <a href="{% url 'reports' %}">
             <i class="bi bi-bar-chart"></i> Reports
         </a>
@@ -702,6 +710,14 @@
         <a href="{% url 'config_home' %}">
             <i class="bi bi-gear"></i> Configuration
         </a>
+
+        {% endif %}
+
+        {% if request.user.role == 'SUPER_ADMIN' %}
+        <a href="{% url 'platform_audit_log' %}">
+            <i class="bi bi-clock-history"></i> Platform Audit Log
+        </a>
+        {% endif %}
 
         <a href="{% url 'security_settings' %}">
             <i class="bi bi-shield-check"></i> Security Settings
