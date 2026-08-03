@@ -39,6 +39,16 @@ if RENDER_EXTERNAL_HOSTNAME:
 CSRF_TRUSTED_ORIGINS = [f"https://{RENDER_EXTERNAL_HOSTNAME}"] if RENDER_EXTERNAL_HOSTNAME else []
 
 
+# Base URL used to build absolute links in emails (invitations, password reset, etc.)
+# On Render this is picked up automatically from RENDER_EXTERNAL_HOSTNAME.
+# Locally it falls back to http://127.0.0.1:8000, and can always be overridden via env var.
+if os.getenv("SITE_URL"):
+    SITE_URL = os.getenv("SITE_URL").rstrip("/")
+elif RENDER_EXTERNAL_HOSTNAME:
+    SITE_URL = f"https://{RENDER_EXTERNAL_HOSTNAME}"
+else:
+    SITE_URL = "http://127.0.0.1:8000"
+
 # Application definition
 
 INSTALLED_APPS = [

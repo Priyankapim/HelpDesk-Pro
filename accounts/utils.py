@@ -170,9 +170,8 @@ def generate_username(email):
 
 
 def send_invitation_email(invitation):
-
     accept_link = (
-        f"http://127.0.0.1:8000"
+        f"{settings.SITE_URL}"
         f"{reverse('accept_invitation', args=[invitation.token])}"
     )
 
