@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User
@@ -44,6 +43,7 @@ class CustomUserAdmin(UserAdmin):
         "email",
         "username",
         "role",
+        "tenant",
         "is_staff",
 
 
@@ -61,6 +61,7 @@ class CustomUserAdmin(UserAdmin):
 
                     "role",
                     "department",
+                    "tenant",
                     "phone",
                     "profile_image",
 
