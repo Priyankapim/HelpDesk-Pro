@@ -1201,7 +1201,7 @@ def accept_invitation(request, token):
                     last_name=invitation.last_name,
                     role=invitation.role,
                     department=invitation.department,
-                    tenant=invitation.invited_by.tenant if invitation.invited_by else None,  # ← yeh line naya hai
+                    tenant=invitation.invited_by.tenant,
                     is_active=True,
                 )
 
