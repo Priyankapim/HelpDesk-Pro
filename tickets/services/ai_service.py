@@ -158,16 +158,31 @@ Do not use markdown.
     return json.loads(text)
 
 
-def ai_assistant_reply(history):
+def ai_assistant_reply(history, role="EMPLOYEE"):
     """
     history: list of {"role": "user"|"assistant", "content": "..."}
+    role: the requesting user's role, used to pick the right persona.
     Returns the assistant's plain-text reply using the same Mistral client
     already configured for ticket triage.
     """
 
-    system_prompt = {
-        "role": "system",
-        "content": (
+    if role == "SUPER_ADMIN":
+        prompt_text = (
+            "You are the AI Assistant inside ServiceDesk Pro, used here by "
+            "the platform's Super Admin (not a tenant employee). You help "
+            "with platform-operations tasks: drafting replies to tenant "
+            "Support Requests, summarizing tenant activity, explaining SLA "
+            "and priority conventions, and general guidance on managing "
+            "tenants, plans, and platform settings. You do NOT help with "
+            "personal IT troubleshooting (password resets, laptop issues, "
+            "etc.) — that is handled inside each tenant's own helpdesk, not "
+            "here. Keep answers short, practical, and professional. "
+            "Do not invent tenant-specific data you don't know - if unsure, "
+            "say so and suggest checking the Tenant Management or Support "
+            "Requests pages instead."
+        )
+    else:
+        prompt_text = (
             "You are the AI Assistant inside ServiceDesk Pro, an IT helpdesk "
             "portal. You help employees troubleshoot common IT issues, explain "
             "how to raise support tickets, describe SLA timelines, and answer "
@@ -177,6 +192,10 @@ def ai_assistant_reply(history):
             "Do not invent company-specific policies you don't know - if unsure, "
             "say so and suggest raising a ticket instead."
         )
+
+    system_prompt = {
+        "role": "system",
+        "content": prompt_text
     }
 
     messages = [system_prompt] + history

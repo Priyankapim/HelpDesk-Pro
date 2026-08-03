@@ -1178,7 +1178,7 @@ def ai_assistant_chat(request):
                 "error": "No message provided."
             })
 
-        reply = ai_assistant_reply(clean_history)
+        reply = ai_assistant_reply(clean_history, request.user.role)
 
         return JsonResponse({
             "success": True,
