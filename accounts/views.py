@@ -1194,25 +1194,15 @@ def accept_invitation(request, token):
                     return redirect("login")
 
                 user = User.objects.create_user(
-
-                    username=generate_username(
-                        invitation.email
-                    ),
-
+                    username=generate_username(invitation.email),
                     email=invitation.email,
-
                     password=password,
-
                     first_name=invitation.first_name,
-
                     last_name=invitation.last_name,
-
                     role=invitation.role,
-
                     department=invitation.department,
-
+                    tenant=invitation.invited_by.tenant if invitation.invited_by else None,  # ← yeh line naya hai
                     is_active=True,
-
                 )
 
                 invitation.status = "ACCEPTED"
