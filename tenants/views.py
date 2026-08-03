@@ -53,6 +53,99 @@ def _send_invite_email(request, invite):
         html_content=html_content,
     )
 
+@login_required
+def suspend_tenant(request, tenant_id):
+
+    if not _is_super_admin(request.user):
+        return redirect('dashboard')
+
+    tenant = get_object_or_404(Tenant, id=tenant_id)
+
+    if request.method == "POST":
+
+        tenant.is_active = False
+        tenant.save(update_fields=["is_active"])
+
+        log_activity(
+            actor=request.user,
+            action="tenant.suspended",
+            action_label="Tenant suspended",
+            module="TENANTS",
+            target=tenant.name,
+            severity="WARNING",
+        )
+
+        messages.success(request, f"Tenant '{tenant.name}' has been suspended.")
+
+    return redirect("tenant_detail", tenant_id=tenant.id)
+
+
+@login_required
+def reactivate_tenant(request, tenant_id):
+
+    if not _is_super_admin(request.user):
+        return redirect('dashboard')
+
+    tenant = get_object_or_404(Tenant, id=tenant_id)
+
+    if request.method == "POST":
+
+        tenant.is_active = True
+        tenant.save(update_fields=["is_active"])
+
+        log_activity(
+            actor=request.user,
+            action="tenant.reactivated",
+            action_label="Tenant reactivated",
+            module="TENANTS",
+            target=tenant.name,
+            severity="INFO",
+        )
+
+        messages.success(request, f"Tenant '{tenant.name}' has been reactivated.")
+
+    return redirect("tenant_detail", tenant_id=tenant.id)
+
+
+@login_required
+def delete_tenant(request, tenant_id):
+
+    if not _is_super_admin(request.user):
+        return redirect('dashboard')
+
+    tenant = get_object_or_404(Tenant, id=tenant_id)
+
+    if request.method == "POST":
+
+        confirm_name = request.POST.get("confirm_name", "").strip()
+
+        if confirm_name != tenant.name:
+            messages.error(
+                request,
+                "Tenant name did not match. Deletion cancelled."
+            )
+            return redirect("tenant_detail", tenant_id=tenant.id)
+
+        tenant_name = tenant.name
+
+        log_activity(
+            actor=request.user,
+            action="tenant.deleted",
+            action_label="Tenant deleted",
+            module="TENANTS",
+            target=tenant_name,
+            severity="CRITICAL",
+        )
+
+        tenant.delete()
+
+        messages.success(request, f"Tenant '{tenant_name}' has been permanently deleted.")
+
+        return redirect("tenant_list")
+
+    return redirect("tenant_detail", tenant_id=tenant.id)
+
+
 
 @login_required
 def tenant_list(request):

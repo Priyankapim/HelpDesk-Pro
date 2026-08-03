@@ -77,7 +77,6 @@ def login_view(request):
         # Account inactive
 
         if not user_obj.is_active:
-
             messages.error(
                 request,
                 "Your account is inactive. Please contact Administrator."
@@ -85,6 +84,17 @@ def login_view(request):
 
             return redirect("login")
 
+        # Tenant suspended — blocks everyone except the platform's own
+        # Super Admin (who has no tenant)
+
+        if user_obj.tenant_id and not user_obj.tenant.is_active:
+            messages.error(
+                request,
+                "Your organization's account has been suspended. "
+                "Please contact support."
+            )
+
+            return redirect("login")
 
         # Account locked - check if the lockout duration has already passed
 

@@ -310,9 +310,34 @@ body.dark-mode .alert-error, body.dark-mode .alert-danger{ background:#450a0a; c
             </div>
         </div>
 
-        <button class="btn btn-primary" onclick="openModal('inviteUserModal')">
-            <i class="bi bi-person-plus me-2"></i> Invite User
-        </button>
+        <div class="d-flex gap-2">
+
+            {% if tenant.is_active %}
+            <form method="post" action="{% url 'suspend_tenant' tenant.id %}"
+                  onsubmit="return confirm('Suspend {{ tenant.name }}? Their users will not be able to log in until reactivated.');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-warning">
+                    <i class="bi bi-pause-circle me-2"></i> Suspend
+                </button>
+            </form>
+            {% else %}
+            <form method="post" action="{% url 'reactivate_tenant' tenant.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-success">
+                    <i class="bi bi-play-circle me-2"></i> Reactivate
+                </button>
+            </form>
+            {% endif %}
+
+            <button class="btn btn-outline-danger" onclick="openModal('deleteTenantModal')">
+                <i class="bi bi-trash me-2"></i> Delete
+            </button>
+
+            <button class="btn btn-primary" onclick="openModal('inviteUserModal')">
+                <i class="bi bi-person-plus me-2"></i> Invite User
+            </button>
+
+        </div>
 
     </div>
 
@@ -507,6 +532,42 @@ body.dark-mode .alert-error, body.dark-mode .alert-danger{ background:#450a0a; c
             <div class="d-flex justify-content-end gap-2">
                 <button type="button" class="btn btn-light" onclick="closeModal('inviteUserModal')">Cancel</button>
                 <button type="submit" class="btn btn-primary">Send Invite</button>
+            </div>
+
+        </form>
+
+</div>
+</div>
+
+<!-- Delete Tenant Modal -->
+
+<div class="cfg-modal-overlay" id="deleteTenantModal">
+    <div class="cfg-modal">
+
+        <div class="cfg-modal-header">
+            <div class="cfg-modal-title">Delete {{ tenant.name }}</div>
+            <button type="button" class="cfg-modal-close" onclick="closeModal('deleteTenantModal')">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <p class="text-danger">
+            This permanently deletes this tenant and all of its tickets and
+            support requests. This cannot be undone. Users under this tenant
+            will be kept but unlinked from it.
+        </p>
+
+        <form method="post" action="{% url 'delete_tenant' tenant.id %}">
+            {% csrf_token %}
+
+            <label class="form-label">
+                Type <strong>{{ tenant.name }}</strong> to confirm
+            </label>
+            <input type="text" class="form-control mb-3" name="confirm_name" required>
+
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-light" onclick="closeModal('deleteTenantModal')">Cancel</button>
+                <button type="submit" class="btn btn-danger">Delete Permanently</button>
             </div>
 
         </form>
