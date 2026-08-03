@@ -1150,6 +1150,41 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 </script>
+
+<script>
+
+// Highlight the sidebar link matching the current page
+document.addEventListener("DOMContentLoaded", function () {
+
+    var links = document.querySelectorAll(".menu a[href]");
+    var currentPath = window.location.pathname;
+    var bestMatch = null;
+
+    links.forEach(function (link) {
+
+        var linkPath = link.getAttribute("href");
+
+        if (!linkPath || linkPath === "#") return;
+
+        if (currentPath === linkPath) {
+            bestMatch = link;
+        } else if (
+            linkPath !== "/" &&
+            currentPath.startsWith(linkPath) &&
+            (!bestMatch || linkPath.length > bestMatch.getAttribute("href").length)
+        ) {
+            bestMatch = link;
+        }
+
+    });
+
+    if (bestMatch) {
+        bestMatch.classList.add("active");
+    }
+
+});
+
+</script>
 </body>
 </html>
 
