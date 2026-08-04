@@ -75,16 +75,20 @@ class TicketForm(forms.ModelForm):
 
         }
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
 
         from departments.models import Department
 
         queryset = Department.objects.filter(is_active=True)
 
+        if user and user.tenant_id:
+            queryset = queryset.filter(tenant_id=user.tenant_id)
+
         if self.instance and self.instance.pk and self.instance.department_id:
             queryset = Department.objects.filter(
-                models.Q(is_active=True) | models.Q(pk=self.instance.department_id)
+                models.Q(pk=self.instance.department_id) |
+                (models.Q(is_active=True) & (models.Q(tenant_id=user.tenant_id) if user and user.tenant_id else models.Q()))
             )
 
         self.fields["department"].queryset = queryset

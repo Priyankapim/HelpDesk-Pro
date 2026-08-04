@@ -46,6 +46,7 @@ def add_department(request):
             sla_high=request.POST.get("sla_high") or 8,
             sla_medium=request.POST.get("sla_medium") or 24,
             sla_low=request.POST.get("sla_low") or 72,
+            tenant=request.user.tenant,
         )
 
         log_activity(

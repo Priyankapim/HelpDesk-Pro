@@ -83,7 +83,7 @@ def create_ticket(request):
         return redirect("dashboard")
 
     if request.method == "POST":
-        form = TicketForm(request.POST)
+        form = TicketForm(request.POST, user=request.user)
 
         if form.is_valid():
             ticket = form.save(commit=False)
@@ -134,7 +134,7 @@ def create_ticket(request):
 
     else:
 
-        form = TicketForm()
+        form = TicketForm(user=request.user)
 
     return render(
         request,
