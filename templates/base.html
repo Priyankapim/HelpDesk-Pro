@@ -922,9 +922,11 @@ function isDarkMode(){
     return document.body.classList.contains("dark-mode");
 }
 
-function chartTextColor(){
-    return isDarkMode() ? "#e5e7eb" : "#374151";
-}
+function textColor(){
+        return document.body.classList.contains("dark-mode")
+            ? "#f1f5f9"
+            : "#1e293b";
+    }
 
 function chartGridColor(){
     return isDarkMode() ? "#374151" : "#e5e7eb";
