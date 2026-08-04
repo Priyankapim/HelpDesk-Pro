@@ -334,7 +334,11 @@
         .dark-mode .nav-icons i,
         .dark-mode .bi-bell,
         .dark-mode .bi-calendar3,
-        .dark-mode .bi-moon{
+        .dark-mode .bi-moon,
+        .dark-mode .bi-ticket,
+        .dark-mode .bi-ticket-perforated,
+        .dark-mode .bi-ticket-detailed,
+        .dark-mode .bi-building{
             color:#f8fafc !important;
         }
 
@@ -787,25 +791,25 @@
                 {% if request.user.role == 'EMPLOYEE' %}
                 <a href="{% url 'my_tickets' %}" class="text-decoration-none me-3"
                    title="My Tickets" data-bs-toggle="tooltip">
-                    <i class="bi bi-ticket fs-5" style="color:inherit;"></i>
+                    <i class="bi bi-ticket fs-5"></i>
                 </a>
 
                 {% elif request.user.role == 'AGENT' %}
                 <a href="{% url 'assigned_tickets' %}" class="text-decoration-none me-3"
                    title="Assigned Tickets" data-bs-toggle="tooltip">
-                    <i class="bi bi-ticket-perforated fs-5" style="color:inherit;"></i>
+                    <i class="bi bi-ticket-perforated fs-5"></i>
                 </a>
 
                 {% elif request.user.role == 'ADMIN' %}
                 <a href="{% url 'all_tickets' %}" class="text-decoration-none me-3"
                    title="All Tickets" data-bs-toggle="tooltip">
-                    <i class="bi bi-ticket-detailed fs-5" style="color:inherit;"></i>
+                    <i class="bi bi-ticket-detailed fs-5"></i>
                 </a>
 
                 {% elif request.user.role == 'SUPER_ADMIN' %}
                 <a href="{% url 'tenant_list' %}" class="text-decoration-none me-3"
                    title="Tenant Management" data-bs-toggle="tooltip">
-                    <i class="bi bi-building fs-5" style="color:inherit;"></i>
+                    <i class="bi bi-building fs-5"></i>
                 </a>
                 {% endif %}
 
