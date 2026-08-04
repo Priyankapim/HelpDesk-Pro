@@ -576,16 +576,18 @@ def users_list(request):
         )
 
     # =======================
-    # Summary
+    # Summary (tenant-scoped, not global)
     # =======================
 
-    total_users = User.objects.count()
+    tenant_users = User.objects.filter(tenant=request.user.tenant)
 
-    active_users = User.objects.filter(
+    total_users = tenant_users.count()
+
+    active_users = tenant_users.filter(
         is_active=True
     ).count()
 
-    inactive_users = User.objects.filter(
+    inactive_users = tenant_users.filter(
         is_active=False
     ).count()
 
@@ -987,7 +989,9 @@ def reset_password_view(request, uidb64, token):
 @login_required
 def invitation_list(request):
 
-    invitations = Invitation.objects.all()
+    invitations = Invitation.objects.filter(
+        invited_by__tenant=request.user.tenant
+    )
 
     # Search
     search = request.GET.get("search")
@@ -1013,23 +1017,27 @@ def invitation_list(request):
 
     invitations = invitations.order_by("-created_at")
 
+    tenant_invitations = Invitation.objects.filter(
+        invited_by__tenant=request.user.tenant
+    )
+
     context = {
 
         "invitations": invitations,
 
-        "pending_count": Invitation.objects.filter(
+        "pending_count": tenant_invitations.filter(
             status="PENDING"
         ).count(),
 
-        "accepted_count": Invitation.objects.filter(
+        "accepted_count": tenant_invitations.filter(
             status="ACCEPTED"
         ).count(),
 
-        "expired_count": Invitation.objects.filter(
+        "expired_count": tenant_invitations.filter(
             status="EXPIRED"
         ).count(),
 
-        "revoked_count": Invitation.objects.filter(
+        "revoked_count": tenant_invitations.filter(
             status="REVOKED"
         ).count(),
 
