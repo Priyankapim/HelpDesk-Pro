@@ -641,15 +641,24 @@ Dashboard
     );
 
 
+        const statusRawData = {{ status_data|safe }};
+        const statusIsEmpty = statusRawData.reduce((a,b) => a+b, 0) === 0;
+
         new Chart(
             document.getElementById('statusChart'),
             {
                 type:'doughnut',
 
-                data:{
+                data: statusIsEmpty ? {
+                    labels: ['No tickets yet'],
+                    datasets:[{
+                        data:[1],
+                        backgroundColor:['#e2e8f0']
+                    }]
+                } : {
                     labels: {{ status_labels|safe }},
                     datasets:[{
-                        data: {{ status_data|safe }},
+                        data: statusRawData,
                         backgroundColor:[
                             '#60a5fa',
                             '#c084fc',
@@ -665,6 +674,7 @@ Dashboard
 
                     plugins:{
                         legend:{
+                            display: !statusIsEmpty,
                             position:'top',
                             labels:{
                                 color:textColor(),
@@ -673,6 +683,9 @@ Dashboard
                                     size:10
                                 }
                             }
+                        },
+                        tooltip:{
+                            enabled: !statusIsEmpty
                         }
                     }
                 }
@@ -680,15 +693,24 @@ Dashboard
         );
 
 
+        const priorityRawData = {{ priority_data|safe }};
+        const priorityIsEmpty = priorityRawData.reduce((a,b) => a+b, 0) === 0;
+
         new Chart(
             document.getElementById('priorityChart'),
             {
                 type:'pie',
 
-                data:{
+                data: priorityIsEmpty ? {
+                    labels: ['No tickets yet'],
+                    datasets:[{
+                        data:[1],
+                        backgroundColor:['#e2e8f0']
+                    }]
+                } : {
                     labels: {{ priority_labels|safe }},
                     datasets:[{
-                        data: {{ priority_data|safe }},
+                        data: priorityRawData,
                         backgroundColor:[
                             '#4ade80',
                             '#fbbf24',
@@ -704,6 +726,7 @@ Dashboard
 
                     plugins:{
                         legend:{
+                            display: !priorityIsEmpty,
                             position:'top',
                             labels:{
                                 color:textColor(),
@@ -712,12 +735,18 @@ Dashboard
                                     size:10
                                 }
                             }
+                        },
+                        tooltip:{
+                            enabled: !priorityIsEmpty
                         }
                     }
                 }
             }
         );
 
+
+        const departmentLabelsRaw = {{ department_labels|safe }};
+        const departmentIsEmpty = departmentLabelsRaw.length === 0;
 
         new Chart(
             document.getElementById('departmentChart'),
@@ -732,6 +761,9 @@ Dashboard
                     plugins:{
                         legend:{
                             display:false
+                        },
+                        tooltip:{
+                            enabled: !departmentIsEmpty
                         }
                     },
 
@@ -764,8 +796,15 @@ Dashboard
                     }
                 },
 
-                data:{
-                    labels: {{ department_labels|safe }},
+                data: departmentIsEmpty ? {
+                    labels: ['No data'],
+                    datasets:[{
+                        label:'Tickets',
+                        data:[0],
+                        backgroundColor:'#e2e8f0'
+                    }]
+                } : {
+                    labels: departmentLabelsRaw,
                     datasets:[{
                         label:'Tickets',
                         data: {{ department_data|safe }},
