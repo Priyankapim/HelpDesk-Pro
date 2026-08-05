@@ -25,7 +25,9 @@ def knowledge_base_list(request):
     category = request.GET.get('category', '')
     query = request.GET.get('q', '').strip()
 
-    articles = Article.objects.select_related('department')
+    articles = Article.objects.filter(
+        tenant=request.user.tenant
+    ).select_related('department')
 
     if request.user.role not in MANAGE_ROLES:
         articles = articles.filter(is_internal=False)
@@ -48,7 +50,9 @@ def knowledge_base_list(request):
             Q(tags__icontains=query)
         )
 
-    departments = Department.objects.filter(is_active=True).order_by('name')
+    departments = Department.objects.filter(
+        is_active=True, tenant=request.user.tenant
+    ).order_by('name')
 
     return render(
         request,
@@ -69,7 +73,9 @@ def knowledge_base_list(request):
 @login_required
 def article_detail(request, article_id):
 
-    article = get_object_or_404(Article, id=article_id)
+    article = get_object_or_404(
+        Article, id=article_id, tenant=request.user.tenant
+    )
 
     if article.is_internal and request.user.role not in MANAGE_ROLES:
         return redirect('knowledge_base_list')
@@ -107,7 +113,9 @@ def faq_list(request):
     query = request.GET.get('q', '').strip()
     topic = request.GET.get('topic', '').strip()
 
-    articles = Article.objects.filter(status='PUBLISHED')
+    articles = Article.objects.filter(
+        status='PUBLISHED', tenant=request.user.tenant
+    )
 
     if request.user.role not in MANAGE_ROLES:
         articles = articles.filter(is_internal=False)
@@ -123,7 +131,9 @@ def faq_list(request):
             Q(tags__icontains=query)
         )
 
-    topics_qs = Article.objects.filter(status='PUBLISHED')
+    topics_qs = Article.objects.filter(
+        status='PUBLISHED', tenant=request.user.tenant
+    )
 
     if request.user.role not in MANAGE_ROLES:
         topics_qs = topics_qs.filter(is_internal=False)
@@ -152,7 +162,9 @@ def article_form(request, article_id=None):
     article = None
 
     if article_id:
-        article = get_object_or_404(Article, id=article_id)
+        article = get_object_or_404(
+            Article, id=article_id, tenant=request.user.tenant
+        )
 
     if request.method == 'POST':
 
@@ -208,6 +220,7 @@ def article_form(request, article_id=None):
                 is_internal=is_internal,
                 tags=tags,
                 created_by=request.user,
+                tenant=request.user.tenant,
             )
 
             log_activity(
@@ -223,7 +236,9 @@ def article_form(request, article_id=None):
 
         return redirect('knowledge_base_list')
 
-    departments = Department.objects.filter(is_active=True).order_by('name')
+    departments = Department.objects.filter(
+        is_active=True, tenant=request.user.tenant
+    ).order_by('name')
 
     department_category_map = get_department_category_map()
 
@@ -245,7 +260,9 @@ def delete_article(request, article_id):
     if request.user.role not in MANAGE_ROLES:
         return redirect('knowledge_base_list')
 
-    article = get_object_or_404(Article, id=article_id)
+    article = get_object_or_404(
+        Article, id=article_id, tenant=request.user.tenant
+    )
     title = article.title
     article.delete()
 
@@ -267,7 +284,9 @@ def delete_article(request, article_id):
 @require_POST
 def mark_helpful(request, article_id):
 
-    article = get_object_or_404(Article, id=article_id)
+    article = get_object_or_404(
+        Article, id=article_id, tenant=request.user.tenant
+    )
 
     helpful_articles = request.session.get('kb_helpful_articles', [])
 

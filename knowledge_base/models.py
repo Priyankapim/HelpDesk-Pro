@@ -52,6 +52,14 @@ class Article(models.Model):
         related_name='kb_articles'
     )
 
+    tenant = models.ForeignKey(
+        'tenants.Tenant',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='kb_articles'
+    )
+
     category = models.CharField(
         max_length=100,
         choices=CATEGORY_CHOICES,
@@ -85,6 +93,13 @@ class Article(models.Model):
 
     class Meta:
         ordering = ['-updated_at']
+
+    def save(self, *args, **kwargs):
+
+        if not self.tenant_id and self.created_by_id:
+            self.tenant_id = self.created_by.tenant_id
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

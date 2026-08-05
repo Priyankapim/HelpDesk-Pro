@@ -15,19 +15,36 @@ class WorkingHours(models.Model):
         ('SUN', 'Sunday'),
     )
 
-    day = models.CharField(max_length=3, choices=DAY_CHOICES, unique=True)
+    tenant = models.ForeignKey(
+        'tenants.Tenant',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='working_hours'
+    )
+
+    day = models.CharField(max_length=3, choices=DAY_CHOICES)
     is_working = models.BooleanField(default=True)
     start_time = models.TimeField(default='09:00')
     end_time = models.TimeField(default='17:00')
 
     class Meta:
         ordering = ['id']
+        unique_together = ('tenant', 'day')
 
     def __str__(self):
         return self.get_day_display()
 
 
 class Holiday(models.Model):
+
+    tenant = models.ForeignKey(
+        'tenants.Tenant',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='holidays'
+    )
 
     name = models.CharField(max_length=150)
     date = models.DateField()
@@ -47,6 +64,14 @@ class EscalationRule(models.Model):
         ('MEDIUM', 'Medium'),
         ('HIGH', 'High'),
         ('CRITICAL', 'Critical'),
+    )
+
+    tenant = models.ForeignKey(
+        'tenants.Tenant',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='escalation_rules'
     )
 
     department = models.ForeignKey(
@@ -75,6 +100,14 @@ class EmailTemplate(models.Model):
         ('TICKET_ESCALATED', 'Ticket Escalated'),
         ('SLA_WARNING', 'SLA Warning'),
         ('CSAT_REQUEST', 'CSAT Request'),
+    )
+
+    tenant = models.ForeignKey(
+        'tenants.Tenant',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='email_templates'
     )
 
     name = models.CharField(max_length=150)

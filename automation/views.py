@@ -50,7 +50,9 @@ def automation_list(request):
     if request.user.role != 'ADMIN':
         return redirect('dashboard')
 
-    rules = AutomationRule.objects.all().prefetch_related(
+    rules = AutomationRule.objects.filter(
+        tenant=request.user.tenant
+    ).prefetch_related(
         'conditions', 'actions'
     ).order_by('-created_at')
 
@@ -59,13 +61,15 @@ def automation_list(request):
     if selected_trigger:
         rules = rules.filter(trigger=selected_trigger)
 
-    total_rules = AutomationRule.objects.count()
+    tenant_rules = AutomationRule.objects.filter(tenant=request.user.tenant)
 
-    active_rules = AutomationRule.objects.filter(
+    total_rules = tenant_rules.count()
+
+    active_rules = tenant_rules.filter(
         is_active=True
     ).count()
 
-    total_executions = AutomationRule.objects.aggregate(
+    total_executions = tenant_rules.aggregate(
         total=Sum('execution_count')
     )['total'] or 0
 
@@ -151,7 +155,8 @@ def add_automation_rule(request):
             description=request.POST.get("description", "").strip(),
             trigger=trigger,
             is_active=bool(request.POST.get("is_active")),
-            created_by=request.user
+            created_by=request.user,
+            tenant=request.user.tenant,
         )
 
         _save_conditions_and_actions(request, rule)
@@ -169,7 +174,7 @@ def edit_automation_rule(request, rule_id):
     if request.user.role not in ['ADMIN', 'SUPER_ADMIN']:
         return redirect('dashboard')
 
-    rule = get_object_or_404(AutomationRule, id=rule_id)
+    rule = get_object_or_404(AutomationRule, id=rule_id, tenant=request.user.tenant)
 
     if request.method == "POST":
 
@@ -201,7 +206,7 @@ def toggle_automation_rule(request, rule_id):
     if request.user.role not in ['ADMIN', 'SUPER_ADMIN']:
         return redirect('dashboard')
 
-    rule = get_object_or_404(AutomationRule, id=rule_id)
+    rule = get_object_or_404(AutomationRule, id=rule_id, tenant=request.user.tenant)
 
     rule.is_active = not rule.is_active
     rule.save()
@@ -220,7 +225,7 @@ def delete_automation_rule(request, rule_id):
     if request.user.role not in ['ADMIN', 'SUPER_ADMIN']:
         return redirect('dashboard')
 
-    rule = get_object_or_404(AutomationRule, id=rule_id)
+    rule = get_object_or_404(AutomationRule, id=rule_id, tenant=request.user.tenant)
     rule.delete()
 
     messages.success(request, "Automation rule deleted.")

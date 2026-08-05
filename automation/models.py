@@ -35,6 +35,14 @@ class AutomationRule(models.Model):
     is_active = models.BooleanField(default=True)
     execution_count = models.PositiveIntegerField(default=0)
 
+    tenant = models.ForeignKey(
+        'tenants.Tenant',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='automation_rules'
+    )
+
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,

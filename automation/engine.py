@@ -179,7 +179,8 @@ def run_automation_rules(trigger, ticket, extra=None):
 
     rules = AutomationRule.objects.filter(
         trigger=trigger,
-        is_active=True
+        is_active=True,
+        tenant=ticket.tenant,
     ).prefetch_related("conditions", "actions")
 
     for rule in rules:

@@ -538,7 +538,12 @@ def global_search(request):
                 Q(last_name__icontains=query) |
                 Q(email__icontains=query)
 
-            )[:5]
+            )
+
+            if role == "ADMIN":
+                users = users.filter(tenant_id=request.user.tenant_id)
+
+            users = users[:5]
 
             for user in users:
                 results.append({
@@ -549,11 +554,17 @@ def global_search(request):
                     "url": reverse("users_list")
                 })
 
+    
         # == Departments ==
 
         departments = Department.objects.filter(
             name__icontains=query
-        )[:5]
+        )
+
+        if role == "ADMIN":
+            departments = departments.filter(tenant_id=request.user.tenant_id)
+
+        departments = departments[:5]
 
         for dept in departments:
             results.append({

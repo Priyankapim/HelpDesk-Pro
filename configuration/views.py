@@ -18,25 +18,22 @@ def config_home(request):
     if not _is_admin(request.user):
         return redirect('dashboard')
 
-    # Ensure all 7 working-hours rows exist (created once, then reused)
+    tenant = request.user.tenant
+
     for day_code, _label in WorkingHours.DAY_CHOICES:
-        WorkingHours.objects.get_or_create(day=day_code)
+        WorkingHours.objects.get_or_create(tenant=tenant, day=day_code)
 
     context = {
-        "departments": Department.objects.all().order_by('name'),
-        "working_hours": WorkingHours.objects.all(),
-        "holidays": Holiday.objects.all(),
-        "escalation_rules": EscalationRule.objects.select_related('department').all(),
-        "templates": EmailTemplate.objects.all(),
+        "departments": Department.objects.filter(tenant=tenant).order_by('name'),
+        "working_hours": WorkingHours.objects.filter(tenant=tenant),
+        "holidays": Holiday.objects.filter(tenant=tenant),
+        "escalation_rules": EscalationRule.objects.filter(tenant=tenant).select_related('department'),
+        "templates": EmailTemplate.objects.filter(tenant=tenant),
         "selected_department_id": request.GET.get("department", ""),
     }
 
     return render(request, "admin_config.html", context)
 
-
-# =====================================================
-# SLA Rules
-# =====================================================
 
 @login_required
 def save_sla_rules(request, department_id):
@@ -44,7 +41,7 @@ def save_sla_rules(request, department_id):
     if not _is_admin(request.user):
         return redirect('dashboard')
 
-    department = get_object_or_404(Department, id=department_id)
+    department = get_object_or_404(Department, id=department_id, tenant=request.user.tenant)
 
     if request.method == "POST":
 
@@ -75,10 +72,6 @@ def save_sla_rules(request, department_id):
     return redirect(f"/configuration/?department={department.id}")
 
 
-# =====================================================
-# Working Hours
-# =====================================================
-
 @login_required
 def save_working_hours(request):
 
@@ -89,7 +82,10 @@ def save_working_hours(request):
 
         for day_code, _label in WorkingHours.DAY_CHOICES:
 
-            wh = WorkingHours.objects.get(day=day_code)
+            wh, _created = WorkingHours.objects.get_or_create(
+                tenant=request.user.tenant,
+                day=day_code
+            )
 
             wh.is_working = f"is_working_{day_code}" in request.POST
 
@@ -118,10 +114,6 @@ def save_working_hours(request):
     return redirect("/configuration/?tab=hours")
 
 
-# =====================================================
-# Holidays
-# =====================================================
-
 @login_required
 def add_holiday(request):
 
@@ -139,6 +131,7 @@ def add_holiday(request):
             return redirect("/configuration/?tab=holidays")
 
         Holiday.objects.create(
+            tenant=request.user.tenant,
             name=name,
             date=date,
             recurring=recurring,
@@ -164,7 +157,7 @@ def delete_holiday(request, holiday_id):
     if not _is_admin(request.user):
         return redirect('dashboard')
 
-    holiday = get_object_or_404(Holiday, id=holiday_id)
+    holiday = get_object_or_404(Holiday, id=holiday_id, tenant=request.user.tenant)
     holiday_name = holiday.name
 
     holiday.delete()
@@ -183,10 +176,6 @@ def delete_holiday(request, holiday_id):
     return redirect("/configuration/?tab=holidays")
 
 
-# =====================================================
-# Escalation Rules
-# =====================================================
-
 @login_required
 def add_escalation_rule(request):
 
@@ -196,9 +185,10 @@ def add_escalation_rule(request):
     if request.method == "POST":
 
         department_id = request.POST.get("department")
-        department = get_object_or_404(Department, id=department_id)
+        department = get_object_or_404(Department, id=department_id, tenant=request.user.tenant)
 
         rule = EscalationRule.objects.create(
+            tenant=request.user.tenant,
             department=department,
             priority=request.POST.get("priority"),
             escalate_after_hours=request.POST.get("escalate_after_hours") or 4,
@@ -226,12 +216,12 @@ def edit_escalation_rule(request, rule_id):
     if not _is_admin(request.user):
         return redirect('dashboard')
 
-    rule = get_object_or_404(EscalationRule, id=rule_id)
+    rule = get_object_or_404(EscalationRule, id=rule_id, tenant=request.user.tenant)
 
     if request.method == "POST":
 
         department_id = request.POST.get("department")
-        rule.department = get_object_or_404(Department, id=department_id)
+        rule.department = get_object_or_404(Department, id=department_id, tenant=request.user.tenant)
         rule.priority = request.POST.get("priority")
         rule.escalate_after_hours = request.POST.get("escalate_after_hours") or rule.escalate_after_hours
         rule.notify_email = request.POST.get("notify_email", "")
@@ -259,7 +249,7 @@ def delete_escalation_rule(request, rule_id):
     if not _is_admin(request.user):
         return redirect('dashboard')
 
-    rule = get_object_or_404(EscalationRule, id=rule_id)
+    rule = get_object_or_404(EscalationRule, id=rule_id, tenant=request.user.tenant)
     rule_target = f"{rule.department.name} - {rule.get_priority_display()}"
 
     rule.delete()
@@ -278,10 +268,6 @@ def delete_escalation_rule(request, rule_id):
     return redirect("/configuration/?tab=escalation")
 
 
-# =====================================================
-# Email Templates
-# =====================================================
-
 @login_required
 def add_email_template(request):
 
@@ -293,6 +279,7 @@ def add_email_template(request):
         name = request.POST.get("name", "").strip()
 
         template = EmailTemplate.objects.create(
+            tenant=request.user.tenant,
             name=name,
             trigger_event=request.POST.get("trigger_event"),
             subject=request.POST.get("subject", ""),
@@ -320,7 +307,7 @@ def edit_email_template(request, template_id):
     if not _is_admin(request.user):
         return redirect('dashboard')
 
-    template = get_object_or_404(EmailTemplate, id=template_id)
+    template = get_object_or_404(EmailTemplate, id=template_id, tenant=request.user.tenant)
 
     if request.method == "POST":
 
@@ -352,7 +339,7 @@ def delete_email_template(request, template_id):
     if not _is_admin(request.user):
         return redirect('dashboard')
 
-    template = get_object_or_404(EmailTemplate, id=template_id)
+    template = get_object_or_404(EmailTemplate, id=template_id, tenant=request.user.tenant)
     template_name = template.name
 
     template.delete()
