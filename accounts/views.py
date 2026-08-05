@@ -1074,7 +1074,7 @@ def invite_user(request):
                 module="INVITES",
                 target=invitation.email,
                 severity="INFO",
-                after={"role": invitation.role, "department": str(invitation.department)},
+                after={"role": invitation.role},
             )
 
             messages.success(

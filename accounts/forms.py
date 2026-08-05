@@ -74,7 +74,6 @@ class InvitationForm(forms.ModelForm):
             "last_name",
             "email",
             "role",
-            "department",
 
         ]
 
@@ -96,10 +95,6 @@ class InvitationForm(forms.ModelForm):
             }),
 
             "role": forms.Select(attrs={
-                "class": "form-select"
-            }),
-
-            "department": forms.Select(attrs={
                 "class": "form-select"
             }),
 
