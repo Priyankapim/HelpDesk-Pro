@@ -578,6 +578,7 @@ body.dark-mode .cat-add-row{
                                 {% csrf_token %}
                                 <button type="submit"
                                         title="{% if department.is_active %}Deactivate{% else %}Activate{% endif %}"
+                                        data-bs-toggle="tooltip"
                                         class="{% if department.is_active %}power-on{% else %}power-off{% endif %}">
                                     <i class="bi bi-power"></i>
                                 </button>
@@ -722,7 +723,7 @@ body.dark-mode .cat-add-row{
                                     <form method="post" action="{% url 'edit_category' category.id %}">
                                         {% csrf_token %}
                                         <input type="text" name="name" value="{{ category.name }}">
-                                        <button type="submit" title="Save name">
+                                        <button type="submit" title="Save name" data-bs-toggle="tooltip">
                                             <i class="bi bi-check-lg"></i>
                                         </button>
                                     </form>
@@ -732,7 +733,8 @@ body.dark-mode .cat-add-row{
                                         <form method="post" action="{% url 'toggle_category' category.id %}">
                                             {% csrf_token %}
                                             <button type="submit"
-                                                    title="{% if category.is_active %}Deactivate{% else %}Activate{% endif %}">
+                                                    title="{% if category.is_active %}Deactivate{% else %}Activate{% endif %}"
+                                                    data-bs-toggle="tooltip">
                                                 <i class="bi bi-power"></i>
                                             </button>
                                         </form>
@@ -740,7 +742,7 @@ body.dark-mode .cat-add-row{
                                         <form method="post" action="{% url 'delete_category' category.id %}"
                                               onsubmit="return confirm('Delete this category? Existing tickets/articles keep the old value as plain text.');">
                                             {% csrf_token %}
-                                            <button type="submit" class="cat-delete-btn" title="Delete">
+                                            <button type="submit" class="cat-delete-btn" title="Delete" data-bs-toggle="tooltip">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>

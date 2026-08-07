@@ -509,8 +509,8 @@ body.dark-mode .kb-card-footer{
                 <div class="kb-card-footer">
 
                     <div class="kb-card-stats">
-                        <span><i class="bi bi-eye"></i> {{ article.views_count }}</span>
-                        <span><i class="bi bi-hand-thumbs-up"></i> {{ article.helpful_count }}</span>
+                        <span title="Views" data-bs-toggle="tooltip"><i class="bi bi-eye"></i> {{ article.views_count }}</span>
+                        <span title="Marked Helpful" data-bs-toggle="tooltip"><i class="bi bi-hand-thumbs-up"></i> {{ article.helpful_count }}</span>
                     </div>
 
                     {% if can_manage %}

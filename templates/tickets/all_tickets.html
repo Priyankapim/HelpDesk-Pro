@@ -519,6 +519,7 @@ document.querySelectorAll("select").forEach(function(item){
 
     {% for ticket in tickets %}
 
+
     <tr>
         <td>
             <a href="{% url 'ticket_detail' ticket.id %}"
@@ -660,12 +661,13 @@ document.querySelectorAll("select").forEach(function(item){
 
         <td>
             <a href="{% url 'ticket_detail' ticket.id %}"
-               class="btn btn-sm btn-outline-primary rounded-pill">
+               class="btn btn-sm btn-outline-primary rounded-pill" title="View Ticket" data-bs-toggle="tooltip">
                 <i class="bi bi-eye"></i>
             </a>
         </td>
 
     </tr>
+
 
     {% empty %}
 

@@ -199,6 +199,7 @@ body.dark-mode .empty-state p{ color:#94a3b8; }
                         {% csrf_token %}
                         <button type="submit"
                                 title="{% if category.is_active %}Deactivate{% else %}Activate{% endif %}"
+                                data-bs-toggle="tooltip"
                                 class="{% if category.is_active %}power-on{% else %}power-off{% endif %}">
                             <i class="bi bi-power"></i>
                         </button>
@@ -206,7 +207,7 @@ body.dark-mode .empty-state p{ color:#94a3b8; }
 
                     <form method="post" action="{% url 'delete_category' category.id %}" style="display:inline;" onsubmit="return confirm('Delete this category permanently?');">
                         {% csrf_token %}
-                        <button type="submit" title="Delete">
+                        <button type="submit" title="Delete" data-bs-toggle="tooltip">
                             <i class="bi bi-trash"></i>
                         </button>
                     </form>

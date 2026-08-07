@@ -790,12 +790,13 @@
         <div class="d-flex justify-content-between align-items-center h-100 w-100">
 
             <div class="d-flex align-items-center" style="min-width:0;">
-                <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Toggle menu">
+                <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Toggle menu"
+                        title="Toggle Sidebar" data-bs-toggle="tooltip">
                     <i class="bi bi-list"></i>
                 </button>
 
                 <!-- Search -->
-                <div class="search-box">
+                <div class="search-box" title="Search Everything (tickets, KB, users...)" data-bs-toggle="tooltip">
                     <input type="text" id="openSearch" class="form-control"
                            placeholder="Search tickets, departments..." readonly>
                 </div>
@@ -835,13 +836,14 @@
                 <!-- Dark Mode -->
                 <i id="themeToggle"
                    class="bi bi-moon me-3"
-                   style="cursor:pointer;"></i>
+                   style="cursor:pointer;"
+                   title="Toggle Dark / Light Mode" data-bs-toggle="tooltip"></i>
 
                 <!-- Notification -->
                 <div class="dropdown me-3">
 
                     <button class="btn p-0 border-0 bg-transparent position-relative" type="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                        data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
 
                         <i class="bi bi-bell fs-5"></i>
 
@@ -884,7 +886,7 @@
                                 </a>
 
                                 <a href="{% url 'delete_notification' notification.id %}"
-                                   class="text-danger ms-2">
+                                   class="text-danger ms-2" title="Delete Notification" data-bs-toggle="tooltip">
 
                                     <i class="bi bi-trash"></i>
                                 </a>

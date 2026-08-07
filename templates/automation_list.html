@@ -766,13 +766,13 @@ body.dark-mode .btn-close{
 
                     <form method="post" action="{% url 'toggle_automation_rule' rule.id %}">
                         {% csrf_token %}
-                        <label class="rule-toggle">
+                        <label class="rule-toggle" title="{% if rule.is_active %}Deactivate Rule{% else %}Activate Rule{% endif %}" data-bs-toggle="tooltip">
                             <input type="checkbox" onchange="this.form.submit()" {% if rule.is_active %}checked{% endif %}>
                             <span class="toggle-slider"></span>
                         </label>
                     </form>
 
-                    <button type="button" class="rule-icon-btn" title="Edit"
+                    <button type="button" class="rule-icon-btn" title="Edit" data-bs-toggle="tooltip"
                             onclick="openEditModal({{ rule.id }})">
                         <i class="bi bi-pencil-fill"></i>
                     </button>
@@ -780,12 +780,12 @@ body.dark-mode .btn-close{
                     <form method="post" action="{% url 'delete_automation_rule' rule.id %}"
                           onsubmit="return confirm('Delete this automation rule?');">
                         {% csrf_token %}
-                        <button type="submit" class="rule-icon-btn" title="Delete">
+                        <button type="submit" class="rule-icon-btn" title="Delete" data-bs-toggle="tooltip">
                             <i class="bi bi-trash"></i>
                         </button>
                     </form>
 
-                    <button type="button" class="rule-icon-btn chevron-btn" title="Details"
+                    <button type="button" class="rule-icon-btn chevron-btn" title="Details" data-bs-toggle="tooltip"
                             onclick="toggleRuleDetails({{ rule.id }})">
                         <i class="bi bi-chevron-down" id="ruleChevron{{ rule.id }}"></i>
                     </button>
