@@ -119,8 +119,8 @@ Dashboard
         margin-bottom:12px;
     }
 
-    .chart-small{ height:340px; }
-    .chart-small canvas{ height:260px !important; max-height:260px !important; }
+    .chart-small{ height:290px; }
+    .chart-small canvas{ height:210px !important; max-height:210px !important; }
 
     @media(max-width:1024px){
         .row.g-2.mb-4 > .col-md{
@@ -386,7 +386,14 @@ Dashboard
                     },
                     y: {
                         grid: { display: false },
-                        ticks: { color: textColor(), font: { size: 11, weight: '600' } }
+                        ticks: {
+                            color: textColor(),
+                            font: { size: 11, weight: '600' },
+                            callback: function(value){
+                                const label = this.getLabelForValue(value);
+                                return label.split(' ');
+                            }
+                        }
                     }
                 }
             }
