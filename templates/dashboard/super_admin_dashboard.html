@@ -24,19 +24,29 @@ Dashboard
         transform:translateY(-3px);
     }
 
+    .kpi-card .card-body{
+        text-align:center;
+    }
+
+    .kpi-card .d-flex.justify-content-between{
+        justify-content:center !important;
+        gap:8px;
+    }
+
     .kpi-label{
-        font-size:10px;
+        font-size:11px;
         font-weight:600;
         color:#6b7280;
         text-transform:uppercase;
         min-height:28px;
+        text-align:center;
     }
 
     .kpi-value{
-        font-size:25px;
+        font-size:26px;
         font-weight:700;
         margin-top:15px;
-        text-align:left;
+        text-align:center;
     }
 
     .kpi-icon{
@@ -109,8 +119,8 @@ Dashboard
         margin-bottom:12px;
     }
 
-    .chart-small{ height:250px; }
-    .chart-small canvas{ height:170px !important; max-height:170px !important; }
+    .chart-small{ height:340px; }
+    .chart-small canvas{ height:260px !important; max-height:260px !important; }
 
     @media(max-width:1024px){
         .row.g-2.mb-4 > .col-md{
@@ -221,7 +231,7 @@ Dashboard
 
     <div class="row g-3 mb-4">
 
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="card chart-card chart-small">
                 <div class="card-body">
                     <div class="chart-title">Support Requests by Status</div>
@@ -230,7 +240,7 @@ Dashboard
             </div>
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="card chart-card chart-small">
                 <div class="card-body">
                     <div class="chart-title">Support Requests by Priority</div>
@@ -239,7 +249,7 @@ Dashboard
             </div>
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="card chart-card chart-small">
                 <div class="card-body">
                     <div class="chart-title">Support Requests by Department</div>
