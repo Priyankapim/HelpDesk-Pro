@@ -262,7 +262,7 @@ def _super_admin_dashboard(request):
     status_labels = [
         'Open',
         'Progress',
-        'Pending',
+       #'Pending',
         'Resolved',
         'Closed'
     ]
@@ -270,7 +270,7 @@ def _super_admin_dashboard(request):
     status_data = [
         requests_qs.filter(status='OPEN').count(),
         requests_qs.filter(status='IN_PROGRESS').count(),
-        requests_qs.filter(status='PENDING_USER').count(),
+        #requests_qs.filter(status='PENDING_USER').count(),
         requests_qs.filter(status='RESOLVED').count(),
         requests_qs.filter(status='CLOSED').count(),
     ]
