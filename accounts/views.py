@@ -284,6 +284,15 @@ def _super_admin_dashboard(request):
         requests_qs.filter(priority='CRITICAL').count(),
     ]
 
+    department_counts = requests_qs.values(
+        'department__name'
+    ).annotate(count=Count('id')).order_by('-count')
+
+    department_labels = [
+        (row['department__name'] or 'General') for row in department_counts
+    ]
+    department_data = [row['count'] for row in department_counts]
+
     recent_requests = requests_qs.select_related(
         'tenant'
     ).order_by('-created_at')[:6]
@@ -301,6 +310,8 @@ def _super_admin_dashboard(request):
         "status_data": status_data,
         "priority_labels": priority_labels,
         "priority_data": priority_data,
+        "department_labels": department_labels,
+        "department_data": department_data,
         "recent_requests": recent_requests,
         "recent_tenants": recent_tenants,
     }

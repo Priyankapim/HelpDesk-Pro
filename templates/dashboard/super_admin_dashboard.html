@@ -239,6 +239,17 @@ Dashboard
             </div>
         </div>
 
+        <div class="col-lg-6">
+            <div class="card chart-card chart-small">
+                <div class="card-body">
+                    <div class="chart-title">Support Requests by Department</div>
+                    <canvas id="departmentChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -295,6 +306,29 @@ Dashboard
                             font: { size: 10 }
                         }
                     }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('departmentChart'), {
+            type: 'bar',
+            data: {
+                labels: {{ department_labels|safe }},
+                datasets: [{
+                    label: 'Support Requests',
+                    data: {{ department_data|safe }},
+                    backgroundColor: '#2563eb'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { ticks: { color: textColor() } },
+                    y: { beginAtZero: true, ticks: { color: textColor(), precision: 0 } }
                 }
             }
         });

@@ -289,6 +289,14 @@ body.dark-mode .alert-error, body.dark-mode .alert-danger{ background:#450a0a; c
             <label class="form-label">Subject</label>
             <input type="text" class="form-control mb-3" name="subject" placeholder="e.g. Tickets are not visible" required>
 
+            <label class="form-label">Department</label>
+            <select class="form-select mb-3" name="department">
+                <option value="">General</option>
+                {% for dept in departments %}
+                <option value="{{ dept.id }}">{{ dept.name }}</option>
+                {% endfor %}
+            </select>
+
             <label class="form-label">Priority</label>
             <select class="form-select mb-3" name="priority">
                 <option value="LOW">Low</option>

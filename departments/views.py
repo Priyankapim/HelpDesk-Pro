@@ -8,7 +8,7 @@ from .models import Department, Category
 @login_required
 def department_list(request):
 
-    if request.user.role != 'ADMIN':
+    if request.user.role not in ['ADMIN', 'SUPER_ADMIN']:
         return redirect('dashboard')
 
     departments = Department.objects.all().order_by('name').prefetch_related('categories')

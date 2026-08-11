@@ -2,6 +2,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from .models import SupportRequest, SupportMessage
+from departments.models import Department
 
 from auditlogs.utils import log_activity
 
@@ -135,6 +137,7 @@ def my_support_requests(request):
         subject = request.POST.get("subject", "").strip()
         description = request.POST.get("description", "").strip()
         priority = request.POST.get("priority", "MEDIUM")
+        department_id = request.POST.get("department") or None
 
         if not subject or not description:
             messages.error(request, "Subject and description are required.")
@@ -146,6 +149,7 @@ def my_support_requests(request):
             subject=subject,
             description=description,
             priority=priority,
+            department_id=department_id,
         )
 
         log_activity(
@@ -180,6 +184,7 @@ def my_support_requests(request):
         ).count(),
         "current_status": status or "",
         "status_choices": SupportRequest.STATUS_CHOICES,
+        "departments": Department.objects.filter(tenant__isnull=True, is_active=True).order_by('name'),
     }
 
     return render(request, "my_support_requests.html", context)
