@@ -66,9 +66,40 @@ Platform Audit Log
         border-radius:20px;
     }
 
-    .severity-info{ background:#dbeafe; color:#2563eb; }
+.severity-info{ background:#dbeafe; color:#2563eb; }
     .severity-warning{ background:#fef3c7; color:#d97706; }
     .severity-critical{ background:#fee2e2; color:#dc2626; }
+
+    body.dark-mode .page-title{ color:#f8fafc; }
+    body.dark-mode .page-subtitle{ color:#94a3b8; }
+
+    body.dark-mode .kpi-card{
+        background:#1e293b;
+        border:1px solid #334155;
+    }
+
+    body.dark-mode .kpi-value{ color:#f8fafc; }
+
+    body.dark-mode .table-card{
+        background:#1e293b;
+        border:1px solid #334155;
+    }
+
+    body.dark-mode .table{ color:#e2e8f0; }
+
+    body.dark-mode .table thead th{
+        background:#233044;
+        color:#cbd5e1;
+        border-bottom:1px solid #334155;
+    }
+
+    body.dark-mode .table tbody td{ border-color:#334155; }
+    body.dark-mode .table tbody tr{ background:#1e293b; }
+    body.dark-mode .table tbody tr:hover{ background:#273549; }
+
+    body.dark-mode .severity-info{ background:#1e3a5f; color:#93c5fd; }
+    body.dark-mode .severity-warning{ background:#4a3810; color:#fcd34d; }
+    body.dark-mode .severity-critical{ background:#4a1515; color:#fca5a5; }
 
 </style>
 
@@ -115,6 +146,7 @@ Platform Audit Log
                         <th>Action</th>
                         <th>Target</th>
                         <th>Severity</th>
+                        <th width="30"></th>
                     </tr>
                 </thead>
 
@@ -122,7 +154,17 @@ Platform Audit Log
 
                 {% for log in logs %}
 
-                    <tr>
+                    <tr class="audit-row"
+                        data-timestamp="{{ log.created_at|date:'M d, Y, g:i A' }}"
+                        data-severity="{{ log.severity }}"
+                        data-severity-label="{{ log.get_severity_display }}"
+                        data-actor="{{ log.actor_name }}"
+                        data-module="{{ log.get_module_display }}"
+                        data-action="{{ log.action_label }}"
+                        data-target="{{ log.target|default:'—' }}"
+                        data-before='{{ log.changes_before_json }}'
+                        data-after='{{ log.changes_after_json }}'>
+
                         <td title="{{ log.created_at|date:'M d, Y, g:i A' }}">
                             {{ log.created_at|timesince }} ago
                         </td>
@@ -145,12 +187,16 @@ Platform Audit Log
                                 {{ log.get_severity_display }}
                             </span>
                         </td>
+
+                        <td>
+                            <i class="bi bi-chevron-right"></i>
+                        </td>
                     </tr>
 
                 {% empty %}
 
                     <tr>
-                        <td colspan="5" class="text-center text-muted py-4">
+                        <td colspan="6" class="text-center text-muted py-4">
                             No platform-level events yet.
                         </td>
                     </tr>
@@ -164,5 +210,134 @@ Platform Audit Log
     </div>
 
 </div>
+
+<!-- Audit Log Detail Modal -->
+
+<div id="auditModalOverlay" class="audit-modal-overlay">
+
+    <div class="audit-modal">
+
+        <div class="audit-modal-header">
+
+            <div class="audit-modal-title">
+                <i class="bi bi-activity"></i>
+                Audit Log Detail
+            </div>
+
+            <button type="button" class="audit-modal-close" id="auditModalClose">
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+        </div>
+
+        <div class="audit-modal-grid">
+
+            <div>
+                <div class="audit-field-label">Timestamp</div>
+                <div class="audit-field-value" id="modalTimestamp"></div>
+            </div>
+
+            <div>
+                <div class="audit-field-label">Severity</div>
+                <div class="audit-field-value">
+                    <span id="modalSeverity" class="severity-badge"></span>
+                </div>
+            </div>
+
+            <div>
+                <div class="audit-field-label">Actor</div>
+                <div class="audit-field-value" id="modalActor"></div>
+            </div>
+
+            <div>
+                <div class="audit-field-label">Module</div>
+                <div class="audit-field-value" id="modalModule"></div>
+            </div>
+
+            <div>
+                <div class="audit-field-label">Action</div>
+                <div class="audit-field-value">
+                    <span class="audit-action-box" id="modalAction"></span>
+                </div>
+            </div>
+
+            <div>
+                <div class="audit-field-label">Target</div>
+                <div class="audit-field-value" id="modalTarget"></div>
+            </div>
+
+        </div>
+
+        <div id="modalChangesWrapper" class="audit-changes-box" style="display:none;">
+            <div class="changes-title">Changes</div>
+            <div id="modalChangesBody"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const auditRows = document.querySelectorAll(".audit-row");
+const auditOverlay = document.getElementById("auditModalOverlay");
+const auditModalClose = document.getElementById("auditModalClose");
+
+function formatChangeObject(prefix, obj){
+    let html = "";
+    for(const key in obj){
+        html += `<code>${prefix}: ${key}: ${obj[key]}</code>`;
+    }
+    return html;
+}
+
+auditRows.forEach(function(row){
+
+    row.addEventListener("click", function(){
+
+        document.getElementById("modalTimestamp").textContent = row.dataset.timestamp;
+        document.getElementById("modalActor").textContent = row.dataset.actor;
+        document.getElementById("modalModule").textContent = row.dataset.module;
+        document.getElementById("modalAction").textContent = row.dataset.action;
+        document.getElementById("modalTarget").textContent = row.dataset.target;
+
+        const severityEl = document.getElementById("modalSeverity");
+        severityEl.textContent = row.dataset.severityLabel;
+        severityEl.className = "severity-badge severity-" + row.dataset.severity.toLowerCase();
+
+        const before = JSON.parse(row.dataset.before || "null");
+        const after = JSON.parse(row.dataset.after || "null");
+        const changesWrapper = document.getElementById("modalChangesWrapper");
+        const changesBody = document.getElementById("modalChangesBody");
+
+        if(!before && !after){
+            changesWrapper.style.display = "none";
+        } else {
+            let html = "";
+            if(before){
+                html += formatChangeObject("Before", before);
+            }
+            if(after){
+                html += formatChangeObject("After", after);
+            }
+            changesBody.innerHTML = html;
+            changesWrapper.style.display = "block";
+        }
+
+        auditOverlay.style.display = "flex";
+    });
+});
+
+auditModalClose.addEventListener("click", function(){
+    auditOverlay.style.display = "none";
+});
+
+auditOverlay.addEventListener("click", function(e){
+    if(e.target === auditOverlay){
+        auditOverlay.style.display = "none";
+    }
+});
+
+</script>
 
 {% endblock %}
