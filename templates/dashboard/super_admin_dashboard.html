@@ -76,6 +76,25 @@ Dashboard
 
     .table-card .card-body{ padding:20px; }
 
+    body.dark-mode .table-card{
+        background:#1e293b !important;
+    }
+
+    body.dark-mode .table-card table,
+    body.dark-mode .table-card thead,
+    body.dark-mode .table-card tbody,
+    body.dark-mode .table-card tr,
+    body.dark-mode .table-card td,
+    body.dark-mode .table-card th{
+        background-color:transparent !important;
+        color:#f1f5f9 !important;
+        border-color:#334155 !important;
+    }
+
+    body.dark-mode .table-card thead tr{
+        color:#94a3b8 !important;
+    }
+
     .ticket-card{
         border:none;
         border-radius:14px;
@@ -306,7 +325,7 @@ Dashboard
             }
         };
 
-        new Chart(document.getElementById('statusChart'), {
+        const statusChart = new Chart(document.getElementById('statusChart'), {
             type: 'doughnut',
             data: {
                 labels: {{ status_labels|safe }},
@@ -329,7 +348,7 @@ Dashboard
             plugins: [centerTotalPlugin]
         });
 
-        new Chart(document.getElementById('priorityChart'), {
+        const priorityChart = new Chart(document.getElementById('priorityChart'), {
             type: 'doughnut',
             data: {
                 labels: {{ priority_labels|safe }},
@@ -358,7 +377,7 @@ Dashboard
         deptGradient.addColorStop(0, '#60a5fa');
         deptGradient.addColorStop(1, '#2563eb');
 
-        new Chart(deptCanvas, {
+        const departmentChart = new Chart(deptCanvas, {
             type: 'bar',
             data: {
                 labels: {{ department_labels|safe }},
@@ -398,6 +417,26 @@ Dashboard
                 }
             }
         });
+
+        // Re-color charts instantly when dark/light mode is toggled
+        // (Chart.js bakes colors in at creation time, so without this
+        // the legend/axis text stays stuck in the old theme's color)
+        window.refreshDashboardChartsTheme = function(){
+            const tc = textColor();
+            const gc = gridColor();
+            const borderClr = document.body.classList.contains("dark-mode") ? '#1e293b' : '#ffffff';
+
+            [statusChart, priorityChart].forEach(function(ch){
+                ch.options.plugins.legend.labels.color = tc;
+                ch.data.datasets[0].borderColor = borderClr;
+                ch.update();
+            });
+
+            departmentChart.options.scales.x.ticks.color = tc;
+            departmentChart.options.scales.x.grid.color = gc;
+            departmentChart.options.scales.y.ticks.color = tc;
+            departmentChart.update();
+        };
 
     });
     </script>
