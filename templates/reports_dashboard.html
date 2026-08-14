@@ -64,6 +64,7 @@ SUMMARY CARDS
     border:1px solid #edf2f7;
     transition:.25s;
     height:100%;
+    text-align:center;
 }
 
 .summary-card:hover{
@@ -71,24 +72,32 @@ SUMMARY CARDS
     box-shadow:0 8px 22px rgba(15,23,42,.08);
 }
 
-.summary-icon{
-    width:44px;
-    height:44px;
-    border-radius:10px;
+.summary-header{
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:20px;
+    gap:8px;
+    margin-bottom:10px;
+}
+
+.summary-icon{
+    width:34px;
+    height:34px;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
     color:#2563eb;
     background:#eff6ff;
-    margin-bottom:12px;
+    flex-shrink:0;
 }
 
 .summary-title{
     font-size:12px;
     color:#64748b;
-    margin-bottom:6px;
 }
+
 
 .summary-value{
     font-size:26px;
@@ -441,12 +450,14 @@ body.dark-mode .export-btn{
 
             <div class="summary-card">
 
-                <div class="summary-icon">
-                    <i class="bi bi-ticket-perforated"></i>
-                </div>
+                <div class="summary-header">
+                    <div class="summary-icon">
+                        <i class="bi bi-ticket-perforated"></i>
+                    </div>
 
-                <div class="summary-title">
-                    Total Tickets
+                    <div class="summary-title">
+                        Total Tickets
+                    </div>
                 </div>
 
                 <div class="summary-value">
@@ -460,12 +471,14 @@ body.dark-mode .export-btn{
         <div class="col-lg-3 col-md-6">
             <div class="summary-card">
 
-                <div class="summary-icon">
-                    <i class="bi bi-folder"></i>
-                </div>
+                <div class="summary-header">
+                    <div class="summary-icon">
+                        <i class="bi bi-folder"></i>
+                    </div>
 
-                <div class="summary-title">
-                    Departments
+                    <div class="summary-title">
+                        Departments
+                    </div>
                 </div>
 
                 <div class="summary-value">
@@ -480,12 +493,14 @@ body.dark-mode .export-btn{
 
             <div class="summary-card">
 
-                <div class="summary-icon">
-                    <i class="bi bi-people"></i>
-                </div>
+                <div class="summary-header">
+                    <div class="summary-icon">
+                        <i class="bi bi-people"></i>
+                    </div>
 
-                <div class="summary-title">
-                    Agents
+                    <div class="summary-title">
+                        Agents
+                    </div>
                 </div>
 
                 <div class="summary-value">
@@ -500,12 +515,14 @@ body.dark-mode .export-btn{
 
             <div class="summary-card">
 
-                <div class="summary-icon">
-                    <i class="bi bi-bar-chart"></i>
-                </div>
+                <div class="summary-header">
+                    <div class="summary-icon">
+                        <i class="bi bi-bar-chart"></i>
+                    </div>
 
-                <div class="summary-title">
-                    Categories
+                    <div class="summary-title">
+                        Categories
+                    </div>
                 </div>
 
                 <div class="summary-value">
