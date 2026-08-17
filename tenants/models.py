@@ -44,8 +44,7 @@ class Tenant(models.Model):
 
     @property
     def total_tickets(self):
-        # Tickets are not tenant-scoped yet — placeholder for a future step.
-        return 0
+        return self.support_requests.count()
 
     @property
     def onboarding_percent(self):
